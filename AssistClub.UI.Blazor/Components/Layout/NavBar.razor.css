@@ -1,0 +1,60 @@
+.media {
+    display: flex;
+}
+
+.media-card {
+    padding: 0;
+    transition: all 0.3s;
+}
+
+.media-img-xs {
+    width: 38px !important;
+    height: 38px !important;
+}
+
+.dropdown-toggle:after {
+    display: none;
+}
+
+.username {
+    margin-top: .5rem;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.text-lightgray {
+    --tw-text-opacity: 1;
+    color: rgb(90 99 131 / var(--tw-text-opacity));
+}
+
+.text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+.user:hover {
+    text-decoration: none!important;
+}
+
+@media (min-width: 740px) {
+    .xl\:block {
+        display: block;
+    }
+}
+
+@media (min-width: 1000px) {
+    .search-bar {
+        width: 30rem;
+    }
+}

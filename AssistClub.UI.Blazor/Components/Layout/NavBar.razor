@@ -1,0 +1,57 @@
+@using AssistClub.UI.Blazor.Services
+@using AssistClub.UI.Blazor.Models
+
+@inject UserService UserService
+
+<form class="d-flex me-auto mb-lg-0" role="search">
+    <input class="form-control me-2 search-bar" type="search" placeholder="Search..." aria-label="Search">
+    <button class="btn btn-outline-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
+</form>
+<ul class="navbar-nav flex-row flex-wrap ms-md-auto align-items-center">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle ps-2 user" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="media media-card mb-0 rounded-0 align-items-center bg-transparent">
+                <div class="media-img flex-shrink-0 rounded-circle me-2">
+                    @if (_user != null)
+                    {
+                        <img src="images/@_user.Photo" alt="avatar" class="rounded-circle media-img-xs">
+                    }
+                    else
+                    {
+                        <img src="images/default.jpeg" alt="avatar" class="rounded-circle media-img-xs">
+                    }
+                </div>
+                <div class="text-start">
+                    <div class="d-flex align-items-center gap-1">
+                        @if (_user != null)
+                        {
+                            <span class="hidden xl:block text-sm font-semibold">@_user.Fullname</span>
+                        } else
+                        {
+                            <span class="hidden xl:block text-sm font-semibold">Loading...</span>
+                        }
+                        <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.29241 5.20759C0.901881 4.81707 0.90188 4.18391 1.29241 3.79338C1.68293 3.40286 2.31609 3.40286 2.70662 3.79338L5.99951 7.08627L9.2924 3.79338C9.68293 3.40286 10.3161 3.40286 10.7066 3.79338C11.0971 4.18391 11.0971 4.81707 10.7066 5.20759L6.70662 9.2076C6.31609 9.59812 5.68293 9.59812 5.2924 9.2076L1.29241 5.20759Z" fill="currentColor"></path>
+                        </svg>
+                    </div>
+                    <span class="hidden xl:block text-xs text-lightgray">@if (_user != null) @_user.Club</span>
+                </div>
+            </div>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item d-flex align-items-center" href="/user">Profile</a></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="#">Sign out</a></li>
+        </ul>
+    </li>
+</ul>
+
+@code {
+    private UserViewModel? _user;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _user = await UserService.GetUserByEmail("carlos@gmail.com");
+    }
+}
