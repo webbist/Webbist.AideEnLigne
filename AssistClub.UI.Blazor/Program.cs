@@ -1,5 +1,5 @@
 using AssistClub.UI.Blazor.Components;
-using AssistClub.UI.Blazor.Services;
+using AssistClub.UI.Blazor.HttpClients;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +8,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5284")});
-builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<UserHttpClient>();
 
 var app = builder.Build();
 

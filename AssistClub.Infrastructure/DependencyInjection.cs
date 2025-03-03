@@ -1,4 +1,5 @@
 ﻿using AssistClub.Application.Interfaces;
+using AssistClub.Application.Services;
 using AssistClub.Infrastructure.Persistence;
 using AssistClub.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -22,8 +23,11 @@ public static class DependencyInjection
     {
         services.AddDbContext<AssistClubDbContext>(
             options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
+        
+        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IQuestionService, QuestionService>();
+        services.AddScoped<IQuestionRepository, QuestionRepository>();
         return services;
     }
 }

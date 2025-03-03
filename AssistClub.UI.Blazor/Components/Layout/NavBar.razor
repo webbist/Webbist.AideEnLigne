@@ -1,7 +1,7 @@
-@using AssistClub.UI.Blazor.Services
+@using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
 
-@inject UserService UserService
+@inject UserHttpClient UserHttpClient
 
 <form class="d-flex me-auto mb-lg-0" role="search">
     <input class="form-control me-2 search-bar" type="search" placeholder="Search..." aria-label="Search">
@@ -52,6 +52,6 @@
     
     protected override async Task OnInitializedAsync()
     {
-        _user = await UserService.GetUserByEmail("carlos@gmail.com");
+        _user = await UserHttpClient.GetUserByEmail("carlos@gmail.com");
     }
 }

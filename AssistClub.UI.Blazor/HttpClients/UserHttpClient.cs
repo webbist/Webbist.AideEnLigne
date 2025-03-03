@@ -1,12 +1,12 @@
 using AssistClub.UI.Blazor.Models;
 
-namespace AssistClub.UI.Blazor.Services;
+namespace AssistClub.UI.Blazor.HttpClients;
 
 /// <summary>
 /// Handles communication between the Blazor UI and the API for retrieving user data.
 /// Ensures the UI remains decoupled from API response structures.
 /// </summary>
-public class UserService(HttpClient http)
+public class UserHttpClient(HttpClient http)
 {
     /// <summary>
     /// Retrieves a user's profile information by email.

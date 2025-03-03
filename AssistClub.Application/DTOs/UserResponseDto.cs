@@ -1,7 +1,7 @@
 namespace AssistClub.Application.DTOs;
 
 /// <summary>
-/// Data transfer object for user responses.
+/// Data Transfer Object (DTO) representing the user data that is returned by the API.
 /// </summary>
 public class UserResponseDto
 {
