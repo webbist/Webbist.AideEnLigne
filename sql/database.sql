@@ -21,7 +21,7 @@ CREATE TABLE Questions (
                            Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
                            UserId UNIQUEIDENTIFIER NOT NULL,
                            Title NVARCHAR(255) NOT NULL,
-                           Content NVARCHAR(2000) NOT NULL,
+                           Content NVARCHAR(MAX) NOT NULL,
                            CreatedAt DATETIME DEFAULT GETDATE(),
                            UpdatedAt DATETIME NULL,
                            Visibility NVARCHAR(50) NOT NULL CHECK (Visibility IN ('public', 'private')),

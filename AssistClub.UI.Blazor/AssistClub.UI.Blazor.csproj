@@ -14,4 +14,8 @@
       <ProjectReference Include="..\AssistClub.Application\AssistClub.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Radzen.Blazor" Version="6.1.5" />
+    </ItemGroup>
+
 </Project>
