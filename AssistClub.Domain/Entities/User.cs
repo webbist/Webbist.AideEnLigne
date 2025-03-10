@@ -15,4 +15,6 @@ public partial class User
     public string Club { get; set; } = null!;
 
     public string Microsite { get; set; } = null!;
+
+    public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
 }

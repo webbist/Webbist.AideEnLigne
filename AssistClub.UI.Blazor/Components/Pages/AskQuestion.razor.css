@@ -1,0 +1,14 @@
+.input-box {
+    padding-bottom: 10px !important;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form--control {
+    height: 50px;
+    font-size: 15px;
+    padding-right: 18px;
+    padding-left: 18px;
+}

@@ -1,30 +1,33 @@
-using AssistClub.Application.DTOs;
 using AssistClub.Application.Interfaces;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace AssistClub.Infrastructure.Persistence.Repositories;
 
-/// <summary>
-/// Repository for user-related data operations.
-/// </summary>
+/// <inheritdoc/>
 public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logger): IUserRepository
 {
-    public UserResponseDto? GetUserByEmail(string email)
+    /// <summary>
+    /// Retrieves a user by their email address.
+    /// </summary>
+    /// <param name="email">The email of the user.</param>
+    /// <returns>
+    /// A <see cref="User"/> entity if found; otherwise, <c>null</c>.
+    /// </returns>
+    public async Task<User?> GetUserByEmailAsync(string email)
     {
-        var user = db.Users.FirstOrDefault(u => u.Email == email);
-        if (user != null)
-            // Map the user entity to UserResponseDto
-            return new UserResponseDto
-            {
-                Id = user.Id,
-                Firstname = user.Firstname,
-                Lastname = user.Lastname,
-                Email = user.Email,
-                Photo = user.Photo,
-                Club = user.Club,
-                Microsite = user.Microsite
-            };
-        logger.LogError("User with email {email} not found.", email);
-        return null;
+        string normalizedEmail = email.Trim().ToLower();
+        try
+        {
+            return await db.Users
+                .Where(u => u.Email.ToLower() == normalizedEmail)
+                .SingleOrDefaultAsync();
+        }
+        catch (InvalidOperationException ex)
+        {
+            logger.LogError(ex, "Multiple users found with the same email: {Email}", email);
+            throw new Exception("Data integrity issue: multiple users found with the same email.");
+        }
     }
 }

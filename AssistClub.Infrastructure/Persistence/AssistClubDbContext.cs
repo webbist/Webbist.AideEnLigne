@@ -14,6 +14,8 @@ public partial class AssistClubDbContext : DbContext
     {
     }
 
+    public virtual DbSet<Question> Questions { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -21,6 +23,25 @@ public partial class AssistClubDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Question>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Question__3214EC075A332241");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Content).HasMaxLength(2000);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Status).HasMaxLength(50);
+            entity.Property(e => e.Title).HasMaxLength(255);
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Visibility).HasMaxLength(50);
+
+            entity.HasOne(d => d.User).WithMany(p => p.Questions)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_Questions_Users");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07FE407C18");

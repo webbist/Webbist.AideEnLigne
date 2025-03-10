@@ -1,19 +1,21 @@
 using AssistClub.UI.Blazor.Models;
 
-namespace AssistClub.UI.Blazor.Services;
+namespace AssistClub.UI.Blazor.HttpClients;
 
 /// <summary>
-/// Handles communication between the Blazor UI and the API for retrieving user data.
-/// Ensures the UI remains decoupled from API response structures.
+/// Represents the client responsible for communicating with the API to retrieve user data.
 /// </summary>
-public class UserService(HttpClient http)
+/// <param name="http"><c>HttpClient</c> instance used for making API requests.</param>
+public class UserHttpClient(HttpClient http)
 {
     /// <summary>
     /// Retrieves a user's profile information by email.
-    /// This method is critical for displaying user details in the UI.
     /// </summary>
+    /// <remarks>
+    /// Used to fetch user details for profile display in the UI.
+    /// </remarks>
     /// <param name="email">The email address of the user to retrieve.</param>
-    /// <returns>A UserViewModel containing user details, or null if not found.</returns>
+    /// <returns>A <see cref="UserViewModel"/> containing user details, or <c>null</c> if not found.</returns>
     public async Task<UserViewModel?> GetUserByEmail(string email)
     {
         try

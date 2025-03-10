@@ -1,14 +1,17 @@
 using AssistClub.UI.Blazor.Components;
-using AssistClub.UI.Blazor.Services;
+using AssistClub.UI.Blazor.HttpClients;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddRadzenComponents();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5284")});
-builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<UserHttpClient>();
+builder.Services.AddScoped<QuestionHttpClient>();
 
 var app = builder.Build();
 
