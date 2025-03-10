@@ -27,7 +27,7 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
         catch (InvalidOperationException ex)
         {
             logger.LogError(ex, "Multiple users found with the same email: {Email}", email);
-            throw new Exception("Data integrity issue: multiple users found with the same email.");
+            throw new InvalidOperationException("Data integrity issue: multiple users found with the same email.", ex);
         }
     }
 }
