@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace AssistClub.API.Controllers;
 
 /// <summary>
-/// API controller responsible for user-related operations.
+/// Represents the API controller for user-related operations.
 /// </summary>
-/// <param name="userService">The user service.</param>
+/// <param name="userService">The service responsible for user management.</param>
 /// <param name="logger">The logger.</param>
 [ApiController]
 [Route("v1/[controller]")]
@@ -17,9 +17,9 @@ public class UserController(IUserService userService, ILogger<UserController> lo
     /// </summary>
     /// <param name="email">The email address of the user to retrieve.</param>
     /// <returns>
-    /// - 200 OK: Returns the user data if found.
-    /// - 404 Not Found: If no user is associated with the given email.
-    /// - 500 Internal Server Error: If an unexpected error occurs.
+    /// - <c>200 OK</c>: Returns the user data if found.<br/>
+    /// - <c>404 Not Found</c>: If no user is associated with the given email.<br/>
+    /// - <c>500 Internal Server Error</c>: If an unexpected error occurs.
     /// </returns>
     [HttpGet("{email}")]
     public async Task<IActionResult> GetUser(string email)
@@ -29,7 +29,7 @@ public class UserController(IUserService userService, ILogger<UserController> lo
             var user = await userService.GetUserByEmailAsync(email);
             if (user == null)
             {
-                logger.LogError("User with email {email} not found.", email);
+                logger.LogWarning("User with email {email} not found.", email);
                 return NotFound();
             }
             logger.LogInformation("User found with email {email}", email);

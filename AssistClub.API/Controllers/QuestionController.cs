@@ -5,22 +5,24 @@ using Microsoft.AspNetCore.Mvc;
 namespace AssistClub.API.Controllers;
 
 /// <summary>
-/// API Controller for managing user-submitted questions.
+/// Represents the API Controller for managing user-submitted questions.
 /// </summary>
-/// <param name="questionService">The question service.</param>
-/// <param name="logger">The logger.</param>
+/// <param name="questionService">The service responsible for question management.</param>
+/// <param name="logger">The logging service.</param>
 [ApiController]
 [Route("v1/[controller]")]
 public class QuestionController(IQuestionService questionService, ILogger<QuestionController> logger) : ControllerBase
 {
     /// <summary>
     /// Creates a new question in the system.
-    /// Ensures the question follows platform policies before saving it to the database.
     /// </summary>
+    /// <remarks>
+    /// Ensures the question follows platform policies before saving it to the database.
+    /// </remarks>
     /// <param name="questionDto">The question data submitted by the user.</param>
     /// <returns>
-    /// - 200 OK: Returns the created question details.
-    /// - 500 Internal Server Error: If an unexpected error occurs.
+    /// - <c>200 OK</c>: Returns the created question details. <br/>
+    /// - <c>500 Internal Server Error</c>: If an unexpected error occurs.
     /// </returns>
     [Route("Create")]
     [HttpPost]

@@ -3,10 +3,12 @@ using AssistClub.Application.DTOs;
 namespace AssistClub.Application.Interfaces;
 
 /// <summary>
-/// Service interface for handling user-related business logic.
-/// This service ensures that user data is processed correctly before being 
-/// sent to the presentation layer, maintaining security and consistency.
+/// Represents the service interface for handling user-related business logic.
 /// </summary>
+/// <remarks>
+/// Ensures that user data is processed correctly before being sent to the presentation layer, 
+/// maintaining security and consistency.
+/// </remarks>
 public interface IUserService
 {
     /// <summary>
@@ -14,7 +16,7 @@ public interface IUserService
     /// </summary>
     /// <param name="email">The email of the user to retrieve.</param>
     /// <returns>
-    /// A <see cref="UserResponseDto"/> containing user details if found; otherwise, null.
+    /// A <see cref="UserResponseDto"/> containing user details if found; otherwise, <c>null</c>.
     /// </returns>
     Task<UserResponseDto?> GetUserByEmailAsync(string email);
 }

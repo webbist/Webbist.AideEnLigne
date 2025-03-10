@@ -3,14 +3,16 @@ using AssistClub.Application.Interfaces;
 
 namespace AssistClub.Application.Services;
 
-/// <summary>
-/// Service responsible for handling user-related business logic.
-/// This service ensures that user data is properly retrieved, processed, and transformed 
-/// before being sent to the presentation layer. It acts as a bridge between 
-/// the repository and API consumers.
-/// </summary>
+/// <inheritdoc/>
 public class UserService(IUserRepository userRepository) : IUserService
 {
+    /// <summary>
+    /// Retrieves a user's profile information using their email address.
+    /// </summary>
+    /// <param name="email">The email of the user to retrieve.</param>
+    /// <returns>
+    /// A <see cref="UserResponseDto"/> containing user details if found; otherwise, <c>null</c>.
+    /// </returns>
     public async Task<UserResponseDto?> GetUserByEmailAsync(string email)
     {
         var user = await userRepository.GetUserByEmailAsync(email);

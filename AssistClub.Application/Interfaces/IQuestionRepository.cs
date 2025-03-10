@@ -1,46 +1,55 @@
 using Domain.Entities;
+using Domain.Enums;
 
 namespace AssistClub.Application.Interfaces;
 
 /// <summary>
-/// Repository interface for managing question-related database operations.
-/// This interface abstracts the data access layer, ensuring that business logic 
-/// does not directly interact with the database and maintains the separation of concerns.
+/// Represents the repository interface for managing question-related database operations.
 /// </summary>
+/// <remarks>
+/// Abstracts the data access layer to maintain separation of concerns 
+/// and prevent direct interaction between business logic and the database.
+/// </remarks>
 public interface IQuestionRepository
 {
     /// <summary>
     /// Adds a new question to the database.
     /// </summary>
-    /// <param name="question"> The question entity to add.</param>
-    /// <returns>The question entity that was added.</returns>
+    /// <param name="question">The <see cref="Question"/> entity to add.</param>
+    /// <returns>The <see cref="Question"/> entity that was added.</returns>
     Task<Question> CreateQuestionAsync(Question question);
     
     /// <summary>
     /// Retrieves a question by its unique identifier.
     /// </summary>
     /// <param name="id">The ID of the question.</param>
-    /// <returns>The question if found, otherwise null.</returns>
+    /// <returns>The <see cref="Question"/> entity if found; otherwise, <c>null</c>.</returns>
     Task<Question?> GetQuestionByIdAsync(Guid id);
     
     /// <summary>
-    /// Retrieves all questions in the database with optional visibility filter.
+    /// Retrieves all questions in the database.
     /// </summary>
-    /// <param name="visibility">The visibility filter to apply.</param>
-    /// <returns>A list of all questions in the database.</returns>
-    Task<List<Question>> GetAllQuestionsAsync(string? visibility = null);
+    /// <returns>A list of all <see cref="Question"/> entities.</returns>
+    Task<List<Question>> GetAllQuestionsAsync();
+    
+    /// <summary>
+    /// Retrieves all questions in the database filtered by visibility.
+    /// </summary>
+    /// <param name="visibility">The visibility filter (<c>public</c> or <c>private</c>).</param>
+    /// <returns>A list of <see cref="Question"/> entities matching the criteria.</returns>
+    Task<List<Question>> GetAllQuestionsAsync(QuestionVisibility visibility);
     
     /// <summary>
     /// Updates an existing question in the database.
     /// </summary>
-    /// <param name="question">The updated question entity.</param>
-    /// <returns>True if the update was successful, otherwise false.</returns>
+    /// <param name="question">The updated <see cref="Question"/> entity.</param>
+    /// <returns><c>true</c> if the update was successful; otherwise, <c>false</c>.</returns>
     Task<bool> UpdateQuestionAsync(Question question);
     
     /// <summary>
     /// Deletes a question from the database.
     /// </summary>
     /// <param name="id">The ID of the question to delete.</param>
-    /// <returns>True if the deletion was successful, otherwise false.</returns>
+    /// <returns><c>true</c> if the deletion was successful; otherwise, <c>false</c>.</returns>
     Task<bool> DeleteQuestionAsync(Guid id);
 }

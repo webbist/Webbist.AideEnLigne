@@ -1,14 +1,24 @@
 using AssistClub.Application.DTOs;
 using AssistClub.Application.Interfaces;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace AssistClub.Application.Services;
 
-/// <summary>
-/// Service responsible for handling business logic related to questions.
-/// </summary>
+/// <inheritdoc/>
 public class QuestionService(IQuestionRepository questionRepository): IQuestionService
 {
+    /// <summary>
+    /// Creates a new question in the system.
+    /// </summary>
+    /// <remarks>
+    /// Ensures that the question is properly structured and stored,
+    /// making it available for users based on its visibility settings.
+    /// </remarks>
+    /// <param name="questionDto">The <see cref="QuestionRequestDto"/> containing question details.</param>
+    /// <returns>
+    /// A <see cref="QuestionResponseDto"/> representing the created question.
+    /// </returns>
     public async Task<QuestionResponseDto> CreateQuestionAsync(QuestionRequestDto questionDto)
     {
         var question = new Question
@@ -23,7 +33,7 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
         };
         
         var createdQuestion = await questionRepository.CreateQuestionAsync(question);
-
+        
         return new QuestionResponseDto
         {
             UserId = createdQuestion.UserId,
