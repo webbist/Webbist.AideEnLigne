@@ -6,6 +6,10 @@ namespace AssistClub.UI.Blazor.Models;
 public class UserApiResponse
 {
     /// <summary>
+    /// The unique identifier of the user.
+    /// </summary>
+    public Guid Id { get; set; }
+    /// <summary>
     /// The user's first name.
     /// </summary>
     public string Firstname { get; set; }

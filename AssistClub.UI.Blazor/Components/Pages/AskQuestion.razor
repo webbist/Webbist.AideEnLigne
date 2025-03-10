@@ -1,5 +1,11 @@
 @page "/AskQuestion"
+@using AssistClub.UI.Blazor.HttpClients
+@using AssistClub.UI.Blazor.Models
 @rendermode InteractiveServer
+
+@inject QuestionHttpClient QuestionHttpClient
+@inject NavigationManager NavigationManager
+@inject NotificationService NotificationService
 
 <h2>Ask a question</h2>
 
@@ -7,19 +13,22 @@
     <div class="container">
         <div class="row">
             <div class="card card-item">
-                <form method="post" class="card-body">
+                <form method="post" class="card-body" onsubmit="return false;">
                     <div class="input-box">
                         <label class="text-black fw-medium mb-0">Question Title</label>
                         <p class="fs-13 lh-20">Be specific and imagine you’re asking a question to another person</p>
                         <div class="form-group">
-                            <input class="form-control form--control" type="text" name="text" placeholder="Enter your question title" />
+                            <input class="form-control form--control @(string.IsNullOrWhiteSpace(Title) ? "is-invalid" : "")" type="text" name="text" placeholder="Enter your question title" @bind="Title" MaxLength="255"/>
+                            <span class="text-danger pt-1" style="display:@(string.IsNullOrWhiteSpace(Title) ? "block" : "none")">
+                                Title is required.
+                            </span>
                         </div>
                     </div>
                     <div class="input-box">
                         <label class="text-black fw-medium mb-0">Details</label>
                         <p class="fs-13 lh-20">Include all the information someone would need to answer your question</p>
                         <div class="form-group">
-                            <RadzenHtmlEditor @bind-Value=@value style="height: 200px;" UploadUrl="upload/image">
+                            <RadzenHtmlEditor class="@(string.IsNullOrWhiteSpace(Details) || Details == "<br>" || Details.Length > 2000 ? "form-control is-invalid p-0" : "")" @bind-Value="Details" style="height: 200px;" UploadUrl="upload/image">
                                 <RadzenHtmlEditorUndo />
                                 <RadzenHtmlEditorRedo />
                                 <RadzenHtmlEditorSeparator />
@@ -29,9 +38,19 @@
                                 <RadzenHtmlEditorStrikeThrough />
                                 <RadzenHtmlEditorSeparator />
                                 <RadzenHtmlEditorColor />
-                                <RadzenHtmlEditorBackground />
                                 <RadzenHtmlEditorRemoveFormat />
                             </RadzenHtmlEditor>
+                            <span class="text-danger pt-1" style="display:@((string.IsNullOrWhiteSpace(Details) || Details == "<br>") ? "block" : "none")">
+                                Details are required.
+                            </span>
+                            <span class="text-danger pt-1" style="display:@(Details.Length > 2000 ? "block" : "none")">
+                                Maximum 2000 characters allowed. Current: @Details.Length
+                            </span>
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <div class="btn-box">
+                            <button type="submit" class="btn btn-primary" @onclick="PublishQuestion" disabled="@(!IsValid())">Publish your question</button>
                         </div>
                     </div>
                 </form>
@@ -41,5 +60,64 @@
 </section>
 
 @code {
-    string value = @"<p>Ask a question</p>";
+    private string Title = string.Empty;
+    private string Details = string.Empty;
+    
+    private bool IsValid()
+    {
+        return !string.IsNullOrWhiteSpace(Title) && 
+               !string.IsNullOrWhiteSpace(Details) && 
+               Details != "<br>" && 
+               Details.Length <= 2000;
+    }
+
+    private async Task PublishQuestion()
+    {
+        if (!IsValid())
+        {
+            return;
+        }
+
+        var newQuestion = new QuestionRequest
+        {
+            Title = Title,
+            Content = Details,
+            UserId = Guid.Parse("85300a85-112e-4410-a2b4-1cc079584347"), //change this to the actual user id when authentication is implemented
+            Visibility = QuestionVisibility.Public,
+            Status = "open"
+        };
+
+        var result = await QuestionHttpClient.CreateQuestionAsync(newQuestion);
+
+        if (result == null)
+        {
+            ShowNotification(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = "Error",
+                Detail = "An error occurred while creating the question.",
+                Duration = 4000
+            });
+        }
+        else
+        {
+            Title = string.Empty;
+            Details = string.Empty;
+        
+            ShowNotification(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Success,
+                Summary = "Question published",
+                Detail = "Your question has been published successfully.",
+                Duration = 4000
+            });
+            NavigationManager.NavigateTo("/");
+        }
+    }
+    
+    void ShowNotification(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+    }
+
 }

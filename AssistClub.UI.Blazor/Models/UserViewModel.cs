@@ -6,6 +6,10 @@ namespace AssistClub.UI.Blazor.Models;
 public class UserViewModel
 {
     /// <summary>
+    /// The unique identifier of the user.
+    /// </summary>
+    public Guid Id { get; set; }
+    /// <summary>
     /// The user's full name.
     /// </summary>
     public string? Fullname { get; set; }

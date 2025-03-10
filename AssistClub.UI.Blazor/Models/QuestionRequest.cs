@@ -1,14 +1,9 @@
-using Domain.Enums;
-
-namespace AssistClub.Application.DTOs;
+namespace AssistClub.UI.Blazor.Models;
 
 /// <summary>
-/// Represents the request structure for creating or updating a question.
+/// Represents the request model for creating a question from the UI.
 /// </summary>
-/// <remarks>
-/// Ensures that only valid and necessary data is received from the client before processing.
-/// </remarks>
-public class QuestionRequestDto
+public class QuestionRequest
 {
     /// <summary>
     /// The unique identifier of the user submitting the question.
@@ -30,4 +25,10 @@ public class QuestionRequestDto
     /// The status of the question (<c>open</c>, <c>pending</c>, or <c>resolved</c>).
     /// </summary>
     public string Status { get; set; }
+}
+
+public enum QuestionVisibility
+{
+    Public,
+    Private
 }

@@ -21,6 +21,11 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
     /// </returns>
     public async Task<QuestionResponseDto> CreateQuestionAsync(QuestionRequestDto questionDto)
     {
+        if (questionDto.Content.Length > 2000)
+        {
+            throw new Exception("Question content exceeds the maximum character limit of 2000.");
+        }
+        
         var question = new Question
         {
             Id = Guid.NewGuid(),
@@ -28,8 +33,8 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
             Title = questionDto.Title,
             Content = questionDto.Content,
             CreatedAt = DateTime.UtcNow,
-            Visibility = questionDto.Visibility,
-            Status = "open"
+            Visibility = questionDto.Visibility.ToString().ToLower(),
+            Status = questionDto.Status
         };
         
         var createdQuestion = await questionRepository.CreateQuestionAsync(question);
