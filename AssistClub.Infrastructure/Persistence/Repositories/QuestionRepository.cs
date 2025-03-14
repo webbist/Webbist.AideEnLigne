@@ -14,6 +14,7 @@ public class QuestionRepository(AssistClubDbContext db, ILogger<QuestionReposito
     /// </summary>
     /// <param name="question">The <see cref="Question"/> entity to add.</param>
     /// <returns>The <see cref="Question"/> entity that was added.</returns>
+    /// <exception cref="DbUpdateException">Thrown if an error occurs while saving the question to the database.</exception>
     public async Task<Question> CreateQuestionAsync(Question question)
     {
         try

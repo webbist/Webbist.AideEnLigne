@@ -15,6 +15,9 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
     /// <returns>
     /// A <see cref="User"/> entity if found; otherwise, <c>null</c>.
     /// </returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if multiple users are found with the same email address.
+    /// </exception>
     public async Task<User?> GetUserByEmailAsync(string email)
     {
         string normalizedEmail = email.Trim().ToLower();

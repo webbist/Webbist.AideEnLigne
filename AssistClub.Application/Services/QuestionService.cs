@@ -1,7 +1,6 @@
 using AssistClub.Application.DTOs;
 using AssistClub.Application.Interfaces;
 using Domain.Entities;
-using Domain.Enums;
 
 namespace AssistClub.Application.Services;
 
@@ -19,11 +18,20 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
     /// <returns>
     /// A <see cref="QuestionResponseDto"/> representing the created question.
     /// </returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown if the question title exceeds <see cref="QuestionRequestDto.TitleMaxLength"/> characters 
+    /// or the content exceeds <see cref="QuestionRequestDto.ContentMaxLength"/> characters.
+    /// </exception>
     public async Task<QuestionResponseDto> CreateQuestionAsync(QuestionRequestDto questionDto)
     {
-        if (questionDto.Content.Length > 2000)
+        if (questionDto.Title.Length > QuestionRequestDto.TitleMaxLength)
         {
-            throw new Exception("Question content exceeds the maximum character limit of 2000.");
+            throw new ArgumentException("Question title exceeds the maximum character limit of 255.");
+        }
+        
+        if (questionDto.Content.Length > QuestionRequestDto.ContentMaxLength)
+        {
+            throw new ArgumentException("Question content exceeds the maximum character limit of 2000.");
         }
         
         var question = new Question
