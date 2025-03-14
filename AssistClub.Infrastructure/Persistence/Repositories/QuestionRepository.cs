@@ -14,6 +14,7 @@ public class QuestionRepository(AssistClubDbContext db, ILogger<QuestionReposito
     /// </summary>
     /// <param name="question">The <see cref="Question"/> entity to add.</param>
     /// <returns>The <see cref="Question"/> entity that was added.</returns>
+    /// <exception cref="DbUpdateException">Thrown if an error occurs while saving the question to the database.</exception>
     public async Task<Question> CreateQuestionAsync(Question question)
     {
         try
@@ -51,7 +52,7 @@ public class QuestionRepository(AssistClubDbContext db, ILogger<QuestionReposito
     /// <summary>
     /// Retrieves all questions in the database filtered by visibility.
     /// </summary>
-    /// <param name="visibility">The visibility filter (<c>public</c> or <c>private</c>).</param>
+    /// <param name="visibility">The visibility filter <see cref="QuestionVisibility"/>.</param>
     /// <returns>A list of <see cref="Question"/> entities matching the criteria.</returns>
     public async Task<List<Question>> GetAllQuestionsAsync(QuestionVisibility visibility)
     {
@@ -85,6 +86,6 @@ public class QuestionRepository(AssistClubDbContext db, ILogger<QuestionReposito
             return true;
         }
         db.Questions.Remove(question);
-        return await db.SaveChangesAsync() > 0;
+        return await db.SaveChangesAsync() == 1;
     }
 }

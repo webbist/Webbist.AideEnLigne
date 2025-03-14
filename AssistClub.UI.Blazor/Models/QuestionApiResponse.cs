@@ -1,15 +1,17 @@
-namespace AssistClub.Application.DTOs;
+namespace AssistClub.UI.Blazor.Models;
 
 /// <summary>
-/// Represents the response structure for a question.
+/// Represents the response model for a question from the API.
 /// </summary>
-/// <remarks>
-/// Ensures that only relevant question details are exposed to the client.
-/// </remarks>
-public class QuestionResponseDto
+public class QuestionApiResponse
 {
     /// <summary>
-    /// The unique identifier of the user who created the question.
+    /// The unique identifier of the question.
+    /// </summary>
+    public Guid Id { get; set; }
+    
+    /// <summary>
+    /// The unique identifier of the user submitting the question.
     /// </summary>
     public Guid UserId { get; set; }
     
@@ -24,14 +26,9 @@ public class QuestionResponseDto
     public string Content { get; set; }
     
     /// <summary>
-    /// The timestamp indicating when the question was created.
+    /// The date and time when the question was created.
     /// </summary>
-    public DateTime? CreatedAt { get; set; }
-    
-    /// <summary>
-    /// The timestamp indicating when the question was last updated.
-    /// </summary>
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
     
     /// <summary>
     /// Defines the visibility of the question (<c>public</c> or <c>private</c>).

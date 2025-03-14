@@ -15,6 +15,9 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
     /// <returns>
     /// A <see cref="User"/> entity if found; otherwise, <c>null</c>.
     /// </returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if multiple users are found with the same email address.
+    /// </exception>
     public async Task<User?> GetUserByEmailAsync(string email)
     {
         string normalizedEmail = email.Trim().ToLower();
@@ -27,7 +30,7 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
         catch (InvalidOperationException ex)
         {
             logger.LogError(ex, "Multiple users found with the same email: {Email}", email);
-            throw new Exception("Data integrity issue: multiple users found with the same email.");
+            throw new InvalidOperationException("Data integrity issue: multiple users found with the same email.", ex);
         }
     }
 }

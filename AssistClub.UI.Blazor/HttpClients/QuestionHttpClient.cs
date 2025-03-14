@@ -1,4 +1,4 @@
-using Domain.Entities;
+using AssistClub.UI.Blazor.Models;
 
 namespace AssistClub.UI.Blazor.HttpClients;
 
@@ -15,16 +15,16 @@ public class QuestionHttpClient(HttpClient http)
     /// <remarks>
     /// Allows users to submit questions through the UI, which are then stored in the backend for other users to view and respond to.
     /// </remarks>
-    /// <param name="question">The <see cref="Question"/> entity containing user input.</param>
+    /// <param name="question">The <see cref="QuestionRequest"/> entity containing user input.</param>
     /// <returns>
-    /// The created <see cref="Question"/> entity if successful; otherwise, <c>null</c> in case of an error.
+    /// The created <see cref="QuestionApiResponse"/> entity if successful; otherwise, <c>null</c> in case of an error.
     /// </returns>
-    public async Task<Question?> CreateQuestionAsync(Question question)
+    public async Task<QuestionApiResponse?> CreateQuestionAsync(QuestionRequest question)
     {
         try
         {
             var result = await http.PostAsJsonAsync("v1/question/create", question);
-            return await result.Content.ReadFromJsonAsync<Question>();
+            return await result.Content.ReadFromJsonAsync<QuestionApiResponse>();
         }
         catch (Exception e)
         {
