@@ -4,25 +4,25 @@
 
 @inject UserHttpClient UserHttpClient
 
-<PageTitle>Profile</PageTitle>
+<PageTitle>@Localizer["Profile"]</PageTitle>
 
 @if (_user != null)
 {
     <div class="card">
         <div class="card-header">
-            <h4>User Info</h4>
+            <h4>@Localizer["UserInfo"]</h4>
         </div>
         <div class="card-body">
-            <p><strong>Firstname:</strong> @_user.Fullname</p>
-            <p><strong>Email:</strong> @_user.Email</p>
-            <p><strong>Photo:</strong> @_user.Photo</p>
-            <p><strong>Club:</strong> @_user.Club</p>
-            <p><strong>Microsite:</strong> @_user.Microsite</p>
+            <p><strong>@Localizer["Fullname"]:</strong> @_user.Fullname</p>
+            <p><strong>@Localizer["Email"]:</strong> @_user.Email</p>
+            <p><strong>@Localizer["Photo"]:</strong> @_user.Photo</p>
+            <p><strong>@Localizer["Club"]:</strong> @_user.Club</p>
+            <p><strong>@Localizer["Microsite"]:</strong> @_user.Microsite</p>
         </div>
     </div>
 } else
 {
-    <p>Loading...</p>
+    <p>@Localizer["Loading"]</p>
 }
 
 @code {

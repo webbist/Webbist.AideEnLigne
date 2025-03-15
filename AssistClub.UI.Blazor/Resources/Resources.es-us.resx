@@ -26,4 +26,70 @@
     <data name="Loading" xml:space="preserve">
         <value>Cargando...</value>
     </data>
+    <data name="QuestionTitle" xml:space="preserve">
+        <value>Título de la pregunta</value>
+    </data>
+    <data name="AskTitleGuidance" xml:space="preserve">
+        <value>Sé específico e imagina que estás haciendo una pregunta a otra persona.</value>
+    </data>
+    <data name="Content" xml:space="preserve">
+        <value>Contenido</value>
+    </data>
+    <data name="QuestionDetailsHint" xml:space="preserve">
+        <value>Incluye toda la información que alguien necesitaría para responder a tu pregunta.</value>
+    </data>
+    <data name="PublishQuestion" xml:space="preserve">
+        <value>Publica tu pregunta</value>
+    </data>
+    <data name="Error" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="ErrorCreatingQuestion" xml:space="preserve">
+        <value>Ocurrió un error al crear la pregunta.</value>
+    </data>
+    <data name="QuestionPublished" xml:space="preserve">
+        <value>Pregunta publicada</value>
+    </data>
+    <data name="QuestionPublishedSuccess" xml:space="preserve">
+        <value>Tu pregunta ha sido publicada con éxito.</value>
+    </data>
+    <data name="EnterQuestionTitle" xml:space="preserve">
+        <value>Ingresa el título de tu pregunta</value>
+    </data>
+    <data name="Firstname" xml:space="preserve">
+        <value>Nombre</value>
+    </data>
+    <data name="Photo" xml:space="preserve">
+        <value>Foto</value>
+    </data>
+    <data name="Email" xml:space="preserve">
+        <value>Correo electrónico</value>
+    </data>
+    <data name="Club" xml:space="preserve">
+        <value>Club</value>
+    </data>
+    <data name="Microsite" xml:space="preserve">
+        <value>Micrositio</value>
+    </data>
+    <data name="UserInfo" xml:space="preserve">
+        <value>Información de usuario</value>
+    </data>
+    <data name="Fullname" xml:space="preserve">
+        <value>Nombre completo</value>
+    </data>
+    <data name="TitleRequired" xml:space="preserve">
+        <value>El título es obligatorio.</value>
+    </data>
+    <data name="ContentRequired" xml:space="preserve">
+        <value>El contenido es obligatorio.</value>
+    </data>
+    <data name="TitleMaxLength" xml:space="preserve">
+        <value>El título debe tener como máximo {1} caracteres.</value>
+    </data>
+    <data name="ContentMaxLength" xml:space="preserve">
+        <value>El contenido debe tener como máximo {1} caracteres.</value>
+    </data>
+    <data name="SearchPlaceholder" xml:space="preserve">
+        <value>Buscar...</value>
+    </data>
 </root>

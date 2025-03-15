@@ -74,5 +74,137 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("Loading", resourceCulture);
             }
         }
+        
+        internal static string QuestionTitle {
+            get {
+                return ResourceManager.GetString("QuestionTitle", resourceCulture);
+            }
+        }
+        
+        internal static string AskTitleGuidance {
+            get {
+                return ResourceManager.GetString("AskTitleGuidance", resourceCulture);
+            }
+        }
+        
+        internal static string Content {
+            get {
+                return ResourceManager.GetString("Content", resourceCulture);
+            }
+        }
+        
+        internal static string QuestionDetailsHint {
+            get {
+                return ResourceManager.GetString("QuestionDetailsHint", resourceCulture);
+            }
+        }
+        
+        internal static string PublishQuestion {
+            get {
+                return ResourceManager.GetString("PublishQuestion", resourceCulture);
+            }
+        }
+        
+        internal static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        internal static string ErrorCreatingQuestion {
+            get {
+                return ResourceManager.GetString("ErrorCreatingQuestion", resourceCulture);
+            }
+        }
+        
+        internal static string QuestionPublished {
+            get {
+                return ResourceManager.GetString("QuestionPublished", resourceCulture);
+            }
+        }
+        
+        internal static string QuestionPublishedSuccess {
+            get {
+                return ResourceManager.GetString("QuestionPublishedSuccess", resourceCulture);
+            }
+        }
+        
+        internal static string EnterQuestionTitle {
+            get {
+                return ResourceManager.GetString("EnterQuestionTitle", resourceCulture);
+            }
+        }
+        
+        internal static string Firstname {
+            get {
+                return ResourceManager.GetString("Firstname", resourceCulture);
+            }
+        }
+        
+        internal static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        internal static string Photo {
+            get {
+                return ResourceManager.GetString("Photo", resourceCulture);
+            }
+        }
+        
+        internal static string Club {
+            get {
+                return ResourceManager.GetString("Club", resourceCulture);
+            }
+        }
+        
+        internal static string Microsite {
+            get {
+                return ResourceManager.GetString("Microsite", resourceCulture);
+            }
+        }
+        
+        internal static string UserInfo {
+            get {
+                return ResourceManager.GetString("UserInfo", resourceCulture);
+            }
+        }
+        
+        internal static string Fullname {
+            get {
+                return ResourceManager.GetString("Fullname", resourceCulture);
+            }
+        }
+        
+        internal static string TitleRequired {
+            get {
+                return ResourceManager.GetString("TitleRequired", resourceCulture);
+            }
+        }
+        
+        internal static string ContentRequired {
+            get {
+                return ResourceManager.GetString("ContentRequired", resourceCulture);
+            }
+        }
+        
+        internal static string TitleMaxLength {
+            get {
+                return ResourceManager.GetString("TitleMaxLength", resourceCulture);
+            }
+        }
+        
+        internal static string ContentMaxLength {
+            get {
+                return ResourceManager.GetString("ContentMaxLength", resourceCulture);
+            }
+        }
+        
+        internal static string SearchPlaceholder {
+            get {
+                return ResourceManager.GetString("SearchPlaceholder", resourceCulture);
+            }
+        }
     }
 }
