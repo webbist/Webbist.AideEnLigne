@@ -32,4 +32,25 @@ public class QuestionHttpClient(HttpClient http)
             return null;
         }
     }
+
+    /// <summary>
+    /// Sends a request to retrieve all questions in the system.
+    /// </summary>
+    /// <param name="visibility">The visibility filter for questions (<c>public</c> or <c>private</c>).</param>
+    /// <returns>
+    /// A list of <see cref="QuestionApiResponse"/> entities if successful; otherwise, <c>null</c> in case of an error.
+    /// </returns>
+    public async Task<IEnumerable<QuestionApiResponse>?> GetQuestionsAsync(QuestionVisibility visibility)
+    {
+        try
+        {
+            var result = await http.GetFromJsonAsync<IEnumerable<QuestionApiResponse>>($"v1/question/all?visibility={visibility}");
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error getting questions: {e.Message}");
+            return null;
+        }
+    }
 }

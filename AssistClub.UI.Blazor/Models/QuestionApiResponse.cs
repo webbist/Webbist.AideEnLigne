@@ -16,6 +16,16 @@ public class QuestionApiResponse
     public Guid UserId { get; set; }
     
     /// <summary>
+    /// The full name of the user submitting the question.
+    /// </summary>
+    public string UserFullname { get; set; }
+    
+    /// <summary>
+    /// The URL of the user's profile photo.
+    /// </summary>
+    public string? UserPhoto { get; set; }
+    
+    /// <summary>
     /// The title of the question.
     /// </summary>
     public string Title { get; set; }

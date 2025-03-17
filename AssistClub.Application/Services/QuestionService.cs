@@ -1,6 +1,8 @@
 using AssistClub.Application.DTOs;
 using AssistClub.Application.Interfaces;
 using Domain.Entities;
+using Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace AssistClub.Application.Services;
 
@@ -56,5 +58,32 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
             Visibility = createdQuestion.Visibility,
             Status = createdQuestion.Status
         };
+    }
+    
+    /// <summary>
+    /// Retrieves all questions in the system filtered by visibility.
+    /// </summary>
+    /// <param name="visibility">
+    /// The <see cref="QuestionVisibility"/> filter to apply when retrieving questions.
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="QuestionResponseDto"/> representing the filtered questions.
+    /// </returns>
+    public async Task<IEnumerable<QuestionResponseDto>> GetQuestionsByVisibilityAsync(QuestionVisibility visibility)
+    {
+        var questions = await questionRepository.GetQuestions(visibility)
+            .OrderByDescending(q => q.CreatedAt)
+            .Select(q => new QuestionResponseDto
+            {
+                UserId = q.UserId,
+                UserFullname = q.User.Firstname + " " + q.User.Lastname,
+                UserPhoto = q.User.Photo,
+                Title = q.Title,
+                Content = q.Content,
+                CreatedAt = q.CreatedAt,
+                Visibility = q.Visibility,
+                Status = q.Status
+            }).ToListAsync();
+        return questions;
     }
 }

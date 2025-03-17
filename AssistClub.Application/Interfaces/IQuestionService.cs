@@ -1,5 +1,6 @@
 using AssistClub.Application.DTOs;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace AssistClub.Application.Interfaces;
 
@@ -24,5 +25,20 @@ public interface IQuestionService
     /// <returns>
     /// A <see cref="QuestionResponseDto"/> representing the created question.
     /// </returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown if the question title exceeds <see cref="QuestionRequestDto.TitleMaxLength"/> characters 
+    /// or the content exceeds <see cref="QuestionRequestDto.ContentMaxLength"/> characters.
+    /// </exception>
     Task<QuestionResponseDto> CreateQuestionAsync(QuestionRequestDto questionDto);
+    
+    /// <summary>
+    /// Retrieves all questions in the system filtered by visibility.
+    /// </summary>
+    /// <param name="visibility">
+    /// The <see cref="QuestionVisibility"/> filter to apply when retrieving questions.
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="QuestionResponseDto"/> representing the filtered questions.
+    /// </returns>
+    Task<IEnumerable<QuestionResponseDto>> GetQuestionsByVisibilityAsync(QuestionVisibility visibility);
 }

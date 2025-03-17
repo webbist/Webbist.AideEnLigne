@@ -41,24 +41,25 @@ public class QuestionRepository(AssistClubDbContext db, ILogger<QuestionReposito
     }
 
     /// <summary>
-    /// Retrieves all questions in the database.
+    /// Retrieves all questions in the database, including user information.
     /// </summary>
-    /// <returns>A list of all <see cref="Question"/> entities.</returns>
-    public async Task<List<Question>> GetAllQuestionsAsync()
+    /// <returns>An <see cref="IQueryable{T}"/> representing all questions in the database.</returns>
+    public IQueryable<Question> GetQuestions()
     {
-        return await db.Questions.ToListAsync();
+        return db.Questions
+            .Include(q => q.User);
     }
 
     /// <summary>
-    /// Retrieves all questions in the database filtered by visibility.
+    /// Retrieves all questions in the database, including user information and filtered by visibility.
     /// </summary>
-    /// <param name="visibility">The visibility filter <see cref="QuestionVisibility"/>.</param>
-    /// <returns>A list of <see cref="Question"/> entities matching the criteria.</returns>
-    public async Task<List<Question>> GetAllQuestionsAsync(QuestionVisibility visibility)
+    /// <param name="visibility">The visibility filter (<c>public</c> or <c>private</c>).</param>
+    /// <returns>An <see cref="IQueryable{T}"/> containing the filtered questions.</returns>
+    public IQueryable<Question> GetQuestions(QuestionVisibility visibility)
     {
-        return await db.Questions
-            .Where(q => q.Visibility == visibility.ToString())
-            .ToListAsync();
+        return db.Questions
+            .Include(q => q.User)
+            .Where(q => q.Visibility == visibility.ToString());
     }
 
     /// <summary>

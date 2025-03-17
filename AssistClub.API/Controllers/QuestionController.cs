@@ -1,5 +1,6 @@
 using AssistClub.Application.DTOs;
 using AssistClub.Application.Interfaces;
+using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssistClub.API.Controllers;
@@ -37,6 +38,31 @@ public class QuestionController(IQuestionService questionService, ILogger<Questi
         catch (Exception e)
         {
             logger.LogError(e, "An error occurred while creating the question.");
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    /// <summary>
+    /// Retrieves all questions in the system.
+    /// </summary>
+    /// <param name="visibility">The visibility filter for the questions (<c>public</c> or <c>private</c>).</param>
+    /// <returns>
+    /// - <c>200 OK</c>: Returns a list of questions matching the visibility criteria. <br/>
+    /// - <c>500 Internal Server Error</c>: If an unexpected error occurs.
+    /// </returns>
+    [Route("All")]
+    [HttpGet]
+    public async Task<IActionResult> GetQuestions(QuestionVisibility visibility)
+    {
+        try
+        {
+            var questions = await questionService.GetQuestionsByVisibilityAsync(visibility);
+            logger.LogInformation("Retrieved {count} questions with visibility {visibility}", questions.Count(), visibility);
+            return Ok(questions);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "An error occurred while getting questions.");
             return StatusCode(500, e.Message);
         }
     }

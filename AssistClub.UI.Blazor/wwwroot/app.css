@@ -57,3 +57,15 @@ h1:focus {
 .lh-20 {
     line-height: 20px !important;
 }
+
+a {
+    text-decoration: none!important;
+}
+
+.lh-18 {
+    line-height: 18px !important;
+}
+
+.fs-12 {
+    font-size: 12px !important;
+}

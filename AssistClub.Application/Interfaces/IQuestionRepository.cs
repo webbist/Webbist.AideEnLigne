@@ -27,17 +27,17 @@ public interface IQuestionRepository
     Task<Question?> GetQuestionByIdAsync(Guid id);
     
     /// <summary>
-    /// Retrieves all questions in the database.
+    /// Retrieves all questions in the database, including user information.
     /// </summary>
-    /// <returns>A list of all <see cref="Question"/> entities.</returns>
-    Task<List<Question>> GetAllQuestionsAsync();
+    /// <returns>An <see cref="IQueryable{T}"/> representing all questions in the database.</returns>
+    IQueryable<Question> GetQuestions();
     
     /// <summary>
-    /// Retrieves all questions in the database filtered by visibility.
+    /// Retrieves all questions in the database, including user information and filtered by visibility.
     /// </summary>
     /// <param name="visibility">The visibility filter (<c>public</c> or <c>private</c>).</param>
-    /// <returns>A list of <see cref="Question"/> entities matching the criteria.</returns>
-    Task<List<Question>> GetAllQuestionsAsync(QuestionVisibility visibility);
+    /// <returns>An <see cref="IQueryable{T}"/> containing the filtered questions.</returns>
+    IQueryable<Question> GetQuestions(QuestionVisibility visibility);
     
     /// <summary>
     /// Updates an existing question in the database.

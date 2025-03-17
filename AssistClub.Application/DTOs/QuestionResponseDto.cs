@@ -14,6 +14,16 @@ public class QuestionResponseDto
     public Guid UserId { get; set; }
     
     /// <summary>
+    /// The full name of the user who created the question.
+    /// </summary>
+    public string UserFullname { get; set; }
+    
+    /// <summary>
+    /// The photo URL of the user who created the question.
+    /// </summary>
+    public string UserPhoto { get; set; }
+    
+    /// <summary>
     /// The title of the question.
     /// </summary>
     public string Title { get; set; }
