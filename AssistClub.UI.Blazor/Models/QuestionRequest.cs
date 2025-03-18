@@ -25,15 +25,15 @@ public class QuestionRequest
     /// <summary>
     /// The title of the question.
     /// </summary>
-    [Required(ErrorMessage = "Title is required.")]
-    [StringLength(TitleMaxLength, ErrorMessage = "Title must be at most {1} characters long.")]
+    [Required(ErrorMessageResourceName = "TitleRequiredMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
+    [StringLength(TitleMaxLength, ErrorMessageResourceName = "TitleMaxLengthMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
     public string Title { get; set; }
     
     /// <summary>
     /// The full content of the question.
     /// </summary>
-    [Required(ErrorMessage = "Content is required.")]
-    [StringLength(ContentMaxLength, ErrorMessage = "Content must be at most {1} characters long.")]
+    [Required(ErrorMessageResourceName = "ContentRequiredMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
+    [StringLength(ContentMaxLength, ErrorMessageResourceName = "ContentMaxLengthMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
     public string Content { get; set; }
     
     /// <summary>
