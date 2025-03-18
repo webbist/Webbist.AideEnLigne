@@ -1,0 +1,56 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="PageTitle" xml:space="preserve">
+        <value>Ask a question</value>
+    </data>
+    <data name="FormTitleLabel" xml:space="preserve">
+        <value>Question Title</value>
+    </data>
+    <data name="TitleHint" xml:space="preserve">
+        <value>Be specific and imagine you’re asking a question to another person.</value>
+    </data>
+    <data name="FormTitlePlaceholder" xml:space="preserve">
+        <value>Enter your question title</value>
+    </data>
+    <data name="FormContentLabel" xml:space="preserve">
+        <value>Content</value>
+    </data>
+    <data name="FormContentHint" xml:space="preserve">
+        <value>Include all the information someone would need to answer your question.</value>
+    </data>
+    <data name="FormSubmitButton" xml:space="preserve">
+        <value>Publish your question</value>
+    </data>
+    <data name="FormErrorMessage" xml:space="preserve">
+        <value>An error occurred while creating the question.</value>
+    </data>
+    <data name="SuccessTitle" xml:space="preserve">
+        <value>Question published</value>
+    </data>
+    <data name="SuccessMessage" xml:space="preserve">
+        <value>Your question has been published successfully.</value>
+    </data>
+    <data name="ContentMaxLengthMessage" xml:space="preserve">
+        <value>Content must be at most {1} characters long.</value>
+    </data>
+    <data name="ContentRequiredMessage" xml:space="preserve">
+        <value>Content is required.</value>
+    </data>
+    <data name="TitleMaxLengthMessage" xml:space="preserve">
+        <value>Title must be at most {1} characters long.</value>
+    </data>
+    <data name="TitleRequiredMessage" xml:space="preserve">
+        <value>Title is required.</value>
+    </data>
+</root>

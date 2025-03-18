@@ -16,10 +16,10 @@ builder.Services.AddScoped<QuestionHttpClient>();
 
 var app = builder.Build();
 
-string[] supportedCultures = ["fr-CA", "en-US", "es-US"];
+string[] supportedCultures = ["fr", "en", "es"];
 var localizationOptions = new RequestLocalizationOptions()
     .SetDefaultCulture(supportedCultures[0])
-    .AddSupportedCultures(supportedCultures)
+    .AddSupportedCultures("fr-CA", "en-US", "es-US")
     .AddSupportedUICultures(supportedCultures);
 
 app.UseRequestLocalization(localizationOptions);

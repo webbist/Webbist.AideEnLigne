@@ -6,8 +6,9 @@
 @inject QuestionHttpClient QuestionHttpClient
 @inject NavigationManager NavigationManager
 @inject NotificationService NotificationService
+@inject IStringLocalizer<AskQuestionResources> AskQuestionLocalizer
 
-<h2>@Localizer["AskQuestion"]</h2>
+<h2>@AskQuestionLocalizer["PageTitle"]</h2>
 
 <section class="question-area pt-2 pb-2">
     <div class="container">
@@ -17,16 +18,16 @@
                     <DataAnnotationsValidator />
                     <div class="card-body">
                         <div class="input-box">
-                            <label class="text-black fw-medium mb-0">@Localizer["QuestionTitle"]</label>
-                            <p class="fs-13 lh-20">@Localizer["AskTitleGuidance"]</p>
+                            <label class="text-black fw-medium mb-0">@AskQuestionLocalizer["FormTitleLabel"]</label>
+                            <p class="fs-13 lh-20">@AskQuestionLocalizer["TitleHint"]</p>
                             <div class="form-group">
-                                <InputText class="form-control form--control" @bind-Value="_questionModel.Title" placeholder=@Localizer["EnterQuestionTitle"] MaxLength="@QuestionRequest.TitleMaxLength"/>
+                                <InputText class="form-control form--control" @bind-Value="_questionModel.Title" placeholder=@AskQuestionLocalizer["FormTitlePlaceholder"] MaxLength="@QuestionRequest.TitleMaxLength"/>
                                 <ValidationMessage For="@(() => _questionModel.Title)" class="text-danger pt-1" />
                             </div>
                         </div>
                         <div class="input-box">
-                            <label class="text-black fw-medium mb-0">@Localizer["Content"]</label>
-                            <p class="fs-13 lh-20">@Localizer["QuestionDetailsHint"]</p>
+                            <label class="text-black fw-medium mb-0">@AskQuestionLocalizer["FormContentLabel"]</label>
+                            <p class="fs-13 lh-20">@AskQuestionLocalizer["FormContentHint"]</p>
                             <div class="form-group">
                                 <RadzenHtmlEditor @bind-Value="_questionModel.Content" style="height: 200px;" UploadUrl="upload/image">
                                     <RadzenHtmlEditorUndo />
@@ -45,7 +46,7 @@
                         </div>
                         <div class="input-box">
                             <div class="btn-box">
-                                <button type="submit" class="btn btn-primary">@Localizer["PublishQuestion"]</button>
+                                <button type="submit" class="btn btn-primary">@AskQuestionLocalizer["FormSubmitButton"]</button>
                             </div>
                         </div>
                     </div>
@@ -68,7 +69,7 @@
             {
                 Severity = NotificationSeverity.Error,
                 Summary = Localizer["Error"],
-                Detail = Localizer["ErrorCreatingQuestion"],
+                Detail = AskQuestionLocalizer["FormErrorMessage"],
                 Duration = 4000
             });
         }
@@ -79,8 +80,8 @@
             ShowNotification(new NotificationMessage
             {
                 Severity = NotificationSeverity.Success,
-                Summary = Localizer["QuestionPublished"],
-                Detail = Localizer["QuestionPublishedSuccess"],
+                Summary = AskQuestionLocalizer["SuccessTitle"],
+                Detail = AskQuestionLocalizer["SuccessMessage"],
                 Duration = 4000
             });
             NavigationManager.NavigateTo("/");

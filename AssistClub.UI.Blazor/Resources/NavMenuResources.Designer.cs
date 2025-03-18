@@ -14,21 +14,21 @@ namespace AssistClub.UI.Blazor.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class NavMenuResources {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal NavMenuResources() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.Resources", typeof(Resources).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.NavMenuResources", typeof(NavMenuResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,15 +45,21 @@ namespace AssistClub.UI.Blazor.Resources {
             }
         }
         
-        internal static string Loading {
+        internal static string HomeLabel {
             get {
-                return ResourceManager.GetString("Loading", resourceCulture);
+                return ResourceManager.GetString("HomeLabel", resourceCulture);
             }
         }
         
-        internal static string Error {
+        internal static string ProfileLabel {
             get {
-                return ResourceManager.GetString("Error", resourceCulture);
+                return ResourceManager.GetString("ProfileLabel", resourceCulture);
+            }
+        }
+        
+        internal static string AskQuestionLabel {
+            get {
+                return ResourceManager.GetString("AskQuestionLabel", resourceCulture);
             }
         }
     }

@@ -2,9 +2,10 @@
 @using AssistClub.UI.Blazor.Models
 
 @inject UserHttpClient UserHttpClient
+@inject IStringLocalizer<NavBarResources> NavBarLocalizer
 
 <form class="d-flex me-auto mb-lg-0" role="search">
-    <input class="form-control me-2 search-bar" type="search" placeholder="@Localizer["SearchPlaceholder"]" aria-label="Search">
+    <input class="form-control me-2 search-bar" type="search" placeholder="@NavBarLocalizer["SearchPlaceholder"]" aria-label="Search">
     <button class="btn btn-outline-primary" type="submit">
         <i class="bi bi-search"></i>
     </button>
@@ -41,8 +42,8 @@
             </div>
         </a>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item d-flex align-items-center" href="/user">@Localizer["Profile"]</a></li>
-            <li><a class="dropdown-item d-flex align-items-center" href="#">@Localizer["SignOut"]</a></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="/user">@NavBarLocalizer["MyProfileLabel"]</a></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="#">@NavBarLocalizer["SignOutLabel"]</a></li>
         </ul>
     </li>
 </ul>

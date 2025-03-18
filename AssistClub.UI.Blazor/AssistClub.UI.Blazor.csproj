@@ -24,6 +24,22 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\NavBarResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>NavBarResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\NavMenuResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>NavMenuResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\AskQuestionResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>AskQuestionResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\ProfileResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ProfileResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -31,6 +47,26 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\NavBarResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>NavBarResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\NavMenuResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>NavMenuResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\AskQuestionResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AskQuestionResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\ProfileResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ProfileResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

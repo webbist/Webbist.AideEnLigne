@@ -25,15 +25,15 @@ public class QuestionRequest
     /// <summary>
     /// The title of the question.
     /// </summary>
-    [Required(ErrorMessageResourceName = "TitleRequired", ErrorMessageResourceType = typeof(Resources.Resources))]
-    [StringLength(TitleMaxLength, ErrorMessageResourceName = "TitleMaxLength", ErrorMessageResourceType = typeof(Resources.Resources))]
+    [Required(ErrorMessageResourceName = "TitleRequiredMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
+    [StringLength(TitleMaxLength, ErrorMessageResourceName = "TitleMaxLengthMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
     public string Title { get; set; }
     
     /// <summary>
     /// The full content of the question.
     /// </summary>
-    [Required(ErrorMessageResourceName = "ContentRequired", ErrorMessageResourceType = typeof(Resources.Resources))]
-    [StringLength(ContentMaxLength, ErrorMessageResourceName = "ContentMaxLength", ErrorMessageResourceType = typeof(Resources.Resources))]
+    [Required(ErrorMessageResourceName = "ContentRequiredMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
+    [StringLength(ContentMaxLength, ErrorMessageResourceName = "ContentMaxLengthMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
     public string Content { get; set; }
     
     /// <summary>
