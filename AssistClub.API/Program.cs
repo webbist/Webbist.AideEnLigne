@@ -1,5 +1,6 @@
 using AssistClub.Application;
 using AssistClub.Infrastructure;
+using Microsoft.AspNetCore.OData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,15 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddOData(options =>
+    {
+        options.Select()
+            .Filter()
+            .OrderBy()
+            .Expand()
+            .SetMaxTop(100);
+    });
 builder.Services.AddRouting(r => r.LowercaseUrls = true);
 builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
     app =>

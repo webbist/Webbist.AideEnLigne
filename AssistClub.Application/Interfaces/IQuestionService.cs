@@ -32,13 +32,10 @@ public interface IQuestionService
     Task<QuestionResponseDto> CreateQuestionAsync(QuestionRequestDto questionDto);
     
     /// <summary>
-    /// Retrieves all questions in the system filtered by visibility.
+    /// Retrieves all questions in the system, including user information.
     /// </summary>
-    /// <param name="visibility">
-    /// The <see cref="QuestionVisibility"/> filter to apply when retrieving questions.
-    /// </param>
     /// <returns>
-    /// A collection of <see cref="QuestionResponseDto"/> representing the filtered questions.
+    /// An <see cref="IQueryable{T}"/> of <see cref="QuestionResponseDto"/> containing the questions.
     /// </returns>
-    Task<IEnumerable<QuestionResponseDto>> GetQuestionsByVisibilityAsync(QuestionVisibility visibility);
+    Task<IQueryable<QuestionResponseDto>> GetQuestionsAsync();
 }

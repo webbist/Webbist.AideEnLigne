@@ -11,19 +11,9 @@ public class QuestionApiResponse
     public Guid Id { get; set; }
     
     /// <summary>
-    /// The unique identifier of the user submitting the question.
+    /// The user who created the question.
     /// </summary>
-    public Guid UserId { get; set; }
-    
-    /// <summary>
-    /// The full name of the user submitting the question.
-    /// </summary>
-    public string UserFullname { get; set; }
-    
-    /// <summary>
-    /// The URL of the user's profile photo.
-    /// </summary>
-    public string? UserPhoto { get; set; }
+    public UserApiResponse User { get; set; }
     
     /// <summary>
     /// The title of the question.

@@ -1,7 +1,7 @@
 using AssistClub.Application.DTOs;
 using AssistClub.Application.Interfaces;
-using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace AssistClub.API.Controllers;
 
@@ -32,7 +32,7 @@ public class QuestionController(IQuestionService questionService, ILogger<Questi
         try
         {
             var question = await questionService.CreateQuestionAsync(questionDto);
-            logger.LogInformation("Question created with title {title}", question.Title);
+            logger.LogTrace("Question created with title {title}", question.Title);
             return Ok(question);
         }
         catch (Exception e)
@@ -43,21 +43,27 @@ public class QuestionController(IQuestionService questionService, ILogger<Questi
     }
     
     /// <summary>
-    /// Retrieves all questions in the system.
+    /// Retrieves all questions in the system with OData support.
     /// </summary>
-    /// <param name="visibility">The visibility filter for the questions (<c>public</c> or <c>private</c>).</param>
+    /// <remarks>
+    /// Supported OData parameters include:
+    /// <para><c>$filter</c>: Allows filtering questions by attributes (e.g., <c>$filter=Visibility eq 'public'</c>).</para>
+    /// <para><c>$orderby</c>: Enables sorting questions (e.g., <c>$orderby=CreatedAt desc</c>).</para>
+    /// <para><c>$select</c>: Retrieves only specific fields (e.g., <c>$select=Title,CreatedAt</c>).</para>
+    /// <para><c>$expand</c>: Includes related entities, such as user details (e.g., <c>$expand=User</c>).</para>
+    /// </remarks>
     /// <returns>
-    /// - <c>200 OK</c>: Returns a list of questions matching the visibility criteria. <br/>
-    /// - <c>500 Internal Server Error</c>: If an unexpected error occurs.
+    /// <c>200 OK</c>: Returns a list of questions.<br/>
+    /// <c>500 Internal Server Error</c>: If an unexpected error occurs.
     /// </returns>
     [Route("All")]
     [HttpGet]
-    public async Task<IActionResult> GetQuestions(QuestionVisibility visibility)
+    [EnableQuery]
+    public async Task<IActionResult> GetQuestions()
     {
         try
         {
-            var questions = await questionService.GetQuestionsByVisibilityAsync(visibility);
-            logger.LogInformation("Retrieved {count} questions with visibility {visibility}", questions.Count(), visibility);
+            var questions = await questionService.GetQuestionsAsync();
             return Ok(questions);
         }
         catch (Exception e)

@@ -1,8 +1,6 @@
 using AssistClub.Application.DTOs;
 using AssistClub.Application.Interfaces;
 using Domain.Entities;
-using Domain.Enums;
-using Microsoft.EntityFrameworkCore;
 
 namespace AssistClub.Application.Services;
 
@@ -51,7 +49,6 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
         
         return new QuestionResponseDto
         {
-            UserId = createdQuestion.UserId,
             Title = createdQuestion.Title,
             Content = createdQuestion.Content,
             CreatedAt = createdQuestion.CreatedAt,
@@ -61,29 +58,32 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
     }
     
     /// <summary>
-    /// Retrieves all questions in the system filtered by visibility.
+    /// Retrieves all questions in the system, including user information.
     /// </summary>
-    /// <param name="visibility">
-    /// The <see cref="QuestionVisibility"/> filter to apply when retrieving questions.
-    /// </param>
     /// <returns>
-    /// A collection of <see cref="QuestionResponseDto"/> representing the filtered questions.
+    /// An <see cref="IQueryable{T}"/> of <see cref="QuestionResponseDto"/> containing the questions.
     /// </returns>
-    public async Task<IEnumerable<QuestionResponseDto>> GetQuestionsByVisibilityAsync(QuestionVisibility visibility)
+    public async Task<IQueryable<QuestionResponseDto>> GetQuestionsAsync()
     {
-        var questions = await questionRepository.GetQuestions(visibility)
-            .OrderByDescending(q => q.CreatedAt)
-            .Select(q => new QuestionResponseDto
+        var questions= await questionRepository.GetQuestions();
+        return questions.Select(q => new QuestionResponseDto
+        {
+            User = new UserResponseDto
             {
-                UserId = q.UserId,
-                UserFullname = q.User.Firstname + " " + q.User.Lastname,
-                UserPhoto = q.User.Photo,
-                Title = q.Title,
-                Content = q.Content,
-                CreatedAt = q.CreatedAt,
-                Visibility = q.Visibility,
-                Status = q.Status
-            }).ToListAsync();
-        return questions;
+                Id = q.User.Id,
+                Firstname = q.User.Firstname,
+                Lastname = q.User.Lastname,
+                Email = q.User.Email,
+                Photo = q.User.Photo,
+                Club = q.User.Club,
+                Microsite = q.User.Microsite
+            },
+            Title = q.Title,
+            Content = q.Content,
+            CreatedAt = q.CreatedAt,
+            Visibility = q.Visibility,
+            UpdatedAt = q.UpdatedAt,
+            Status = q.Status
+        }).AsQueryable();
     }
 }

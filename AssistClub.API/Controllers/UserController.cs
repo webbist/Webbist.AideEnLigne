@@ -32,7 +32,7 @@ public class UserController(IUserService userService, ILogger<UserController> lo
                 logger.LogWarning("User with email {email} not found.", email);
                 return NotFound();
             }
-            logger.LogInformation("User found with email {email}", email);
+            logger.LogTrace("User found with email {email}", email);
             return Ok(user);
         }
         catch (Exception e)

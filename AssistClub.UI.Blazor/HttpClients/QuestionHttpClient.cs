@@ -1,3 +1,4 @@
+using AssistClub.UI.Blazor.Constants;
 using AssistClub.UI.Blazor.Models;
 
 namespace AssistClub.UI.Blazor.HttpClients;
@@ -6,7 +7,6 @@ namespace AssistClub.UI.Blazor.HttpClients;
 /// Represents the client responsible for interacting with the Question API.
 /// </summary>
 /// <param name="http"><c>HttpClient</c> instance used for sending requests.</param>
-
 public class QuestionHttpClient(HttpClient http)
 {
     /// <summary>
@@ -23,7 +23,7 @@ public class QuestionHttpClient(HttpClient http)
     {
         try
         {
-            var result = await http.PostAsJsonAsync("v1/question/create", question);
+            var result = await http.PostAsJsonAsync(ApiRoutes.Questions.Create, question);
             return await result.Content.ReadFromJsonAsync<QuestionApiResponse>();
         }
         catch (Exception e)
@@ -34,17 +34,22 @@ public class QuestionHttpClient(HttpClient http)
     }
 
     /// <summary>
-    /// Sends a request to retrieve all questions in the system.
+    /// Sends a request to retrieve all questions in descending order by creation date and filtered by visibility.
     /// </summary>
+    /// <remarks>
+    /// This method utilizes OData to allow dynamic filtering and sorting of questions.
+    /// </remarks>
     /// <param name="visibility">The visibility filter for questions (<c>public</c> or <c>private</c>).</param>
     /// <returns>
-    /// A list of <see cref="QuestionApiResponse"/> entities if successful; otherwise, <c>null</c> in case of an error.
+    /// A collection of <see cref="QuestionApiResponse"/> entities if successful; otherwise, <c>null</c> in case of an error.
     /// </returns>
     public async Task<IEnumerable<QuestionApiResponse>?> GetQuestionsAsync(QuestionVisibility visibility)
     {
         try
         {
-            var result = await http.GetFromJsonAsync<IEnumerable<QuestionApiResponse>>($"v1/question/all?visibility={visibility}");
+            var query = $"$orderby=CreatedAt desc&$filter=Visibility eq '{visibility}'";
+            var url = $"{ApiRoutes.Questions.GetAll}?{query}";
+            var result = await http.GetFromJsonAsync<IEnumerable<QuestionApiResponse>>(url);
             return result;
         }
         catch (Exception e)

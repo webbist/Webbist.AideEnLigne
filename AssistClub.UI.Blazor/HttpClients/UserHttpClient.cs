@@ -1,3 +1,4 @@
+using AssistClub.UI.Blazor.Constants;
 using AssistClub.UI.Blazor.Models;
 
 namespace AssistClub.UI.Blazor.HttpClients;
@@ -20,7 +21,7 @@ public class UserHttpClient(HttpClient http)
     {
         try
         {
-            var result = await http.GetFromJsonAsync<UserApiResponse>($"v1/user/{email}");
+            var result = await http.GetFromJsonAsync<UserApiResponse>(ApiRoutes.Users.GetUserByEmail(email));
             if (result != null)
                 return new UserViewModel
                 {
