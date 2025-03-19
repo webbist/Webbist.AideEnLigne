@@ -14,21 +14,21 @@ namespace AssistClub.UI.Blazor.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class AllQuestionsResources {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal AllQuestionsResources() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.Resources", typeof(Resources).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.AllQuestionsResources", typeof(AllQuestionsResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,57 +45,21 @@ namespace AssistClub.UI.Blazor.Resources {
             }
         }
         
-        internal static string Loading {
+        internal static string PageTitle {
             get {
-                return ResourceManager.GetString("Loading", resourceCulture);
+                return ResourceManager.GetString("PageTitle", resourceCulture);
             }
         }
         
-        internal static string Error {
+        internal static string EmptyText {
             get {
-                return ResourceManager.GetString("Error", resourceCulture);
+                return ResourceManager.GetString("EmptyText", resourceCulture);
             }
         }
         
-        internal static string TimeAgoJustNow {
+        internal static string PagingSummary {
             get {
-                return ResourceManager.GetString("TimeAgoJustNow", resourceCulture);
-            }
-        }
-        
-        internal static string TimeAgoMinutes {
-            get {
-                return ResourceManager.GetString("TimeAgoMinutes", resourceCulture);
-            }
-        }
-        
-        internal static string TimeAgoHours {
-            get {
-                return ResourceManager.GetString("TimeAgoHours", resourceCulture);
-            }
-        }
-        
-        internal static string TimeAgoDays {
-            get {
-                return ResourceManager.GetString("TimeAgoDays", resourceCulture);
-            }
-        }
-        
-        internal static string TimeAgoMonths {
-            get {
-                return ResourceManager.GetString("TimeAgoMonths", resourceCulture);
-            }
-        }
-        
-        internal static string TimeAgoYears {
-            get {
-                return ResourceManager.GetString("TimeAgoYears", resourceCulture);
-            }
-        }
-        
-        internal static string TimeAgoUnknown {
-            get {
-                return ResourceManager.GetString("TimeAgoUnknown", resourceCulture);
+                return ResourceManager.GetString("PagingSummary", resourceCulture);
             }
         }
     }

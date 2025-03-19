@@ -6,13 +6,16 @@
 
 @rendermode InteractiveServer
 @inject QuestionHttpClient QuestionHttpClient
+@inject IStringLocalizer<AllQuestionsResources> AllQuestionsLocalizer
 
-<PageTitle>Home</PageTitle>
+<PageTitle>@AllQuestionsLocalizer["PageTitle"]</PageTitle>
 
-<h1>All Questions</h1>
+<h1>@AllQuestionsLocalizer["PageTitle"]</h1>
 
 <div class="questions-list border-top">
-    <RadzenDataList WrapItems="false" AllowPaging="true" Data="@_questions" TItem="QuestionApiResponse" PageSize="5" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" PagingSummaryFormat="@_pagingSummaryFormat" ShowEmptyMessage="true" EmptyText="No questions found">
+    <RadzenDataList WrapItems="false" AllowPaging="true" Data="@_questions" TItem="QuestionApiResponse" PageSize="5" 
+                    PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" 
+                    PagingSummaryFormat="@AllQuestionsLocalizer["PagingSummary"]" ShowEmptyMessage="true" EmptyText="@AllQuestionsLocalizer["EmptyText"]">
         <Template Context="question">
             <div class="question-card d-flex rounded-0 shadow-none mb-0 bg-transparent p-2">
                 <div class="question-body">
@@ -41,7 +44,6 @@
 </div>
 
 @code {
-    string _pagingSummaryFormat = "Displaying page {0} of {1} (total {2} questions)";
     private IEnumerable<QuestionApiResponse>? _questions;
 
     protected override async Task OnInitializedAsync()
@@ -59,32 +61,32 @@
     {
         if (dateTime == null)
         {
-            return "Unknown time";
+            return Localizer["TimeAgoUnknown"];
         }
 
         var timeSpan = DateTime.UtcNow - dateTime.Value;
 
         if (timeSpan.TotalSeconds < 60)
         {
-            return "Just now";
+            return Localizer["TimeAgoJustNow"];
         }
         if (timeSpan.TotalMinutes < 60)
         {
-            return $"{(int)timeSpan.TotalMinutes} minutes ago";
+            return string.Format(Localizer["TimeAgoMinutes"], (int)timeSpan.TotalMinutes);
         }
         if (timeSpan.TotalHours < 24)
         {
-            return $"{(int)timeSpan.TotalHours} hours ago";
+            return string.Format(Localizer["TimeAgoHours"], (int)timeSpan.TotalHours);
         }
         if (timeSpan.TotalDays < 30)
         {
-            return $"{(int)timeSpan.TotalDays} days ago";
+            return string.Format(Localizer["TimeAgoDays"], (int)timeSpan.TotalDays);
         }
         if (timeSpan.TotalDays < 365)
         {
-            return $"{(int)(timeSpan.TotalDays / 30)} months ago";
+            return string.Format(Localizer["TimeAgoMonths"], (int)(timeSpan.TotalDays / 30));
         }
 
-        return $"{(int)(timeSpan.TotalDays / 365)} years ago";
+        return string.Format(Localizer["TimeAgoYears"], (int)(timeSpan.TotalDays / 365));
     }
 }

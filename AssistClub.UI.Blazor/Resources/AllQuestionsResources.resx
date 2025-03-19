@@ -18,31 +18,13 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Loading" xml:space="preserve">
-        <value>Chargement...</value>
+    <data name="PageTitle" xml:space="preserve">
+        <value>Toutes les questions</value>
     </data>
-    <data name="Error" xml:space="preserve">
-        <value>Erreur</value>
+    <data name="EmptyText" xml:space="preserve">
+        <value>Aucune question trouvée</value>
     </data>
-    <data name="TimeAgoJustNow" xml:space="preserve">
-        <value>À l’instant</value>
-    </data>
-    <data name="TimeAgoMinutes" xml:space="preserve">
-        <value>Il y a {0} minutes</value>
-    </data>
-    <data name="TimeAgoHours" xml:space="preserve">
-        <value>Il y a {0} heures</value>
-    </data>
-    <data name="TimeAgoDays" xml:space="preserve">
-        <value>Il y a {0} jours</value>
-    </data>
-    <data name="TimeAgoMonths" xml:space="preserve">
-        <value>Il y a {0} mois</value>
-    </data>
-    <data name="TimeAgoYears" xml:space="preserve">
-        <value>Il y a {0} ans</value>
-    </data>
-    <data name="TimeAgoUnknown" xml:space="preserve">
-        <value>Unknown time</value>
+    <data name="PagingSummary" xml:space="preserve">
+        <value>Affichage de la page {0} sur {1} (total {2} questions)</value>
     </data>
 </root>
