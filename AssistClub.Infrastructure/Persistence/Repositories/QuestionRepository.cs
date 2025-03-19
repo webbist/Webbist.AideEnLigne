@@ -1,6 +1,5 @@
 using AssistClub.Application.Interfaces;
 using Domain.Entities;
-using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -41,24 +40,12 @@ public class QuestionRepository(AssistClubDbContext db, ILogger<QuestionReposito
     }
 
     /// <summary>
-    /// Retrieves all questions in the database.
+    /// Retrieves all questions from the database, allowing further filtering, sorting, and pagination.
     /// </summary>
-    /// <returns>A list of all <see cref="Question"/> entities.</returns>
-    public async Task<List<Question>> GetAllQuestionsAsync()
+    /// <returns>An <see cref="IQueryable{T}"/> representing the questions in the database.</returns>
+    public async Task<IQueryable<Question>> GetQuestions()
     {
-        return await db.Questions.ToListAsync();
-    }
-
-    /// <summary>
-    /// Retrieves all questions in the database filtered by visibility.
-    /// </summary>
-    /// <param name="visibility">The visibility filter <see cref="QuestionVisibility"/>.</param>
-    /// <returns>A list of <see cref="Question"/> entities matching the criteria.</returns>
-    public async Task<List<Question>> GetAllQuestionsAsync(QuestionVisibility visibility)
-    {
-        return await db.Questions
-            .Where(q => q.Visibility == visibility.ToString())
-            .ToListAsync();
+        return await Task.FromResult(db.Questions);
     }
 
     /// <summary>

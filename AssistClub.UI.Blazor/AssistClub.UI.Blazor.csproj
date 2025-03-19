@@ -11,10 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AssistClub.Application\AssistClub.Application.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.3" />
       <PackageReference Include="Radzen.Blazor" Version="6.2.6" />
     </ItemGroup>
@@ -39,6 +35,10 @@
       <EmbeddedResource Update="Resources\ProfileResources.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ProfileResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\AllQuestionsResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>AllQuestionsResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
@@ -67,6 +67,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>ProfileResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\AllQuestionsResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AllQuestionsResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

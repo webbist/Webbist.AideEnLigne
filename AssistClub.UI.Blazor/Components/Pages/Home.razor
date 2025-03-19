@@ -1,7 +1,92 @@
 ﻿@page "/"
+@using System.Net
+@using System.Text.RegularExpressions
+@using AssistClub.UI.Blazor.HttpClients
+@using AssistClub.UI.Blazor.Models
 
-<PageTitle>Home</PageTitle>
+@rendermode InteractiveServer
+@inject QuestionHttpClient QuestionHttpClient
+@inject IStringLocalizer<AllQuestionsResources> AllQuestionsLocalizer
 
-<h1>Hello, world!</h1>
+<PageTitle>@AllQuestionsLocalizer["PageTitle"]</PageTitle>
 
-Welcome to your new app.
+<h1>@AllQuestionsLocalizer["PageTitle"]</h1>
+
+<div class="questions-list border-top">
+    <RadzenDataList WrapItems="false" AllowPaging="true" Data="@_questions" TItem="QuestionApiResponse" PageSize="5" 
+                    PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" 
+                    PagingSummaryFormat="@AllQuestionsLocalizer["PagingSummary"]" ShowEmptyMessage="true" EmptyText="@AllQuestionsLocalizer["EmptyText"]">
+        <Template Context="question">
+            <div class="question-card d-flex rounded-0 shadow-none mb-0 bg-transparent p-2">
+                <div class="question-body">
+                    <h5 class="mb-2 fw-medium">
+                        <a href="#">@question.Title</a>
+                    </h5>
+                    <p class="mb-2 truncate-text lh-20 fs-13">
+                        @GetPlainTextFromHtml(question.Content)
+                    </p>
+                    <div class="question-footer d-flex align-items-center px-0 border-bottom-0 pb-0">
+                        <div class="info-footer d-flex flex-wrap align-items-center justify-content-between">
+                            <a href="#" class="d-block d-flex">
+                                <img src="images/@(question.User.Photo ?? "default.jpeg")" alt="avatar" class="user-img rounded-circle">
+                                <h5 class="mb-0 align-content-center">@(question.User.Firstname + " " + question.User.Lastname)</h5>
+                            </a>
+                            <small class="d-block text-end">
+                                <span class="text-black d-block lh-18">@question.Status</span>
+                                <span class="d-block lh-18 fs-12">@GetTimeAgo(question.CreatedAt)</span>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Template>
+    </RadzenDataList>
+</div>
+
+@code {
+    private IEnumerable<QuestionApiResponse>? _questions;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _questions = await QuestionHttpClient.GetQuestionsAsync(QuestionVisibility.Public);
+    }
+    
+    private string GetPlainTextFromHtml(string input)
+    {
+        string decoded = WebUtility.HtmlDecode(input);
+        return Regex.Replace(decoded, "<.*?>", " ");
+    }
+    
+    private string GetTimeAgo(DateTime? dateTime)
+    {
+        if (dateTime == null)
+        {
+            return Localizer["TimeAgoUnknown"];
+        }
+
+        var timeSpan = DateTime.UtcNow - dateTime.Value;
+
+        if (timeSpan.TotalSeconds < 60)
+        {
+            return Localizer["TimeAgoJustNow"];
+        }
+        if (timeSpan.TotalMinutes < 60)
+        {
+            return string.Format(Localizer["TimeAgoMinutes"], (int)timeSpan.TotalMinutes);
+        }
+        if (timeSpan.TotalHours < 24)
+        {
+            return string.Format(Localizer["TimeAgoHours"], (int)timeSpan.TotalHours);
+        }
+        if (timeSpan.TotalDays < 30)
+        {
+            return string.Format(Localizer["TimeAgoDays"], (int)timeSpan.TotalDays);
+        }
+        if (timeSpan.TotalDays < 365)
+        {
+            return string.Format(Localizer["TimeAgoMonths"], (int)(timeSpan.TotalDays / 30));
+        }
+
+        return string.Format(Localizer["TimeAgoYears"], (int)(timeSpan.TotalDays / 365));
+    }
+}

@@ -1,5 +1,6 @@
 using AssistClub.Application.DTOs;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace AssistClub.Application.Interfaces;
 
@@ -24,5 +25,17 @@ public interface IQuestionService
     /// <returns>
     /// A <see cref="QuestionResponseDto"/> representing the created question.
     /// </returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown if the question title exceeds <see cref="QuestionRequestDto.TitleMaxLength"/> characters 
+    /// or the content exceeds <see cref="QuestionRequestDto.ContentMaxLength"/> characters.
+    /// </exception>
     Task<QuestionResponseDto> CreateQuestionAsync(QuestionRequestDto questionDto);
+    
+    /// <summary>
+    /// Retrieves all questions in the system, including user information.
+    /// </summary>
+    /// <returns>
+    /// An <see cref="IQueryable{T}"/> of <see cref="QuestionResponseDto"/> containing the questions.
+    /// </returns>
+    Task<IQueryable<QuestionResponseDto>> GetQuestionsAsync();
 }

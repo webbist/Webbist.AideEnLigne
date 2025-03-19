@@ -49,12 +49,41 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
         
         return new QuestionResponseDto
         {
-            UserId = createdQuestion.UserId,
             Title = createdQuestion.Title,
             Content = createdQuestion.Content,
             CreatedAt = createdQuestion.CreatedAt,
             Visibility = createdQuestion.Visibility,
             Status = createdQuestion.Status
         };
+    }
+    
+    /// <summary>
+    /// Retrieves all questions in the system, including user information.
+    /// </summary>
+    /// <returns>
+    /// An <see cref="IQueryable{T}"/> of <see cref="QuestionResponseDto"/> containing the questions.
+    /// </returns>
+    public async Task<IQueryable<QuestionResponseDto>> GetQuestionsAsync()
+    {
+        var questions= await questionRepository.GetQuestions();
+        return questions.Select(q => new QuestionResponseDto
+        {
+            User = new UserResponseDto
+            {
+                Id = q.User.Id,
+                Firstname = q.User.Firstname,
+                Lastname = q.User.Lastname,
+                Email = q.User.Email,
+                Photo = q.User.Photo,
+                Club = q.User.Club,
+                Microsite = q.User.Microsite
+            },
+            Title = q.Title,
+            Content = q.Content,
+            CreatedAt = q.CreatedAt,
+            Visibility = q.Visibility,
+            UpdatedAt = q.UpdatedAt,
+            Status = q.Status
+        }).AsQueryable();
     }
 }

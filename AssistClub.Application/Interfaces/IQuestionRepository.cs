@@ -1,3 +1,4 @@
+using AssistClub.Application.DTOs;
 using Domain.Entities;
 using Domain.Enums;
 
@@ -27,17 +28,10 @@ public interface IQuestionRepository
     Task<Question?> GetQuestionByIdAsync(Guid id);
     
     /// <summary>
-    /// Retrieves all questions in the database.
+    /// Retrieves all questions from the database, allowing further filtering, sorting, and pagination.
     /// </summary>
-    /// <returns>A list of all <see cref="Question"/> entities.</returns>
-    Task<List<Question>> GetAllQuestionsAsync();
-    
-    /// <summary>
-    /// Retrieves all questions in the database filtered by visibility.
-    /// </summary>
-    /// <param name="visibility">The visibility filter (<c>public</c> or <c>private</c>).</param>
-    /// <returns>A list of <see cref="Question"/> entities matching the criteria.</returns>
-    Task<List<Question>> GetAllQuestionsAsync(QuestionVisibility visibility);
+    /// <returns>An <see cref="IQueryable{T}"/> representing the questions in the database.</returns>
+    Task<IQueryable<Question>> GetQuestions();
     
     /// <summary>
     /// Updates an existing question in the database.
