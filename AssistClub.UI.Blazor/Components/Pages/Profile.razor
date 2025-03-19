@@ -1,0 +1,36 @@
+@page "/user"
+@using AssistClub.UI.Blazor.HttpClients
+@using AssistClub.UI.Blazor.Models
+
+@inject UserHttpClient UserHttpClient
+@inject IStringLocalizer<ProfileResources> ProfileLocalizer
+
+<PageTitle>@ProfileLocalizer["PageTitle"]</PageTitle>
+
+@if (_user != null)
+{
+    <div class="card">
+        <div class="card-header">
+            <h4>@ProfileLocalizer["PageTitle"]</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>@ProfileLocalizer["FullnameLabel"]:</strong> @_user.Fullname</p>
+            <p><strong>@ProfileLocalizer["EmailLabel"]:</strong> @_user.Email</p>
+            <p><strong>@ProfileLocalizer["PhotoLabel"]:</strong> @_user.Photo</p>
+            <p><strong>@ProfileLocalizer["ClubLabel"]:</strong> @_user.Club</p>
+            <p><strong>@ProfileLocalizer["MicrositeLabel"]:</strong> @_user.Microsite</p>
+        </div>
+    </div>
+} else
+{
+    <p>@Localizer["Loading"]</p>
+}
+
+@code {
+    private UserViewModel? _user;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _user = await UserHttpClient.GetUserByEmail("carlos@gmail.com");
+    }
+}
