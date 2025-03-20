@@ -38,4 +38,11 @@ public interface IQuestionService
     /// An <see cref="IQueryable{T}"/> of <see cref="QuestionResponseDto"/> containing the questions.
     /// </returns>
     Task<IQueryable<QuestionResponseDto>> GetQuestionsAsync();
+    
+    /// <summary>
+    /// Retrieves a question by its unique identifier including the user who submitted it.
+    /// </summary>
+    /// <param name="id">The ID of the question.</param>
+    /// <returns>The <see cref="QuestionResponseDto"/> if found; otherwise, <c>null</c>.</returns>
+    Task<QuestionResponseDto?> GetQuestionByIdAsync(Guid id);
 }

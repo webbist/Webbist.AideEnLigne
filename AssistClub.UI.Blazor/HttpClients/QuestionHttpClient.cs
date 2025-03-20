@@ -58,4 +58,18 @@ public class QuestionHttpClient(HttpClient http)
             return null;
         }
     }
+
+    public async Task<QuestionApiResponse?> GetQuestionAsync(Guid id)
+    {
+        try
+        {
+            var result = await http.GetFromJsonAsync<QuestionApiResponse>($"{ApiRoutes.Questions.GetById(id)}");
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error getting question: {e.Message}");
+            return null;
+        }
+    }
 }

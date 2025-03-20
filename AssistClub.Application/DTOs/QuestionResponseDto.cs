@@ -9,6 +9,11 @@ namespace AssistClub.Application.DTOs;
 public class QuestionResponseDto
 {
     /// <summary>
+    /// The unique identifier of the question.
+    /// </summary>
+    public Guid Id { get; set; }
+    
+    /// <summary>
     /// The user who created the question.
     /// </summary>
     public UserResponseDto User { get; set; }

@@ -21,10 +21,11 @@ public interface IQuestionRepository
     Task<Question> CreateQuestionAsync(Question question);
     
     /// <summary>
-    /// Retrieves a question by its unique identifier.
+    /// Retrieves a question by its unique identifier including the user who submitted it.
     /// </summary>
     /// <param name="id">The ID of the question.</param>
     /// <returns>The <see cref="Question"/> entity if found; otherwise, <c>null</c>.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if multiple questions are found with the same ID.</exception>
     Task<Question?> GetQuestionByIdAsync(Guid id);
     
     /// <summary>

@@ -68,6 +68,7 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
         var questions= await questionRepository.GetQuestions();
         return questions.Select(q => new QuestionResponseDto
         {
+            Id = q.Id,
             User = new UserResponseDto
             {
                 Id = q.User.Id,
@@ -85,5 +86,39 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
             UpdatedAt = q.UpdatedAt,
             Status = q.Status
         }).AsQueryable();
+    }
+
+    /// <summary>
+    /// Retrieves a question by its unique identifier including the user who submitted it.
+    /// </summary>
+    /// <param name="id">The ID of the question.</param>
+    /// <returns>The <see cref="QuestionResponseDto"/> if found; otherwise, <c>null</c>.</returns>
+    public async Task<QuestionResponseDto?> GetQuestionByIdAsync(Guid id)
+    {
+        var question = await questionRepository.GetQuestionByIdAsync(id);
+        if (question != null)
+        {
+            return new QuestionResponseDto
+            {
+                Id = question.Id,
+                User = new UserResponseDto
+                {
+                    Id = question.User.Id,
+                    Firstname = question.User.Firstname,
+                    Lastname = question.User.Lastname,
+                    Email = question.User.Email,
+                    Photo = question.User.Photo,
+                    Club = question.User.Club,
+                    Microsite = question.User.Microsite
+                },
+                Title = question.Title,
+                Content = question.Content,
+                CreatedAt = question.CreatedAt,
+                Visibility = question.Visibility,
+                UpdatedAt = question.UpdatedAt,
+                Status = question.Status
+            };
+        }
+        return null;
     }
 }

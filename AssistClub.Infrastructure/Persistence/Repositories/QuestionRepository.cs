@@ -30,13 +30,24 @@ public class QuestionRepository(AssistClubDbContext db, ILogger<QuestionReposito
     }
 
     /// <summary>
-    /// Retrieves a question by its unique identifier.
+    /// Retrieves a question by its unique identifier including the user who submitted it.
     /// </summary>
     /// <param name="id">The ID of the question.</param>
     /// <returns>The <see cref="Question"/> entity if found; otherwise, <c>null</c>.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if multiple questions are found with the same ID.</exception>
     public async Task<Question?> GetQuestionByIdAsync(Guid id)
     {
-        return await db.Questions.FindAsync(id);
+        try
+        {
+            return await db.Questions
+                .Include(q => q.User)
+                .SingleOrDefaultAsync(q => q.Id == id);
+        }
+        catch (InvalidOperationException ex)
+        {
+            logger.LogError(ex, "An error occurred while getting a question.");
+            throw new InvalidOperationException("Data integrity issue: multiple questions found with the same ID.", ex);
+        }
     }
 
     /// <summary>
