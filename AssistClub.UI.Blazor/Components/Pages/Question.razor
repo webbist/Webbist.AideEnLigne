@@ -4,21 +4,22 @@
 @using AssistClub.UI.Blazor.Helpers
 
 @inject QuestionHttpClient QuestionHttpClient
+@inject IStringLocalizer<QuestionResources> QuestionLocalizer
 
-<PageTitle>Question Details</PageTitle>
-
-@if (_question is not null)
+@if (_question != null)
 {
+    <PageTitle>@_question.Title</PageTitle>
+
     <RadzenCard class="rz-mx-auto">
         <div class="question-details">
             <h1 class="question-title">@_question.Title</h1>
             <div class="question-info">
                 <span>
-                    Asked:
+                    @QuestionLocalizer["AskedLabel"]:
                     <time class="info-time">@_question.CreatedAt.GetTimeAgo(Localizer)</time>
                 </span>
                     <span>
-                    Status:
+                    @QuestionLocalizer["StatusLabel"]:
                     <span class="info-status">@_question.Status</span>
                 </span>
             </div>
@@ -26,7 +27,7 @@
                 @((MarkupString)_question.Content)
             </div>
             <div class="question-author">
-                <span class="author-span">Asked by:</span>
+                <span class="author-span">@QuestionLocalizer["AskedByLabel"]:</span>
                 <a href="user/@_question.User.Id">
                     <span class="author-image-span">
                         <img src="images/@(_question.User.Photo ?? "default.jpeg")" alt="avatar" class="author-img rounded-circle">
@@ -36,11 +37,11 @@
             </div>
         </div>
     </RadzenCard>
-    
 }
 else
 {
-    <p>@Localizer["Loading"]</p>
+    <PageTitle>@QuestionLocalizer["NotFoundTitle"]</PageTitle>
+    <h1 class="question-title">@QuestionLocalizer["NotFoundTitle"]</h1>
 }
 
 
