@@ -1,5 +1,8 @@
 using AssistClub.UI.Blazor.Components;
 using AssistClub.UI.Blazor.HttpClients;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +16,23 @@ builder.Services.AddLocalization();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5284")});
 builder.Services.AddScoped<UserHttpClient>();
 builder.Services.AddScoped<QuestionHttpClient>();
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    })
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/sign-in";
+    })
+    .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+    {
+        options.ClientId = builder.Configuration["Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Google:ClientSecret"];
+        options.AccessDeniedPath = "/sign-in";
+        options.ClaimActions.MapJsonKey("urn:google:image", "picture");
+        options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    });
 
 var app = builder.Build();
 
@@ -32,6 +52,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();

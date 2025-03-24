@@ -19,4 +19,13 @@ public interface IUserRepository
     /// A <see cref="User"/> entity if found; otherwise, <c>null</c>.
     /// </returns>
     Task<User?> GetUserByEmailAsync(string email);
+    
+    /// <summary>
+    /// Creates a new user in the database.
+    /// </summary>
+    /// <param name="user">The user to create.</param>
+    /// <returns>
+    /// The newly created <see cref="User"/> entity.
+    /// </returns>
+    Task<User> CreateUserAsync(User user);
 }

@@ -1,9 +1,6 @@
 namespace AssistClub.UI.Blazor.Models;
 
-/// <summary>
-/// Represents the view model for user data in the UI layer.
-/// </summary>
-public class UserViewModel
+public class UserApiRequest
 {
     /// <summary>
     /// The unique identifier of the user.
@@ -11,9 +8,14 @@ public class UserViewModel
     public Guid Id { get; set; }
     
     /// <summary>
-    /// The user's full name.
+    /// The user's first name.
     /// </summary>
-    public string? Fullname { get; set; }
+    public string Firstname { get; set; }
+    
+    /// <summary>
+    /// The user's last name.
+    /// </summary>
+    public string Lastname { get; set; }
     
     /// <summary>
     /// The user's email address.
@@ -36,16 +38,7 @@ public class UserViewModel
     public string? Microsite { get; set; }
     
     /// <summary>
-    /// The user's role in the system.
+    /// The user's role in the system (<c>admin</c> or <c>user</c>).
     /// </summary>
     public Role Role { get; set; }
-}
-
-/// <summary>
-/// Represents the possible roles a user can have in the system.
-/// </summary>
-public enum Role
-{
-    Admin,
-    User
 }

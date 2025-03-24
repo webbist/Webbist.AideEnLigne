@@ -19,4 +19,11 @@ public interface IUserService
     /// A <see cref="UserResponseDto"/> containing user details if found; otherwise, <c>null</c>.
     /// </returns>
     Task<UserResponseDto?> GetUserByEmailAsync(string email);
+    
+    /// <summary>
+    /// Creates a new user in the system.
+    /// </summary>
+    /// <param name="user">The user details to create.</param>
+    /// <returns>A <see cref="UserResponseDto"/> containing the created user details.</returns>
+    Task<UserResponseDto> CreateUserAsync(UserRequest user);
 }

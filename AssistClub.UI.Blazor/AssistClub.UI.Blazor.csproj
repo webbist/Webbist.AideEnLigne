@@ -7,10 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="wwwroot\bootstrap\bootstrap-5.3.3-dist\.DS_Store" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.14" />
       <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.3" />
       <PackageReference Include="Radzen.Blazor" Version="6.2.6" />
     </ItemGroup>

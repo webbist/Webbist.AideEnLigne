@@ -20,7 +20,7 @@ public class QuestionRequest
     /// <summary>
     /// The unique identifier of the user submitting the question.
     /// </summary>
-    public Guid UserId { get; set; } = Guid.Parse("85300a85-112e-4410-a2b4-1cc079584347"); //change this to the actual user id when authentication is implemented
+    public Guid UserId { get; set; }
     
     /// <summary>
     /// The title of the question.

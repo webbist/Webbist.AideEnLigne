@@ -53,4 +53,7 @@
     <data name="TitleRequiredMessage" xml:space="preserve">
         <value>Title is required.</value>
     </data>
+    <data name="FormUserErrorMessage" xml:space="preserve">
+        <value>Unable to identify the user. Please log in again.</value>
+    </data>
 </root>

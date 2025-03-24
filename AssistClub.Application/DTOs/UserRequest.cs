@@ -1,9 +1,11 @@
-namespace AssistClub.UI.Blazor.Models;
+using Domain.Enums;
+
+namespace AssistClub.Application.DTOs;
 
 /// <summary>
-/// Represents the view model for user data in the UI layer.
+/// Represents the user request data.
 /// </summary>
-public class UserViewModel
+public class UserRequest
 {
     /// <summary>
     /// The unique identifier of the user.
@@ -11,14 +13,19 @@ public class UserViewModel
     public Guid Id { get; set; }
     
     /// <summary>
-    /// The user's full name.
+    /// The first name of the user.
     /// </summary>
-    public string? Fullname { get; set; }
+    public string Firstname { get; set; }
     
     /// <summary>
-    /// The user's email address.
+    /// The last name of the user.
     /// </summary>
-    public string? Email { get; set; }
+    public string Lastname { get; set; }
+    
+    /// <summary>
+    /// The email address of the user.
+    /// </summary>
+    public string Email { get; set; }
     
     /// <summary>
     /// The URL of the user's profile photo, if available.
@@ -28,24 +35,15 @@ public class UserViewModel
     /// <summary>
     /// The club to which the user is affiliated.
     /// </summary>
-    public string? Club { get; set; }
+    public string Club { get; set; }
     
     /// <summary>
     /// The user's microsite URL.
     /// </summary>
-    public string? Microsite { get; set; }
+    public string Microsite { get; set; }
     
     /// <summary>
-    /// The user's role in the system.
+    /// The user's role in the system (<c>admin</c> or <c>user</c>).
     /// </summary>
     public Role Role { get; set; }
-}
-
-/// <summary>
-/// Represents the possible roles a user can have in the system.
-/// </summary>
-public enum Role
-{
-    Admin,
-    User
 }

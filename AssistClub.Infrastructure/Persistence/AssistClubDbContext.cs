@@ -25,7 +25,7 @@ public partial class AssistClubDbContext : DbContext
     {
         modelBuilder.Entity<Question>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Question__3214EC075A332241");
+            entity.HasKey(e => e.Id).HasName("PK__Question__3214EC071022BDC7");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Content).HasMaxLength(2000);
@@ -44,9 +44,9 @@ public partial class AssistClubDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07FE407C18");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07DF6C1411");
 
-            entity.HasIndex(e => e.Email, "UQ__Users__A9D105346EC785CE").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Users__A9D105341E545DD6").IsUnique();
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Club).HasMaxLength(100);
@@ -61,6 +61,7 @@ public partial class AssistClubDbContext : DbContext
             entity.Property(e => e.Photo)
                 .HasMaxLength(255)
                 .IsUnicode(false);
+            entity.Property(e => e.Role).HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);
