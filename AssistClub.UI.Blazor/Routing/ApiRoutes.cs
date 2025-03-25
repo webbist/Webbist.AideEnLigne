@@ -15,6 +15,7 @@ public static class ApiRoutes
         private const string Base = $"{Version}/question";
         public const string Create = $"{Base}/create";
         public const string GetAll = $"{Base}/all";
+        public static string GetById(Guid id) => $"{Base}/{id}";
     }
     
     /// <summary>

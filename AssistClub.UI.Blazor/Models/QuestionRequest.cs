@@ -18,31 +18,31 @@ public class QuestionRequest
     public const int ContentMaxLength = 2000;
     
     /// <summary>
-    /// The unique identifier of the user submitting the question.
+    /// Gets or sets the unique identifier of the user submitting the question.
     /// </summary>
     public Guid UserId { get; set; }
     
     /// <summary>
-    /// The title of the question.
+    /// Gets or sets the title of the question.
     /// </summary>
     [Required(ErrorMessageResourceName = "TitleRequiredMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
     [StringLength(TitleMaxLength, ErrorMessageResourceName = "TitleMaxLengthMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
     public string Title { get; set; }
     
     /// <summary>
-    /// The full content of the question.
+    /// Gets or sets the full content of the question.
     /// </summary>
     [Required(ErrorMessageResourceName = "ContentRequiredMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
     [StringLength(ContentMaxLength, ErrorMessageResourceName = "ContentMaxLengthMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
     public string Content { get; set; }
     
     /// <summary>
-    /// Defines the visibility of the question (<c>public</c> or <c>private</c>).
+    /// Gets or sets the visibility of the question (<c>public</c> or <c>private</c>).
     /// </summary>
     public QuestionVisibility Visibility { get; set; } = QuestionVisibility.Public;
     
     /// <summary>
-    /// The status of the question (<c>open</c>, <c>pending</c>, or <c>resolved</c>).
+    /// Gets or sets the status of the question (<c>open</c>, <c>pending</c>, or <c>resolved</c>).
     /// </summary>
     public string Status { get; set; } = "open";
 }

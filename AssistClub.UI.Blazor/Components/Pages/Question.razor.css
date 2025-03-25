@@ -1,0 +1,42 @@
+.question-title {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.question-info {
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.question-info span {
+    padding-right: 1rem;
+}
+
+.info-time, .info-status {
+    font-weight: 500;
+}
+
+.question-content {
+    font-size: 14px;
+    line-height: 24px;
+    padding: 0.5rem 0 0.7rem;
+}
+
+.question-author {
+    text-align: right;
+}
+
+.author-image-span img {
+    width: 42px;
+    border: 2px solid;
+}
+
+.author-span {
+    font-size: 13px;
+    font-weight: 500;
+    color: #0d233e;
+}
+
+.author-text-span {
+    font-size: 14px;
+}

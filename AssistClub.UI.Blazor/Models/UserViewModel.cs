@@ -6,32 +6,32 @@ namespace AssistClub.UI.Blazor.Models;
 public class UserViewModel
 {
     /// <summary>
-    /// The unique identifier of the user.
+    /// Gets or sets the unique identifier of the user.
     /// </summary>
     public Guid Id { get; set; }
     
     /// <summary>
-    /// The user's full name.
+    /// Gets or sets the user's full name.
     /// </summary>
     public string? Fullname { get; set; }
     
     /// <summary>
-    /// The user's email address.
+    /// Gets or sets the user's email address.
     /// </summary>
     public string? Email { get; set; }
     
     /// <summary>
-    /// The URL of the user's profile photo, if available.
+    /// Gets or sets the URL of the user's profile photo, if available.
     /// </summary>
     public string? Photo { get; set; }
     
     /// <summary>
-    /// The club to which the user is affiliated.
+    /// Gets or sets the club to which the user is affiliated.
     /// </summary>
     public string? Club { get; set; }
     
     /// <summary>
-    /// The user's microsite URL.
+    /// Gets or sets the user's microsite URL.
     /// </summary>
     public string? Microsite { get; set; }
     

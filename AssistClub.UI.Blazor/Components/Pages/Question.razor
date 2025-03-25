@@ -1,0 +1,63 @@
+@page "/question/{id}"
+@using AssistClub.UI.Blazor.HttpClients
+@using AssistClub.UI.Blazor.Models
+@using AssistClub.UI.Blazor.Extensions
+
+@inject QuestionHttpClient QuestionHttpClient
+@inject IStringLocalizer<QuestionResources> QuestionLocalizer
+
+@if (_question != null)
+{
+    <PageTitle>@_question.Title</PageTitle>
+
+    <RadzenCard class="rz-mx-auto">
+        <div class="question-details">
+            <h1 class="question-title">@_question.Title</h1>
+            <div class="question-info">
+                <span>
+                    @QuestionLocalizer["AskedLabel"]:
+                    <time class="info-time">@_question.CreatedAt.GetTimeAgo()</time>
+                </span>
+                    <span>
+                    @QuestionLocalizer["StatusLabel"]:
+                    <span class="info-status">@_question.Status</span>
+                </span>
+            </div>
+            <div class="question-content">
+                @((MarkupString)_question.Content)
+            </div>
+            <div class="question-author">
+                <span class="author-span">@QuestionLocalizer["AskedByLabel"]:</span>
+                <a href="user/@_question.User.Id">
+                    <span class="author-image-span">
+                        <img src="images/@(_question.User.Photo ?? "default.jpeg")" alt="avatar" class="author-img rounded-circle">
+                    </span>
+                    <span class="author-text-span">@_question.User.Firstname @_question.User.Lastname</span>
+                </a>
+            </div>
+        </div>
+    </RadzenCard>
+}
+else
+{
+    <PageTitle>@QuestionLocalizer["NotFoundTitle"]</PageTitle>
+    <h1 class="question-title">@QuestionLocalizer["NotFoundTitle"]</h1>
+}
+
+
+@code {
+    [Parameter] public string Id { get; set; }
+    private QuestionApiResponse? _question;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _question = await QuestionHttpClient.GetQuestionAsync(Guid.Parse(Id));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+}

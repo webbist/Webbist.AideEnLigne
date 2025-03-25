@@ -14,21 +14,21 @@ namespace AssistClub.UI.Blazor.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class QuestionResources {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal QuestionResources() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.Resources", typeof(Resources).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.QuestionResources", typeof(QuestionResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,15 +45,33 @@ namespace AssistClub.UI.Blazor.Resources {
             }
         }
         
-        internal static string Loading {
+        internal static string PageTitle {
             get {
-                return ResourceManager.GetString("Loading", resourceCulture);
+                return ResourceManager.GetString("PageTitle", resourceCulture);
             }
         }
         
-        internal static string Error {
+        internal static string StatusLabel {
             get {
-                return ResourceManager.GetString("Error", resourceCulture);
+                return ResourceManager.GetString("StatusLabel", resourceCulture);
+            }
+        }
+        
+        internal static string AskedLabel {
+            get {
+                return ResourceManager.GetString("AskedLabel", resourceCulture);
+            }
+        }
+        
+        internal static string AskedByLabel {
+            get {
+                return ResourceManager.GetString("AskedByLabel", resourceCulture);
+            }
+        }
+        
+        internal static string NotFoundTitle {
+            get {
+                return ResourceManager.GetString("NotFoundTitle", resourceCulture);
             }
         }
     }

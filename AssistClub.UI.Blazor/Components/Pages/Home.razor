@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using System.Net
 @using System.Text.RegularExpressions
+@using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
 @using Microsoft.AspNetCore.Authorization
@@ -12,7 +13,7 @@
 
 <PageTitle>@AllQuestionsLocalizer["PageTitle"]</PageTitle>
 
-<h1>@AllQuestionsLocalizer["PageTitle"]</h1>
+<h2>@AllQuestionsLocalizer["PageTitle"]</h2>
 
 <div class="questions-list border-top">
     <RadzenDataList WrapItems="false" AllowPaging="true" Data="@_questions" TItem="QuestionApiResponse" PageSize="5" 
@@ -22,7 +23,7 @@
             <div class="question-card d-flex rounded-0 shadow-none mb-0 bg-transparent p-2">
                 <div class="question-body">
                     <h5 class="mb-2 fw-medium">
-                        <a href="#">@question.Title</a>
+                        <NavLink href="@($"question/{question.Id}")">@question.Title</NavLink>
                     </h5>
                     <p class="mb-2 truncate-text lh-20 fs-13">
                         @GetPlainTextFromHtml(question.Content)
@@ -35,7 +36,7 @@
                             </a>
                             <small class="d-block text-end">
                                 <span class="text-black d-block lh-18">@question.Status</span>
-                                <span class="d-block lh-18 fs-12">@GetTimeAgo(question.CreatedAt)</span>
+                                <span class="d-block lh-18 fs-12">@question.CreatedAt.GetTimeAgo()</span>
                             </small>
                         </div>
                     </div>
@@ -57,38 +58,5 @@
     {
         string decoded = WebUtility.HtmlDecode(input);
         return Regex.Replace(decoded, "<.*?>", " ");
-    }
-    
-    private string GetTimeAgo(DateTime? dateTime)
-    {
-        if (dateTime == null)
-        {
-            return Localizer["TimeAgoUnknown"];
-        }
-
-        var timeSpan = DateTime.UtcNow - dateTime.Value;
-
-        if (timeSpan.TotalSeconds < 60)
-        {
-            return Localizer["TimeAgoJustNow"];
-        }
-        if (timeSpan.TotalMinutes < 60)
-        {
-            return string.Format(Localizer["TimeAgoMinutes"], (int)timeSpan.TotalMinutes);
-        }
-        if (timeSpan.TotalHours < 24)
-        {
-            return string.Format(Localizer["TimeAgoHours"], (int)timeSpan.TotalHours);
-        }
-        if (timeSpan.TotalDays < 30)
-        {
-            return string.Format(Localizer["TimeAgoDays"], (int)timeSpan.TotalDays);
-        }
-        if (timeSpan.TotalDays < 365)
-        {
-            return string.Format(Localizer["TimeAgoMonths"], (int)(timeSpan.TotalDays / 30));
-        }
-
-        return string.Format(Localizer["TimeAgoYears"], (int)(timeSpan.TotalDays / 365));
     }
 }
