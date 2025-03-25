@@ -18,7 +18,8 @@ public class QuestionController(IQuestionService questionService, ILogger<Questi
     /// Creates a new question in the system.
     /// </summary>
     /// <remarks>
-    /// Ensures the question follows platform policies before saving it to the database.
+    /// This endpoint is used by the frontend application to submit user-generated questions 
+    /// to the system, ensuring the data is validated and stored appropriately.
     /// </remarks>
     /// <param name="questionDto">The question data submitted by the user.</param>
     /// <returns>
@@ -69,6 +70,29 @@ public class QuestionController(IQuestionService questionService, ILogger<Questi
         catch (Exception e)
         {
             logger.LogError(e, "An error occurred while getting questions.");
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    /// <summary>
+    /// Retrieves a question by its unique identifier.
+    /// </summary>
+    /// <param name="id">The ID of the question.</param>
+    /// <returns>
+    /// <c>200 OK</c>: Returns the question details.<br/>
+    /// <c>500 Internal Server Error</c>: If an unexpected error occurs.
+    /// </returns>
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetQuestion(Guid id)
+    {
+        try
+        {
+            var question = await questionService.GetQuestionByIdAsync(id);
+            return Ok(question);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "An error occurred while getting the question.");
             return StatusCode(500, e.Message);
         }
     }

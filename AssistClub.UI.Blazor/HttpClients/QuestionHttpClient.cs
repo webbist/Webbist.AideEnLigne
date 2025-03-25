@@ -1,4 +1,4 @@
-using AssistClub.UI.Blazor.Constants;
+using AssistClub.UI.Blazor.Routing;
 using AssistClub.UI.Blazor.Models;
 
 namespace AssistClub.UI.Blazor.HttpClients;
@@ -55,6 +55,20 @@ public class QuestionHttpClient(HttpClient http)
         catch (Exception e)
         {
             Console.WriteLine($"Error getting questions: {e.Message}");
+            return null;
+        }
+    }
+
+    public async Task<QuestionApiResponse?> GetQuestionAsync(Guid id)
+    {
+        try
+        {
+            var result = await http.GetFromJsonAsync<QuestionApiResponse>($"{ApiRoutes.Questions.GetById(id)}");
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error getting question: {e.Message}");
             return null;
         }
     }

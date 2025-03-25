@@ -40,6 +40,14 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>AllQuestionsResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\QuestionResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>QuestionResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\DateTimeResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>DateTimeResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -72,6 +80,16 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>AllQuestionsResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\QuestionResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>QuestionResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\DateTimeResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>DateTimeResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

@@ -1,4 +1,4 @@
-namespace AssistClub.UI.Blazor.Constants;
+namespace AssistClub.UI.Blazor.Routing;
 
 /// <summary>
 /// Defines the API endpoints used by the application.
@@ -15,6 +15,7 @@ public static class ApiRoutes
         private const string Base = $"{Version}/question";
         public const string Create = $"{Base}/create";
         public const string GetAll = $"{Base}/all";
+        public static string GetById(Guid id) => $"{Base}/{id}";
     }
     
     /// <summary>

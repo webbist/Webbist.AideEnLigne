@@ -17,25 +17,4 @@
     <data name="Loading" xml:space="preserve">
         <value>Loading...</value>
     </data>
-    <data name="TimeAgoJustNow" xml:space="preserve">
-        <value>Just now</value>
-    </data>
-    <data name="TimeAgoMinutes" xml:space="preserve">
-        <value>{0} minutes ago</value>
-    </data>
-    <data name="TimeAgoHours" xml:space="preserve">
-        <value>{0} hours ago</value>
-    </data>
-    <data name="TimeAgoDays" xml:space="preserve">
-        <value>{0} days ago</value>
-    </data>
-    <data name="TimeAgoMonths" xml:space="preserve">
-        <value>{0} months ago</value>
-    </data>
-    <data name="TimeAgoYears" xml:space="preserve">
-        <value>{0} years ago</value>
-    </data>
-    <data name="TimeAgoUnknown" xml:space="preserve">
-        <value>Heure inconnue</value>
-    </data>
 </root>
