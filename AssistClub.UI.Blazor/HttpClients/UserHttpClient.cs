@@ -30,7 +30,8 @@ public class UserHttpClient(HttpClient http)
                     Email = result.Email,
                     Photo = result.Photo,
                     Club = result.Club,
-                    Microsite = result.Microsite
+                    Microsite = result.Microsite,
+                    Role = Enum.Parse<Role>(result.Role, true)
                 };
             return null;
         }

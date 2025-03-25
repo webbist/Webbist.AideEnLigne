@@ -1,5 +1,8 @@
 namespace Domain.Enums;
 
+/// <summary>
+/// Represents the possible roles a user can have in the system.
+/// </summary>
 public enum Role
 {
     /// <summary>

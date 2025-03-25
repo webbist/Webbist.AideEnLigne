@@ -3,6 +3,8 @@ using AssistClub.UI.Blazor.HttpClients;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
 using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,11 +14,12 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddRadzenComponents();
 builder.Services.AddLocalization();
+builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5284")});
 builder.Services.AddScoped<UserHttpClient>();
 builder.Services.AddScoped<QuestionHttpClient>();
-
+builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;

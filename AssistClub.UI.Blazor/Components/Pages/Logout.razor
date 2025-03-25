@@ -13,6 +13,6 @@
     protected override async Task OnInitializedAsync()
     {
         await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        NavigationManager.NavigateTo("/sign-in");
+        NavigationManager.NavigateTo("/");
     }
 }

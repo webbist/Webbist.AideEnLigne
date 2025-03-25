@@ -13,7 +13,7 @@
 @code {
     [CascadingParameter]
     public HttpContext httpContext { get; set; }
-    
+
     protected override async Task OnInitializedAsync()
     {
         var user = httpContext?.User;
@@ -22,12 +22,12 @@
             NavigationManager.NavigateTo("/sign-in");
             return;
         }
-        
+
         var firstName = user.FindFirst(ClaimTypes.GivenName)?.Value ?? string.Empty;
         var lastName = user.FindFirst(ClaimTypes.Surname)?.Value ?? string.Empty;
         var email = user.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
         var photo = user.FindFirst("urn:google:image")?.Value;
-        
+
         var existingUser = await UserHttpClient.GetUserByEmail(email);
         if (existingUser == null)
         {
@@ -42,26 +42,31 @@
                 Microsite = "https://assistclub.com",
                 Role = Role.User
             };
-            
+
             await UserHttpClient.CreateUser(newUser);
             existingUser = await UserHttpClient.GetUserByEmail(email);
         }
-        
+
         if (existingUser == null)
         {
-            NavigationManager.NavigateTo("/sign-in");
+            NavigationManager.NavigateTo("/");
             return;
         }
-        
-        Claim[] claims =
-        [
+
+        var claims = new List<Claim>
+        { 
             new(ClaimTypes.NameIdentifier, existingUser.Id.ToString()),
             new(ClaimTypes.GivenName, existingUser.Fullname),
             new(ClaimTypes.Email, existingUser.Email),
             new("photo", existingUser.Photo ?? "images/default.jpeg"),
             new("club", existingUser.Club),
             new(ClaimTypes.Role, existingUser.Role.ToString())
-        ];
+        };
+        
+        if (existingUser.Role == Role.Admin)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, Role.User.ToString()));
+        }
         
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);

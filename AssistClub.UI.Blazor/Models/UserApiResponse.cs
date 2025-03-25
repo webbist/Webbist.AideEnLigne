@@ -39,4 +39,9 @@ public class UserApiResponse
     /// The user's microsite URL.
     /// </summary>
     public string Microsite { get; set; }
+    
+    /// <summary>
+    /// The user's role in the system (<c>admin</c> or <c>user</c>).
+    /// </summary>
+    public string Role { get; set; }
 }

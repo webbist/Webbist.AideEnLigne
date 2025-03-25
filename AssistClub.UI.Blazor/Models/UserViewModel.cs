@@ -36,7 +36,7 @@ public class UserViewModel
     public string? Microsite { get; set; }
     
     /// <summary>
-    /// The user's role in the system.
+    /// The user's role in the system (<c>admin</c> or <c>user</c>).
     /// </summary>
     public Role Role { get; set; }
 }
