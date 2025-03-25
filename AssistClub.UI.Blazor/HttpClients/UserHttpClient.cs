@@ -1,4 +1,4 @@
-using AssistClub.UI.Blazor.Constants;
+using AssistClub.UI.Blazor.Routing;
 using AssistClub.UI.Blazor.Models;
 
 namespace AssistClub.UI.Blazor.HttpClients;

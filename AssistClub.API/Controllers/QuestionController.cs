@@ -18,7 +18,8 @@ public class QuestionController(IQuestionService questionService, ILogger<Questi
     /// Creates a new question in the system.
     /// </summary>
     /// <remarks>
-    /// This endpoint allows users to submit questions to the system.
+    /// This endpoint is used by the frontend application to submit user-generated questions 
+    /// to the system, ensuring the data is validated and stored appropriately.
     /// </remarks>
     /// <param name="questionDto">The question data submitted by the user.</param>
     /// <returns>

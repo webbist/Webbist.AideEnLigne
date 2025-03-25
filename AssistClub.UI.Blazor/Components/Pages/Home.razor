@@ -1,7 +1,7 @@
 ﻿@page "/"
 @using System.Net
 @using System.Text.RegularExpressions
-@using AssistClub.UI.Blazor.Helpers
+@using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
 
@@ -34,7 +34,7 @@
                             </a>
                             <small class="d-block text-end">
                                 <span class="text-black d-block lh-18">@question.Status</span>
-                                <span class="d-block lh-18 fs-12">@question.CreatedAt.GetTimeAgo(Localizer)</span>
+                                <span class="d-block lh-18 fs-12">@question.CreatedAt.GetTimeAgo()</span>
                             </small>
                         </div>
                     </div>

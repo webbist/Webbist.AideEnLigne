@@ -1,7 +1,7 @@
 @page "/question/{id}"
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
-@using AssistClub.UI.Blazor.Helpers
+@using AssistClub.UI.Blazor.Extensions
 
 @inject QuestionHttpClient QuestionHttpClient
 @inject IStringLocalizer<QuestionResources> QuestionLocalizer
@@ -16,7 +16,7 @@
             <div class="question-info">
                 <span>
                     @QuestionLocalizer["AskedLabel"]:
-                    <time class="info-time">@_question.CreatedAt.GetTimeAgo(Localizer)</time>
+                    <time class="info-time">@_question.CreatedAt.GetTimeAgo()</time>
                 </span>
                     <span>
                     @QuestionLocalizer["StatusLabel"]:

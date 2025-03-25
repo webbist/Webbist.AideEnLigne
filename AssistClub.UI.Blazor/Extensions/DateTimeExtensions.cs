@@ -1,12 +1,31 @@
+using AssistClub.UI.Blazor.Resources;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 
-namespace AssistClub.UI.Blazor.Helpers;
+namespace AssistClub.UI.Blazor.Extensions;
 
 /// <summary>
 /// Provides helper methods for formatting dates and times.
 /// </summary>
 public static class DateTimeExtensions
 {
+    private static readonly IStringLocalizer DefaultLocalizer =
+        new ResourceManagerStringLocalizerFactory(
+            new OptionsWrapper<LocalizationOptions>(new LocalizationOptions()),
+            NullLoggerFactory.Instance
+        ).Create(typeof(DateTimeResources));
+    
+    /// <summary>
+    /// Converts a DateTime into a human-readable "time ago" format using the default localizer.
+    /// </summary>
+    /// <param name="dateTime">The date and time to convert.</param>
+    /// <returns>A localized string representing the time difference.</returns>
+    public static string GetTimeAgo(this DateTime dateTime)
+    {
+        return dateTime.GetTimeAgo(DefaultLocalizer);
+    }
+    
     /// <summary>
     /// Converts a DateTime into a human-readable "time ago" format.
     /// </summary>
