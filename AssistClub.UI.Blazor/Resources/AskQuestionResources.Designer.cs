@@ -128,5 +128,11 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("TitleRequiredMessage", resourceCulture);
             }
         }
+        
+        internal static string FormUserErrorMessage {
+            get {
+                return ResourceManager.GetString("FormUserErrorMessage", resourceCulture);
+            }
+        }
     }
 }

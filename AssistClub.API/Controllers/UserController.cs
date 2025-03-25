@@ -1,3 +1,4 @@
+using AssistClub.Application.DTOs;
 using AssistClub.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,6 +39,34 @@ public class UserController(IUserService userService, ILogger<UserController> lo
         catch (Exception e)
         {
             logger.LogError(e, "An error occurred while getting the user.");
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    /// <summary>
+    /// Creates a new user in the system.
+    /// </summary>
+    /// <remarks>
+    /// Ensures the user follows platform policies before saving it to the database.
+    /// </remarks>
+    /// <param name="user">The user data submitted by the user.</param>
+    /// <returns>
+    /// - <c>200 OK</c>: Returns the created user details.<br/>
+    /// - <c>500 Internal Server Error</c>: If an unexpected error occurs.
+    /// </returns>
+    [Route("Create")]
+    [HttpPost]
+    public async Task<IActionResult> CreateUser(UserRequest user)
+    {
+        try
+        {
+            var newUser = await userService.CreateUserAsync(user);
+            logger.LogTrace("User created with email {email}", newUser.Email);
+            return Ok(newUser);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "An error occurred while creating the user.");
             return StatusCode(500, e.Message);
         }
     }

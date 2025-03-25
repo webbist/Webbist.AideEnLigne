@@ -33,4 +33,29 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
             throw new InvalidOperationException("Data integrity issue: multiple users found with the same email.", ex);
         }
     }
+
+    /// <summary>
+    /// Creates a new user in the database.
+    /// </summary>
+    /// <param name="user">The user to create.</param>
+    /// <returns>
+    /// The newly created <see cref="User"/> entity.
+    /// </returns>
+    /// <exception cref="DbUpdateException">
+    /// Thrown if an error occurs while saving the user to the database.
+    /// </exception>
+    public async Task<User> CreateUserAsync(User user)
+    {
+        try
+        {
+            var result = db.Users.Add(user);
+            await db.SaveChangesAsync();
+            return result.Entity;
+        }
+        catch (DbUpdateException ex)
+        {
+            logger.LogError(ex, "An error occurred while adding a new user to the database.");
+            throw;
+        }
+    }
 }

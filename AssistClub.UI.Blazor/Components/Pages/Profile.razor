@@ -1,9 +1,16 @@
 @page "/user"
+@using System.Security.Claims
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+@rendermode InteractiveServer
+@attribute [Authorize]
 
 @inject UserHttpClient UserHttpClient
 @inject IStringLocalizer<ProfileResources> ProfileLocalizer
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>@ProfileLocalizer["PageTitle"]</PageTitle>
 
@@ -31,6 +38,9 @@
     
     protected override async Task OnInitializedAsync()
     {
-        _user = await UserHttpClient.GetUserByEmail("carlos@gmail.com");
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userEmail = authState.User.FindFirst(c => c.Type == ClaimTypes.Email)?.Value;
+        if (userEmail == null) return;
+        _user = await UserHttpClient.GetUserByEmail(userEmail);
     }
 }

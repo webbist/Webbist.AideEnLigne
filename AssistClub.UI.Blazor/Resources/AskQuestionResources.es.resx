@@ -53,4 +53,7 @@
     <data name="TitleRequiredMessage" xml:space="preserve">
         <value>El título es obligatorio.</value>
     </data>
+    <data name="FormUserErrorMessage" xml:space="preserve">
+        <value>No se pudo identificar al usuario. Por favor, vuelve a iniciar sesión.</value>
+    </data>
 </root>

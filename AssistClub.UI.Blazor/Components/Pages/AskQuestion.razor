@@ -1,12 +1,18 @@
 @page "/AskQuestion"
+@using System.Security.Claims
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
 @rendermode InteractiveServer
+@attribute [Authorize]
 
 @inject QuestionHttpClient QuestionHttpClient
 @inject NavigationManager NavigationManager
 @inject NotificationService NotificationService
 @inject IStringLocalizer<AskQuestionResources> AskQuestionLocalizer
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <h2>@AskQuestionLocalizer["PageTitle"]</h2>
 
@@ -61,6 +67,21 @@
 
     private async Task PublishQuestion()
     {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userIdClaim = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdClaim, out var userId))
+        {
+            ShowNotification(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = Localizer["Error"],
+                Detail = AskQuestionLocalizer["FormUserErrorMessage"],
+                Duration = 4000
+            });
+            return;
+        }
+        _questionModel.UserId = userId;
+        
         var result = await QuestionHttpClient.CreateQuestionAsync(_questionModel);
 
         if (result == null)

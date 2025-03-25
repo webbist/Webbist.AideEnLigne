@@ -25,11 +25,13 @@ public class UserHttpClient(HttpClient http)
             if (result != null)
                 return new UserViewModel
                 {
+                    Id = result.Id,
                     Fullname = result.Firstname + " " + result.Lastname,
                     Email = result.Email,
                     Photo = result.Photo,
                     Club = result.Club,
-                    Microsite = result.Microsite
+                    Microsite = result.Microsite,
+                    Role = Enum.Parse<Role>(result.Role, true)
                 };
             return null;
         }
@@ -37,6 +39,25 @@ public class UserHttpClient(HttpClient http)
         {
             Console.WriteLine($"Error retrieving user: {e.Message}");
             return null;
+        }
+    }
+    
+    /// <summary>
+    /// Creates a new user in the system.
+    /// </summary>
+    /// <param name="user">The user details to create.</param>
+    /// <returns><c>true</c> if the user was created successfully, <c>false</c> otherwise.</returns>
+    public async Task<bool> CreateUser(UserApiRequest user)
+    {
+        try
+        {
+            var response = await http.PostAsJsonAsync(ApiRoutes.Users.CreateUser, user);
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error creating user: {e.Message}");
+            return false;
         }
     }
 }

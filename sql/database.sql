@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Questions;
+DROP TABLE IF EXISTS Users;
 
 DROP DATABASE IF EXISTS AssistClubDB
 
@@ -15,6 +15,7 @@ CREATE TABLE Users (
                        Photo VARCHAR(255),
                        Club NVARCHAR(100) NOT NULL,
                        Microsite VARCHAR(255) NOT NULL,
+                       Role NVARCHAR(50) NOT NULL CHECK (Role IN ('admin', 'user')),
 );
 
 CREATE TABLE Questions (

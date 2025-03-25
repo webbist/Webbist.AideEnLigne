@@ -4,8 +4,10 @@
 @using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
+@using Microsoft.AspNetCore.Authorization
 
 @rendermode InteractiveServer
+@attribute [Authorize]
 @inject QuestionHttpClient QuestionHttpClient
 @inject IStringLocalizer<AllQuestionsResources> AllQuestionsLocalizer
 
@@ -29,7 +31,7 @@
                     <div class="question-footer d-flex align-items-center px-0 border-bottom-0 pb-0">
                         <div class="info-footer d-flex flex-wrap align-items-center justify-content-between">
                             <a href="#" class="d-block d-flex">
-                                <img src="images/@(question.User.Photo ?? "default.jpeg")" alt="avatar" class="user-img rounded-circle">
+                                <img src="@(question.User.Photo ?? "default.jpeg")" alt="avatar" class="user-img rounded-circle">
                                 <h5 class="mb-0 align-content-center">@(question.User.Firstname + " " + question.User.Lastname)</h5>
                             </a>
                             <small class="d-block text-end">
