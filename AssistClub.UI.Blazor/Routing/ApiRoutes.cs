@@ -1,4 +1,4 @@
-namespace AssistClub.UI.Blazor.Constants;
+namespace AssistClub.UI.Blazor.Routing;
 
 /// <summary>
 /// Defines the API endpoints used by the application.
