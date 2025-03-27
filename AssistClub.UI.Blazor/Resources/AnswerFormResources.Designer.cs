@@ -14,21 +14,21 @@ namespace AssistClub.UI.Blazor.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class AnswerFormResources {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal AnswerFormResources() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.Resources", typeof(Resources).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.AnswerFormResources", typeof(AnswerFormResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,27 +45,51 @@ namespace AssistClub.UI.Blazor.Resources {
             }
         }
         
-        internal static string Loading {
+        internal static string ContentRequiredMessage {
             get {
-                return ResourceManager.GetString("Loading", resourceCulture);
+                return ResourceManager.GetString("ContentRequiredMessage", resourceCulture);
             }
         }
         
-        internal static string Error {
+        internal static string ContentMaxLengthMessage {
             get {
-                return ResourceManager.GetString("Error", resourceCulture);
+                return ResourceManager.GetString("ContentMaxLengthMessage", resourceCulture);
             }
         }
         
-        internal static string BackButton {
+        internal static string FormSubmitButton {
             get {
-                return ResourceManager.GetString("BackButton", resourceCulture);
+                return ResourceManager.GetString("FormSubmitButton", resourceCulture);
             }
         }
         
-        internal static string Success {
+        internal static string FormErrorMessage {
             get {
-                return ResourceManager.GetString("Success", resourceCulture);
+                return ResourceManager.GetString("FormErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string FormSuccessMessage {
+            get {
+                return ResourceManager.GetString("FormSuccessMessage", resourceCulture);
+            }
+        }
+        
+        internal static string FormUserNotFoundMessage {
+            get {
+                return ResourceManager.GetString("FormUserNotFoundMessage", resourceCulture);
+            }
+        }
+        
+        internal static string ComponentTitle {
+            get {
+                return ResourceManager.GetString("ComponentTitle", resourceCulture);
+            }
+        }
+        
+        internal static string FormContentEmptyMessage {
+            get {
+                return ResourceManager.GetString("FormContentEmptyMessage", resourceCulture);
             }
         }
     }

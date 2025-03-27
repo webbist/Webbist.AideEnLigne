@@ -18,5 +18,7 @@ public partial class User
 
     public string Role { get; set; } = null!;
 
+    public virtual ICollection<Answer> Answers { get; set; } = new List<Answer>();
+
     public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
 }

@@ -45,6 +45,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>DateTimeResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\AnswerFormResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>AnswerFormResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -87,6 +91,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>DateTimeResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\AnswerFormResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AnswerFormResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

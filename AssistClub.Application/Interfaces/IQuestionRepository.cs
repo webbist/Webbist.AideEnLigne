@@ -1,6 +1,4 @@
-using AssistClub.Application.DTOs;
 using Domain.Entities;
-using Domain.Enums;
 
 namespace AssistClub.Application.Interfaces;
 
