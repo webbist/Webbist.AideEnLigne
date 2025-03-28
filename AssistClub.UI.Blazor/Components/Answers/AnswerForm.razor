@@ -13,7 +13,7 @@
 
 <EditForm Model="_answerModel" OnValidSubmit="PublishAnswer">
     <DataAnnotationsValidator />
-    <div class="pt-4">
+    <div class="py-4">
         <label class="text-black fw-medium pb-2">@AnswerFormLocalizer["ComponentTitle"]</label>
         <div class="pb-3">
             <RadzenHtmlEditor @bind-Value="_answerModel.Content" style="height: 200px;" UploadUrl="upload/image">
@@ -40,6 +40,7 @@
 
 @code {
     [Parameter] public Guid QuestionId { get; set; }
+    [Parameter] public EventCallback OnAnswerCreated { get; set; }
     private AnswerRequest _answerModel = new();
     private bool IsSubmitDisabled => IsContentEmpty(_answerModel.Content);
 
@@ -87,6 +88,7 @@
         else
         {
             _answerModel = new AnswerRequest();
+            await OnAnswerCreated.InvokeAsync();
             NotificationService.Notify(new NotificationMessage
             {
                 Severity = NotificationSeverity.Success,

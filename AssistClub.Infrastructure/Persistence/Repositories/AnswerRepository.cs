@@ -28,4 +28,15 @@ public class AnswerRepository(AssistClubDbContext db, ILogger<AnswerRepository> 
             throw;
         }
     }
+
+    /// <summary>
+    /// Retrieves all answers from the database, allowing further filtering, sorting, and pagination.
+    /// </summary>
+    /// <returns>
+    /// An <see cref="IQueryable{T}"/> representing the answers in the database.
+    /// </returns>
+    public async Task<IQueryable<Answer>> GetAnswers()
+    {
+        return await Task.FromResult(db.Answers);
+    }
 }

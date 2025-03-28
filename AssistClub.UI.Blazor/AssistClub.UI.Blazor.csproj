@@ -49,6 +49,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>AnswerFormResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\AnswerListResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>AnswerListResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -96,6 +100,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>AnswerFormResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\AnswerListResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AnswerListResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

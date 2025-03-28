@@ -1,6 +1,7 @@
 using AssistClub.Application.DTOs;
 using AssistClub.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace AssistClub.API.Controllers;
 
@@ -38,6 +39,36 @@ public class AnswerController(IAnswerService answerService, ILogger<AnswerContro
         catch (Exception e)
         {
             logger.LogError(e, "An error occurred while creating the answer.");
+            return StatusCode(500, e.Message);
+        }
+    }
+
+    /// <summary>
+    /// Retrieves all answers in the system with OData support.
+    /// </summary>
+    /// <remarks>
+    /// Supported OData parameters include:
+    /// <para><c>$orderby</c>: Enables sorting answers (e.g., <c>$orderby=CreatedAt asc</c>).</para>
+    /// <para><c>$select</c>: Retrieves only specific fields (e.g., <c>$select=Content,CreatedAt</c>).</para>
+    /// <para><c>$expand</c>: Includes related entities, such as user details (e.g., <c>$expand=User</c>).</para>
+    /// </remarks>
+    /// <returns>
+    /// <c>200 OK</c>: Returns a list of answers.<br/>
+    /// <c>500 Internal Server Error</c>: If an unexpected error occurs.
+    /// </returns>
+    [Route("All")]
+    [HttpGet]
+    [EnableQuery]
+    public async Task<IActionResult> GetAnswers()
+    {
+        try
+        {
+            var answers = await answerService.GetAnswersAsync();
+            return Ok(answers);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "An error occurred while retrieving the answers.");
             return StatusCode(500, e.Message);
         }
     }

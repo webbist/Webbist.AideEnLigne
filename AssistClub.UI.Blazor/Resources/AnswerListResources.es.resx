@@ -1,0 +1,32 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="AnswerCountSingularLabel" xml:space="preserve">
+        <value>Respuesta</value>
+    </data>
+    <data name="PagingSummary" xml:space="preserve">
+        <value>Mostrando página {0} de {1} (total {2} respuestas)</value>
+    </data>
+    <data name="EmptyText" xml:space="preserve">
+        <value>No hay respuestas aún</value>
+    </data>
+    <data name="AnsweredLabel" xml:space="preserve">
+        <value>Respondido</value>
+    </data>
+    <data name="ByLabel" xml:space="preserve">
+        <value>Por</value>
+    </data>
+    <data name="AnswerCountPluralLabel" xml:space="preserve">
+        <value>Respuestas</value>
+    </data>
+</root>

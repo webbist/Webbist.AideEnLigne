@@ -29,4 +29,30 @@ public class AnswerHttpClient(HttpClient http)
             return null;
         }
     }
+    
+    /// <summary>
+    /// Sends a request to retrieve all answers associated with a specific question.
+    /// </summary>
+    /// <remarks>
+    /// This method utilizes OData to allow dynamic filtering and sorting of answers.
+    /// </remarks>
+    /// <param name="questionId">The unique identifier of the question for which answers are being retrieved.</param>
+    /// <returns>
+    /// A collection of <see cref="AnswerApiResponse"/> entities if successful; otherwise, <c>null</c> in case of an error.
+    /// </returns>
+    public async Task<IEnumerable<AnswerApiResponse>?> GetAnswersAsync(Guid questionId)
+    {
+        try
+        {
+            var query = $"$orderby=CreatedAt asc&$filter=QuestionId eq {questionId}";
+            var url = $"{ApiRoutes.Answers.GetAll}?{query}";
+            var result = await http.GetFromJsonAsync<IEnumerable<AnswerApiResponse>>(url);
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error getting answers: {e.Message}");
+            return null;
+        }
+    }
 }

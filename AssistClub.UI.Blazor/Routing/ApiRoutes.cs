@@ -35,5 +35,6 @@ public static class ApiRoutes
     {
         private const string Base = $"{Version}/answer";
         public const string Create = $"{Base}/create";
+        public const string GetAll = $"{Base}/all";
     }
 }

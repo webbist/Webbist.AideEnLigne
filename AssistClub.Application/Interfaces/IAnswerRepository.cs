@@ -17,4 +17,12 @@ public interface IAnswerRepository
     /// <param name="answer">The <see cref="Answer"/> entity to add.</param>
     /// <returns>The <see cref="Answer"/> entity that was added.</returns>
     Task<Answer> CreateAnswerAsync(Answer answer);
+    
+    /// <summary>
+    /// Retrieves all answers from the database, allowing further filtering, sorting, and pagination.
+    /// </summary>
+    /// <returns>
+    /// An <see cref="IQueryable{T}"/> representing the answers in the database.
+    /// </returns>
+    Task<IQueryable<Answer>> GetAnswers();
 }
