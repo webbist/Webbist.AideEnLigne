@@ -40,3 +40,13 @@
 .author-text-span {
     font-size: 14px;
 }
+
+.button-back {
+    border-color: #006bb7;
+    color: #006bb7;
+}
+
+.button-back:hover {
+    background-color: #006bb7;
+    color: white;
+}

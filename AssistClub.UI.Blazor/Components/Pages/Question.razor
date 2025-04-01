@@ -2,14 +2,20 @@
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
 @using AssistClub.UI.Blazor.Extensions
+@using AssistClub.UI.Blazor.Components.Answers
 
+@rendermode InteractiveServer
 @inject QuestionHttpClient QuestionHttpClient
 @inject IStringLocalizer<QuestionResources> QuestionLocalizer
 
 @if (_question != null)
 {
     <PageTitle>@_question.Title</PageTitle>
-
+    
+    <button class="btn btn-outline-primary mb-3 button-back" onclick="history.back();">
+        <i class="bi bi-arrow-left-circle me-1"></i> @Localizer["BackButton"]
+    </button>
+    
     <RadzenCard class="rz-mx-auto">
         <div class="question-details">
             <h1 class="question-title">@_question.Title</h1>
@@ -18,7 +24,7 @@
                     @QuestionLocalizer["AskedLabel"]:
                     <time class="info-time">@_question.CreatedAt.GetTimeAgo()</time>
                 </span>
-                    <span>
+                <span>
                     @QuestionLocalizer["StatusLabel"]:
                     <span class="info-status">@_question.Status</span>
                 </span>
@@ -30,13 +36,15 @@
                 <span class="author-span">@QuestionLocalizer["AskedByLabel"]:</span>
                 <a href="user/@_question.User.Id">
                     <span class="author-image-span">
-                        <img src="images/@(_question.User.Photo ?? "default.jpeg")" alt="avatar" class="author-img rounded-circle">
+                        <img src="@(_question.User.Photo ?? "default.jpeg")" alt="avatar" class="author-img rounded-circle">
                     </span>
                     <span class="author-text-span">@_question.User.Firstname @_question.User.Lastname</span>
                 </a>
             </div>
         </div>
     </RadzenCard>
+    
+    <AnswerForm QuestionId="@_question.Id"/>
 }
 else
 {

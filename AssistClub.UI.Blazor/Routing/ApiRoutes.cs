@@ -27,4 +27,13 @@ public static class ApiRoutes
         public static string GetUserByEmail(string email) => $"{Base}/{email}";
         public const string CreateUser = $"{Base}/create";
     }
+    
+    /// <summary>
+    /// Base route for answers.
+    /// </summary>
+    public static class Answers
+    {
+        private const string Base = $"{Version}/answer";
+        public const string Create = $"{Base}/create";
+    }
 }

@@ -14,6 +14,8 @@ public partial class AssistClubDbContext : DbContext
     {
     }
 
+    public virtual DbSet<Answer> Answers { get; set; }
+
     public virtual DbSet<Question> Questions { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -23,12 +25,31 @@ public partial class AssistClubDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Question>(entity =>
+        modelBuilder.Entity<Answer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Question__3214EC071022BDC7");
+            entity.HasKey(e => e.Id).HasName("PK__Answers__3214EC07DD1BD3D2");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.Content).HasMaxLength(2000);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Question).WithMany(p => p.Answers)
+                .HasForeignKey(d => d.QuestionId)
+                .HasConstraintName("FK_Answers_Questions");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Answers)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Answers_Users");
+        });
+
+        modelBuilder.Entity<Question>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Question__3214EC07068B0E8F");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -44,9 +65,9 @@ public partial class AssistClubDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07DF6C1411");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC0726A245EC");
 
-            entity.HasIndex(e => e.Email, "UQ__Users__A9D105341E545DD6").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Users__A9D10534E97C4115").IsUnique();
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Club).HasMaxLength(100);
