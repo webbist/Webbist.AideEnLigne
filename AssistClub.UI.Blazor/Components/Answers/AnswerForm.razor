@@ -1,5 +1,4 @@
 @using System.Security.Claims
-@using System.Text.RegularExpressions
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
 @using Microsoft.AspNetCore.Components.Authorization
@@ -31,7 +30,7 @@
             <ValidationMessage For="@(() => _answerModel.Content)" class="text-danger pt-1"/>
         </div>
         <div class="pb-2">
-            <button type="submit" class="btn btn-primary" disabled="@IsSubmitDisabled">
+            <button type="submit" class="btn btn-primary">
                 @AnswerFormLocalizer["FormSubmitButton"]
             </button>
         </div>
@@ -42,21 +41,9 @@
     [Parameter] public Guid QuestionId { get; set; }
     [Parameter] public EventCallback OnAnswerCreated { get; set; }
     private AnswerRequest _answerModel = new();
-    private bool IsSubmitDisabled => IsContentEmpty(_answerModel.Content);
 
     private async Task PublishAnswer()
     {
-        if (IsContentEmpty(_answerModel.Content))
-        {
-            NotificationService.Notify(new NotificationMessage
-            {
-                Severity = NotificationSeverity.Error,
-                Summary = Localizer["Error"],
-                Detail = AnswerFormLocalizer["FormContentEmptyMessage"],
-                Duration = 4000
-            });
-            return;
-        }
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var userIdClaim = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (!Guid.TryParse(userIdClaim, out var userId))
@@ -97,14 +84,5 @@
                 Duration = 4000
             });
         }
-    }
-    
-    private bool IsContentEmpty(string? html)
-    {
-        if (string.IsNullOrWhiteSpace(html)) return true;
-        var withoutTags = Regex.Replace(html, "<.*?>", string.Empty);
-        var decoded = System.Net.WebUtility.HtmlDecode(withoutTags);
-        var cleaned = decoded.Replace("&nbsp;", "").Trim();
-        return string.IsNullOrWhiteSpace(cleaned);
     }
 }

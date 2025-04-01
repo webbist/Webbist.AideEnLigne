@@ -62,5 +62,17 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("PagingSummary", resourceCulture);
             }
         }
+        
+        internal static string QuestionCountSingularLabel {
+            get {
+                return ResourceManager.GetString("QuestionCountSingularLabel", resourceCulture);
+            }
+        }
+        
+        internal static string QuestionCountPluralLabel {
+            get {
+                return ResourceManager.GetString("QuestionCountPluralLabel", resourceCulture);
+            }
+        }
     }
 }

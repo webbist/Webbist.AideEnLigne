@@ -13,7 +13,10 @@
 
 <PageTitle>@AllQuestionsLocalizer["PageTitle"]</PageTitle>
 
-<h2>@AllQuestionsLocalizer["PageTitle"]</h2>
+<div class="d-lg-flex">
+    <h2>@AllQuestionsLocalizer["PageTitle"]</h2>
+    <h5 class="fw-medium ms-lg-auto my-lg-auto">@(_questions?.Count() ?? 0) @(_questions?.Count() == 1 ? AllQuestionsLocalizer["QuestionCountSingularLabel"] : AllQuestionsLocalizer["QuestionCountPluralLabel"])</h5> 
+</div>
 
 <div class="questions-list border-top">
     <RadzenDataList WrapItems="false" AllowPaging="true" Data="@_questions" TItem="QuestionApiResponse" PageSize="15" 

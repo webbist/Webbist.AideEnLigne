@@ -20,4 +20,10 @@
     <data name="PagingSummary" xml:space="preserve">
         <value>Mostrando página {0} de {1} (total {2} preguntas)</value>
     </data>
+    <data name="QuestionCountPluralLabel" xml:space="preserve">
+        <value>Preguntas</value>
+    </data>
+    <data name="QuestionCountSingularLabel" xml:space="preserve">
+        <value>Pregunta</value>
+    </data>
 </root>

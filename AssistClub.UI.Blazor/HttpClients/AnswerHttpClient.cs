@@ -20,7 +20,7 @@ public class AnswerHttpClient(HttpClient http)
     {
         try
         {
-            var result = await http.PostAsJsonAsync(ApiRoutes.Answers.Create, answer);
+            var result = await http.PostAsJsonAsync(AnswerApiRouting.CreateRoute, answer);
             return await result.Content.ReadFromJsonAsync<AnswerApiResponse>();
         }
         catch (Exception e)
@@ -45,7 +45,7 @@ public class AnswerHttpClient(HttpClient http)
         try
         {
             var query = $"$orderby=CreatedAt asc&$filter=QuestionId eq {questionId}";
-            var url = $"{ApiRoutes.Answers.GetAll}?{query}";
+            var url = $"{AnswerApiRouting.GetAllRoute}?{query}";
             var result = await http.GetFromJsonAsync<IEnumerable<AnswerApiResponse>>(url);
             return result;
         }

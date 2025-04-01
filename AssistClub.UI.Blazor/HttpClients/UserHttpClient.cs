@@ -21,7 +21,7 @@ public class UserHttpClient(HttpClient http)
     {
         try
         {
-            var result = await http.GetFromJsonAsync<UserApiResponse>(ApiRoutes.Users.GetUserByEmail(email));
+            var result = await http.GetFromJsonAsync<UserApiResponse>(UserApiRouting.GetUserByEmailRoute(email));
             if (result != null)
                 return new UserViewModel
                 {
@@ -51,7 +51,7 @@ public class UserHttpClient(HttpClient http)
     {
         try
         {
-            var response = await http.PostAsJsonAsync(ApiRoutes.Users.CreateUser, user);
+            var response = await http.PostAsJsonAsync(UserApiRouting.CreateRoute, user);
             return response.IsSuccessStatusCode;
         }
         catch (Exception e)

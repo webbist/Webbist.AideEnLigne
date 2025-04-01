@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using AssistClub.UI.Blazor.DataAnnotations;
 
 namespace AssistClub.UI.Blazor.Models;
 
@@ -33,6 +34,7 @@ public class QuestionRequest
     /// Gets or sets the full content of the question.
     /// </summary>
     [Required(ErrorMessageResourceName = "ContentRequiredMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
+    [HtmlRequired(ErrorMessageResourceName = "ContentRequiredMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
     [StringLength(ContentMaxLength, ErrorMessageResourceName = "ContentMaxLengthMessage", ErrorMessageResourceType = typeof(Resources.AskQuestionResources))]
     public string Content { get; set; }
     

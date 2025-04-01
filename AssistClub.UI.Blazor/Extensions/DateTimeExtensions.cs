@@ -19,27 +19,27 @@ public static class DateTimeExtensions
     /// <summary>
     /// Converts a DateTime into a human-readable "time ago" format using the default localizer.
     /// </summary>
-    /// <param name="dateTime">The date and time to convert.</param>
+    /// <param name="dateTimeUtc">The date and time in UTC to convert.</param>
     /// <returns>A localized string representing the time difference.</returns>
-    public static string GetTimeAgo(this DateTime dateTime)
+    public static string GetTimeAgo(this DateTime dateTimeUtc)
     {
-        return dateTime.GetTimeAgo(DefaultLocalizer);
+        return dateTimeUtc.GetTimeAgo(DefaultLocalizer);
     }
     
     /// <summary>
     /// Converts a DateTime into a human-readable "time ago" format.
     /// </summary>
-    /// <param name="dateTime">The date and time to convert.</param>
+    /// <param name="dateTimeUtc">The date and time to convert.</param>
     /// <param name="localizer">The localization service.</param>
     /// <returns>A localized string representing the time difference.</returns>
-    public static string GetTimeAgo(this DateTime dateTime, IStringLocalizer localizer)
+    public static string GetTimeAgo(this DateTime dateTimeUtc, IStringLocalizer localizer)
     {
-        if (dateTime == null)
+        if (dateTimeUtc == null)
         {
             return localizer["TimeAgoUnknown"];
         }
 
-        var timeSpan = DateTime.UtcNow - dateTime;
+        var timeSpan = DateTime.UtcNow - dateTimeUtc;
 
         if (timeSpan.TotalSeconds < 60)
         {

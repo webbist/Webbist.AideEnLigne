@@ -6,7 +6,7 @@
 @inject IStringLocalizer<AnswerListResources> AnswerListLocalizer
 
 <div class="total-answers">
-    <h5>@(_answers?.Count() ?? 0) @(_answers?.Count() > 0 ? AnswerListLocalizer["AnswerCountPluralLabel"] : AnswerListLocalizer["AnswerCountSingularLabel"])</h5>
+    <h5>@(_answers?.Count() ?? 0) @(_answers?.Count() == 1 ? AnswerListLocalizer["AnswerCountSingularLabel"] : AnswerListLocalizer["AnswerCountPluralLabel"])</h5>
 </div>
 
 <RadzenDataList WrapItems="false" AllowPaging="true" Data="@_answers" TItem="AnswerApiResponse" PageSize="10"

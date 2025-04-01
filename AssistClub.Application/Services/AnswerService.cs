@@ -23,7 +23,7 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
     {
         if (answerRequest.Content.Length > AnswerRequest.ContentMaxLength)
         {
-            throw new ArgumentException("Answer content exceeds the maximum character limit of 2000.");
+            throw new ArgumentException($"Answer content exceeds the maximum character limit of {AnswerRequest.ContentMaxLength}.");
         }
         
         var answer = new Answer

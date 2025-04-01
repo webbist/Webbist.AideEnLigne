@@ -26,12 +26,12 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
     {
         if (questionDto.Title.Length > QuestionRequestDto.TitleMaxLength)
         {
-            throw new ArgumentException("Question title exceeds the maximum character limit of 255.");
+            throw new ArgumentException($"Question title exceeds the maximum character limit of {QuestionRequestDto.TitleMaxLength}.");
         }
         
         if (questionDto.Content.Length > QuestionRequestDto.ContentMaxLength)
         {
-            throw new ArgumentException("Question content exceeds the maximum character limit of 2000.");
+            throw new ArgumentException($"Question content exceeds the maximum character limit of {QuestionRequestDto.ContentMaxLength}.");
         }
         
         var question = new Question
