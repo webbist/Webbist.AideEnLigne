@@ -1,11 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-            
-        </xsd:element>
-    </xsd:schema>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -18,19 +11,22 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="PageTitle" xml:space="preserve">
-        <value>Toutes les questions</value>
+    <data name="AnswerCountSingularLabel" xml:space="preserve">
+        <value>Answer</value>
+    </data>
+    <data name="AnsweredLabel" xml:space="preserve">
+        <value>Answered</value>
+    </data>
+    <data name="ByLabel" xml:space="preserve">
+        <value>By</value>
     </data>
     <data name="EmptyText" xml:space="preserve">
-        <value>Aucune question trouvée</value>
+        <value>No answers yet</value>
     </data>
     <data name="PagingSummary" xml:space="preserve">
-        <value>Affichage de la page {0} sur {1} (total {2} questions)</value>
+        <value>Displaying page {0} of {1} (total {2} answers)</value>
     </data>
-    <data name="QuestionCountSingularLabel" xml:space="preserve">
-        <value>Question</value>
-    </data>
-    <data name="QuestionCountPluralLabel" xml:space="preserve">
-        <value>Questions</value>
+    <data name="AnswerCountPluralLabel" xml:space="preserve">
+        <value>Answers</value>
     </data>
 </root>

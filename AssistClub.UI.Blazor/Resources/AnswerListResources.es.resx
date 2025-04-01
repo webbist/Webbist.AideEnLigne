@@ -11,19 +11,22 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="PageTitle" xml:space="preserve">
-        <value>Todas las preguntas</value>
-    </data>
-    <data name="EmptyText" xml:space="preserve">
-        <value>No se encontraron preguntas</value>
+    <data name="AnswerCountSingularLabel" xml:space="preserve">
+        <value>Respuesta</value>
     </data>
     <data name="PagingSummary" xml:space="preserve">
-        <value>Mostrando página {0} de {1} (total {2} preguntas)</value>
+        <value>Mostrando página {0} de {1} (total {2} respuestas)</value>
     </data>
-    <data name="QuestionCountPluralLabel" xml:space="preserve">
-        <value>Preguntas</value>
+    <data name="EmptyText" xml:space="preserve">
+        <value>No hay respuestas aún</value>
     </data>
-    <data name="QuestionCountSingularLabel" xml:space="preserve">
-        <value>Pregunta</value>
+    <data name="AnsweredLabel" xml:space="preserve">
+        <value>Respondido</value>
+    </data>
+    <data name="ByLabel" xml:space="preserve">
+        <value>Por</value>
+    </data>
+    <data name="AnswerCountPluralLabel" xml:space="preserve">
+        <value>Respuestas</value>
     </data>
 </root>

@@ -1,0 +1,57 @@
+@using AssistClub.UI.Blazor.HttpClients
+@using AssistClub.UI.Blazor.Models
+@using AssistClub.UI.Blazor.Extensions
+
+@inject AnswerHttpClient AnswerHttpClient
+@inject IStringLocalizer<AnswerListResources> AnswerListLocalizer
+
+<div class="total-answers">
+    <h5>@(_answers?.Count() ?? 0) @(_answers?.Count() == 1 ? AnswerListLocalizer["AnswerCountSingularLabel"] : AnswerListLocalizer["AnswerCountPluralLabel"])</h5>
+</div>
+
+<RadzenDataList WrapItems="false" AllowPaging="true" Data="@_answers" TItem="AnswerApiResponse" PageSize="10"
+                PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                PagingSummaryFormat="@AnswerListLocalizer["PagingSummary"]" ShowEmptyMessage="true" 
+                EmptyText="@AnswerListLocalizer["EmptyText"]">
+    <Template Context="answer">
+        <div class="answer-body">
+            @((MarkupString)answer.Content)
+        </div>
+        <div class="answer-info text-end">
+            <div class="answer-date d-flex">
+                @AnswerListLocalizer["AnsweredLabel"]:&nbsp;
+                <span>@answer.CreatedAt?.GetTimeAgo()</span>
+            </div>
+            <div>
+                <span class="author-span">@AnswerListLocalizer["ByLabel"]:</span>
+                <a href="user/@answer.User.Id">
+                    <span class="author-image-span">
+                        <img src="@(answer.User.Photo ?? "images/default.jpeg")" alt="avatar" class="author-img rounded-circle">
+                    </span>
+                    <span class="author-text-span">@answer.User.Firstname @answer.User.Lastname</span>
+                </a>
+            </div>
+        </div>
+    </Template>
+</RadzenDataList>
+
+@code {
+    [Parameter] public Guid QuestionId { get; set; }
+    private IEnumerable<AnswerApiResponse>? _answers;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAnswersAsync();
+    }
+    
+    public async Task RefreshAsync()
+    {
+        await LoadAnswersAsync();
+        StateHasChanged();
+    }
+
+    private async Task LoadAnswersAsync()
+    {
+        _answers = await AnswerHttpClient.GetAnswersAsync(QuestionId);
+    }
+}

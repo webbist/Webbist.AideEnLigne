@@ -23,7 +23,7 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
     {
         if (answerRequest.Content.Length > AnswerRequest.ContentMaxLength)
         {
-            throw new ArgumentException("Answer content exceeds the maximum character limit of 2000.");
+            throw new ArgumentException($"Answer content exceeds the maximum character limit of {AnswerRequest.ContentMaxLength}.");
         }
         
         var answer = new Answer
@@ -45,5 +45,35 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
             CreatedAt = createdAnswer.CreatedAt,
             UpdatedAt = createdAnswer.UpdatedAt
         };
+    }
+
+    /// <summary>
+    /// Retrieves all answers in the system, including user information.
+    /// </summary>
+    /// <returns>
+    /// An <see cref="IQueryable{T}"/> of <see cref="AnswerResponse"/> containing the answers.
+    /// </returns>
+    public async Task<IQueryable<AnswerResponse>> GetAnswersAsync()
+    {
+        var answers = await answerRepository.GetAnswers();
+        return answers.Select(a => new AnswerResponse
+            {
+                Id = a.Id,
+                QuestionId = a.QuestionId,
+                User = new UserResponseDto
+                {
+                    Id = a.User.Id,
+                    Firstname = a.User.Firstname,
+                    Lastname = a.User.Lastname,
+                    Email = a.User.Email,
+                    Photo = a.User.Photo,
+                    Club = a.User.Club,
+                    Microsite = a.User.Microsite
+                },
+                Content = a.Content,
+                CreatedAt = a.CreatedAt,
+                UpdatedAt = a.UpdatedAt
+            }
+        ).AsQueryable();
     }
 }

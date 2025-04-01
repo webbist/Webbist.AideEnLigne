@@ -44,7 +44,8 @@
         </div>
     </RadzenCard>
     
-    <AnswerForm QuestionId="@_question.Id"/>
+    <AnswerList @ref="_answerList" QuestionId="@_question.Id"/>
+    <AnswerForm QuestionId="@_question.Id" OnAnswerCreated="RefreshAnswers"/>
 }
 else
 {
@@ -56,6 +57,7 @@ else
 @code {
     [Parameter] public string Id { get; set; }
     private QuestionApiResponse? _question;
+    private AnswerList? _answerList;
     
     protected override async Task OnInitializedAsync()
     {
@@ -66,6 +68,14 @@ else
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+        }
+    }
+    
+    private async Task RefreshAnswers()
+    {
+        if (_answerList != null)
+        {
+            await _answerList.RefreshAsync();
         }
     }
 }

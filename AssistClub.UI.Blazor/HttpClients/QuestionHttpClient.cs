@@ -23,7 +23,7 @@ public class QuestionHttpClient(HttpClient http)
     {
         try
         {
-            var result = await http.PostAsJsonAsync(ApiRoutes.Questions.Create, question);
+            var result = await http.PostAsJsonAsync(QuestionApiRouting.CreateRoute, question);
             return await result.Content.ReadFromJsonAsync<QuestionApiResponse>();
         }
         catch (Exception e)
@@ -48,7 +48,7 @@ public class QuestionHttpClient(HttpClient http)
         try
         {
             var query = $"$orderby=CreatedAt desc&$filter=Visibility eq '{visibility}'";
-            var url = $"{ApiRoutes.Questions.GetAll}?{query}";
+            var url = $"{QuestionApiRouting.GetAllRoute}?{query}";
             var result = await http.GetFromJsonAsync<IEnumerable<QuestionApiResponse>>(url);
             return result;
         }
@@ -63,7 +63,7 @@ public class QuestionHttpClient(HttpClient http)
     {
         try
         {
-            var result = await http.GetFromJsonAsync<QuestionApiResponse>($"{ApiRoutes.Questions.GetById(id)}");
+            var result = await http.GetFromJsonAsync<QuestionApiResponse>($"{QuestionApiRouting.GetByIdRoute(id)}");
             return result;
         }
         catch (Exception e)

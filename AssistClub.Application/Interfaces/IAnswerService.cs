@@ -25,4 +25,12 @@ public interface IAnswerService
     /// Thrown if the answer content exceeds <see cref="AnswerRequest.ContentMaxLength"/> characters.
     /// </exception>
     Task<AnswerResponse> CreateAnswerAsync(AnswerRequest answerRequest);
+    
+    /// <summary>
+    /// Retrieves all answers in the system, including user information.
+    /// </summary>
+    /// <returns>
+    /// An <see cref="IQueryable{T}"/> of <see cref="AnswerResponse"/> containing the answers.
+    /// </returns>
+    Task<IQueryable<AnswerResponse>> GetAnswersAsync();
 }
