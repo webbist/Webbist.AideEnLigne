@@ -26,7 +26,7 @@
                 </span>
                 <span>
                     @QuestionLocalizer["StatusLabel"]:
-                    <span class="info-status">@_question.Status</span>
+                    <span class="info-status">@_question.Status.ToStatusLocalizedLabel()</span>
                 </span>
             </div>
             <div class="question-content">
@@ -44,8 +44,8 @@
         </div>
     </RadzenCard>
     
-    <AnswerList @ref="_answerList" QuestionId="@_question.Id"/>
-    <AnswerForm QuestionId="@_question.Id" OnAnswerCreated="RefreshAnswers"/>
+    <AnswerList @ref="_answerList" QuestionId="@_question.Id" OnOfficialStatusChanged="ReloadQuestionAsync"/>
+    <AnswerForm QuestionId="@_question.Id" OnAnswerCreated="OnAnswerCreated"/>
 }
 else
 {
@@ -77,5 +77,17 @@ else
         {
             await _answerList.RefreshAsync();
         }
+    }
+    
+    private async Task ReloadQuestionAsync()
+    {
+        _question = await QuestionHttpClient.GetQuestionAsync(Guid.Parse(Id));
+        StateHasChanged();
+    }
+    
+    private async Task OnAnswerCreated()
+    {
+        await RefreshAnswers();
+        await ReloadQuestionAsync();
     }
 }

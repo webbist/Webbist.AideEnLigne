@@ -53,6 +53,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>AnswerListResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\QuestionStatusResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>QuestionStatusResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -105,6 +109,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>AnswerListResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\QuestionStatusResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>QuestionStatusResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

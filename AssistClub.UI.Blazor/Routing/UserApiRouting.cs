@@ -19,8 +19,8 @@ public static class UserApiRouting
     /// Endpoint for retrieving all users.
     /// </summary>
     /// <param name="email">The email of the user to retrieve.</param>
-    /// <returns>The API endpoint for retrieving a user by email.</returns>
-    public static string GetUserByEmailRoute(string email) => $"{Base}/email/{email}";
+    /// <returns>The route to get a user by email.</returns>
+    public static string GetUserByEmailRoute(string email) => $"{Base}/{email}";
     
     /// <summary>
     /// Endpoint for creating a new user.

@@ -32,6 +32,7 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
             QuestionId = answerRequest.QuestionId,
             UserId = answerRequest.UserId,
             Content = answerRequest.Content,
+            IsOfficial = false,
             CreatedAt = DateTime.UtcNow
         };
         
@@ -42,6 +43,7 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
             Id = createdAnswer.Id,
             QuestionId = createdAnswer.QuestionId,
             Content = createdAnswer.Content,
+            IsOfficial = createdAnswer.IsOfficial,
             CreatedAt = createdAnswer.CreatedAt,
             UpdatedAt = createdAnswer.UpdatedAt
         };
@@ -71,9 +73,23 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
                     Microsite = a.User.Microsite
                 },
                 Content = a.Content,
+                IsOfficial = a.IsOfficial,
                 CreatedAt = a.CreatedAt,
                 UpdatedAt = a.UpdatedAt
             }
         ).AsQueryable();
+    }
+
+    /// <summary>
+    /// Updates the official status of an answer and the associated question status.
+    /// </summary>
+    /// <param name="id">The unique identifier of the answer to be updated.</param>
+    /// <param name="isOfficial">Indicates whether the answer is official or not.</param>
+    /// <returns>
+    /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
+    /// </returns>
+    public async Task<bool> UpdateAnswerOfficialStatusAsync(Guid id, bool isOfficial)
+    {
+        return await answerRepository.UpdateAnswerOfficialStatusAsync(id, isOfficial);
     }
 }

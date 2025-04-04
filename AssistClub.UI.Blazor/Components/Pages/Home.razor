@@ -38,7 +38,7 @@
                                 <h5 class="mb-0 align-content-center">@(question.User.Firstname + " " + question.User.Lastname)</h5>
                             </a>
                             <small class="d-block text-end">
-                                <span class="text-black d-block lh-18">@question.Status</span>
+                                <span class="text-black d-block lh-18">@question.Status.ToStatusLocalizedLabel()</span>
                                 <span class="d-block lh-18 fs-12">@question.CreatedAt.GetTimeAgo()</span>
                             </small>
                         </div>

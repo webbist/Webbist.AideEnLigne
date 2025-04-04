@@ -55,4 +55,26 @@ public class AnswerHttpClient(HttpClient http)
             return null;
         }
     }
+    
+    /// <summary>
+    /// Sends a request to update an existing answer in the backend system.
+    /// </summary>
+    /// <param name="answerId">The unique identifier of the answer to be updated.</param>
+    /// <param name="isOfficial">Indicates whether the answer should be marked as official or not.</param>
+    /// <returns>
+    /// A boolean indicating whether the update was successful.
+    /// </returns>
+    public async Task<bool> MarkAnswerAsOfficial(Guid answerId, bool isOfficial)
+    {
+        try
+        {
+            var result = await http.PutAsJsonAsync(AnswerApiRouting.UpdateOfficialStatusRoute(answerId), isOfficial);
+            return result.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error marking answer as official: {e.Message}");
+            return false;
+        }
+    }
 }

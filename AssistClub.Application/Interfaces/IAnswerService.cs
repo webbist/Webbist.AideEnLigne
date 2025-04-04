@@ -33,4 +33,14 @@ public interface IAnswerService
     /// An <see cref="IQueryable{T}"/> of <see cref="AnswerResponse"/> containing the answers.
     /// </returns>
     Task<IQueryable<AnswerResponse>> GetAnswersAsync();
+    
+    /// <summary>
+    /// Updates the official status of an answer and the associated question status.
+    /// </summary>
+    /// <param name="id">The unique identifier of the answer to be updated.</param>
+    /// <param name="isOfficial">Indicates whether the answer is official or not.</param>
+    /// <returns>
+    /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
+    /// </returns>
+    Task<bool> UpdateAnswerOfficialStatusAsync(Guid id, bool isOfficial);
 }

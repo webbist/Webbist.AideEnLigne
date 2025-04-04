@@ -1,6 +1,9 @@
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
 @using AssistClub.UI.Blazor.Extensions
+@using Microsoft.AspNetCore.Components.Authorization
+
+@rendermode InteractiveServer
 
 @inject AnswerHttpClient AnswerHttpClient
 @inject IStringLocalizer<AnswerListResources> AnswerListLocalizer
@@ -14,11 +17,36 @@
                 PagingSummaryFormat="@AnswerListLocalizer["PagingSummary"]" ShowEmptyMessage="true" 
                 EmptyText="@AnswerListLocalizer["EmptyText"]">
     <Template Context="answer">
-        <div class="answer-body">
-            @((MarkupString)answer.Content)
+        <div class="d-flex">
+            <div class="answer-body">
+                @((MarkupString)answer.Content)
+            </div>
+            <AuthorizeView Roles="Admin">
+                <div class="dropdown ms-auto">
+                    <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        @if (!HasOfficialAnswer || answer.IsOfficial)
+                        {
+                            <li>
+                                <button class="dropdown-item" @onclick="@(() => ToggleOfficialStatus(answer.Id, answer.IsOfficial))">
+                                    @(answer.IsOfficial
+                                        ? AnswerListLocalizer["UnmarkOfficialButton"]
+                                        : AnswerListLocalizer["MarkOfficialButton"])
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </AuthorizeView>
         </div>
         <div class="answer-info text-end">
             <div class="answer-date d-flex">
+                @if (answer.IsOfficial)
+                {
+                    <span class="badge-official badge bg-success me-2">@AnswerListLocalizer["OfficialAnswerBadgeLabel"]</span>
+                }
                 @AnswerListLocalizer["AnsweredLabel"]:&nbsp;
                 <span>@answer.CreatedAt?.GetTimeAgo()</span>
             </div>
@@ -37,6 +65,7 @@
 
 @code {
     [Parameter] public Guid QuestionId { get; set; }
+    [Parameter] public EventCallback OnOfficialStatusChanged { get; set; }
     private IEnumerable<AnswerApiResponse>? _answers;
     
     protected override async Task OnInitializedAsync()
@@ -54,4 +83,16 @@
     {
         _answers = await AnswerHttpClient.GetAnswersAsync(QuestionId);
     }
+    
+    private async Task ToggleOfficialStatus(Guid answerId, bool currentStatus)
+    {
+        var success = await AnswerHttpClient.MarkAnswerAsOfficial(answerId, !currentStatus);
+        if (success)
+        {
+            await RefreshAsync();
+            await OnOfficialStatusChanged.InvokeAsync();
+        }
+    }
+    
+    private bool HasOfficialAnswer => _answers?.Any(a => a.IsOfficial) == true;
 }

@@ -27,7 +27,7 @@ public partial class AssistClubDbContext : DbContext
     {
         modelBuilder.Entity<Answer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Answers__3214EC07DD1BD3D2");
+            entity.HasKey(e => e.Id).HasName("PK__Answers__3214EC07618CBE75");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt)
@@ -47,7 +47,7 @@ public partial class AssistClubDbContext : DbContext
 
         modelBuilder.Entity<Question>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Question__3214EC07068B0E8F");
+            entity.HasKey(e => e.Id).HasName("PK__Question__3214EC07832D3D47");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt)
@@ -65,9 +65,9 @@ public partial class AssistClubDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC0726A245EC");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07FDB72547");
 
-            entity.HasIndex(e => e.Email, "UQ__Users__A9D10534E97C4115").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Users__A9D105347AA84E1F").IsUnique();
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Club).HasMaxLength(100);

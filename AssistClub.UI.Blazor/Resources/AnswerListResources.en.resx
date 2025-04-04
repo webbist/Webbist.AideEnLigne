@@ -29,4 +29,13 @@
     <data name="AnswerCountPluralLabel" xml:space="preserve">
         <value>Answers</value>
     </data>
+    <data name="MarkOfficialButton" xml:space="preserve">
+        <value>Mark as official</value>
+    </data>
+    <data name="UnmarkOfficialButton" xml:space="preserve">
+        <value>Mark as not official</value>
+    </data>
+    <data name="OfficialAnswerBadgeLabel" xml:space="preserve">
+        <value>Official answer</value>
+    </data>
 </root>
