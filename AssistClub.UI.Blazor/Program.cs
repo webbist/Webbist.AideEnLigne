@@ -16,7 +16,7 @@ builder.Services.AddRadzenComponents();
 builder.Services.AddLocalization();
 builder.Services.AddCascadingAuthenticationState();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5284")});
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["Api:BaseUrl"]) });
 builder.Services.AddScoped<UserHttpClient>();
 builder.Services.AddScoped<QuestionHttpClient>();
 builder.Services.AddScoped<AnswerHttpClient>();

@@ -45,4 +45,16 @@
     <data name="OfficialAnswerBadgeLabel" xml:space="preserve">
         <value>Réponse officielle</value>
     </data>
+    <data name="EditAnswerDialogTitle" xml:space="preserve">
+        <value>Modifier la réponse</value>
+    </data>
+    <data name="UpdateAnswerSuccessMessage" xml:space="preserve">
+        <value>Réponse mise à jour avec succès.</value>
+    </data>
+    <data name="UpdateAnswerErrorMessage" xml:space="preserve">
+        <value>Échec de la mise à jour de la réponse.</value>
+    </data>
+    <data name="EditAnswerButton" xml:space="preserve">
+        <value>Modifier la réponse</value>
+    </data>
 </root>

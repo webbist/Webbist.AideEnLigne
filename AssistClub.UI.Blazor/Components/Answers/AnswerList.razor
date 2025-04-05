@@ -1,3 +1,4 @@
+@using System.Security.Claims
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
 @using AssistClub.UI.Blazor.Extensions
@@ -7,6 +8,8 @@
 
 @inject AnswerHttpClient AnswerHttpClient
 @inject IStringLocalizer<AnswerListResources> AnswerListLocalizer
+@inject DialogService DialogService
+@inject NotificationService NotificationService
 
 <div class="total-answers">
     <h5>@(_answers?.Count() ?? 0) @(_answers?.Count() == 1 ? AnswerListLocalizer["AnswerCountSingularLabel"] : AnswerListLocalizer["AnswerCountPluralLabel"])</h5>
@@ -21,24 +24,38 @@
             <div class="answer-body">
                 @((MarkupString)answer.Content)
             </div>
-            <AuthorizeView Roles="Admin">
-                <div class="dropdown ms-auto">
-                    <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                        @if (!HasOfficialAnswer || answer.IsOfficial)
-                        {
-                            <li>
-                                <button class="dropdown-item" @onclick="@(() => ToggleOfficialStatus(answer.Id, answer.IsOfficial))">
-                                    @(answer.IsOfficial
-                                        ? AnswerListLocalizer["UnmarkOfficialButton"]
-                                        : AnswerListLocalizer["MarkOfficialButton"])
-                                </button>
-                            </li>
-                        }
-                    </ul>
-                </div>
+            <AuthorizeView>
+                <Authorized Context="auth">
+                    @{
+                        var isAdmin = auth.User.IsInRole("Admin");
+                        var isAuthor = auth.User.FindFirst(ClaimTypes.NameIdentifier)?.Value == answer.User.Id.ToString();
+                    }
+                    @if (isAdmin || isAuthor)
+                    {
+                        <div class="dropdown ms-auto">
+                            <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                @if (isAdmin && (!HasOfficialAnswer || answer.IsOfficial))
+                                {
+                                    <li>
+                                        <button class="dropdown-item" @onclick="@(() => ToggleOfficialStatus(answer.Id, answer.IsOfficial))">
+                                            @(answer.IsOfficial
+                                                ? AnswerListLocalizer["UnmarkOfficialButton"]
+                                                : AnswerListLocalizer["MarkOfficialButton"])
+                                        </button>
+                                    </li>
+                                }
+                                <li>
+                                    <button class="dropdown-item" @onclick="@(() => OpenEditDialog(answer))">
+                                        @AnswerListLocalizer["EditAnswerButton"]
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                </Authorized>
             </AuthorizeView>
         </div>
         <div class="answer-info text-end">
@@ -95,4 +112,40 @@
     }
     
     private bool HasOfficialAnswer => _answers?.Any(a => a.IsOfficial) == true;
+    
+    private async Task OpenEditDialog(AnswerApiResponse answer)
+    {
+        var parameters = new Dictionary<string, object>
+        {
+            { "Answer", answer },
+            { "OnAnswerUpdated", EventCallback.Factory.Create<AnswerRequest>(this, async (updatedAnswer) =>
+                {
+                    var success = await AnswerHttpClient.UpdateAnswerAsync(answer.Id, updatedAnswer);
+                    if (success)
+                    {
+                        await RefreshAsync();
+                        NotificationService.Notify(new NotificationMessage
+                        {
+                            Severity = NotificationSeverity.Success,
+                            Summary = Localizer["Success"],
+                            Detail = AnswerListLocalizer["UpdateAnswerSuccessMessage"],
+                            Duration = 4000
+                        });
+                    }
+                    else
+                    {
+                        NotificationService.Notify(new NotificationMessage
+                        {
+                            Severity = NotificationSeverity.Error,
+                            Summary = Localizer["Error"],
+                            Detail = AnswerListLocalizer["UpdateAnswerErrorMessage"],
+                            Duration = 4000
+                        });
+                    }
+                })
+            }
+        };
+
+        await DialogService.OpenAsync<EditAnswerDialog>(AnswerListLocalizer["EditAnswerDialogTitle"], parameters);
+    }
 }

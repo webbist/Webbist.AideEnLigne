@@ -97,4 +97,29 @@ public class AnswerController(IAnswerService answerService, ILogger<AnswerContro
             return StatusCode(500, e.Message);
         }
     }
+    
+    /// <summary>
+    /// Updates an existing answer in the system.
+    /// </summary>
+    /// <param name="id">The ID of the answer to be updated.</param>
+    /// <param name="answerRequest">The updated answer data.</param>
+    /// <returns>
+    /// - <c>200 OK</c>: If the answer was successfully updated.<br/>
+    /// - <c>404 Not Found</c>: If the answer with the specified ID does not exist. <br/>
+    /// - <c>500 Internal Server Error</c>: If an unexpected error occurs.
+    /// </returns>
+    [HttpPut("Update/{id}")]
+    public async Task<IActionResult> UpdateAnswer(Guid id, [FromBody] AnswerRequest answerRequest)
+    {
+        try
+        {
+            var result = await answerService.UpdateAnswerAsync(id, answerRequest);
+            return result ? Ok() : NotFound();
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "An error occurred while updating the answer.");
+            return StatusCode(500, e.Message);
+        }
+    }
 }

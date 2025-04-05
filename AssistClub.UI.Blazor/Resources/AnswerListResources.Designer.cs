@@ -98,5 +98,29 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("OfficialAnswerBadgeLabel", resourceCulture);
             }
         }
+        
+        internal static string EditAnswerDialogTitle {
+            get {
+                return ResourceManager.GetString("EditAnswerDialogTitle", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateAnswerSuccessMessage {
+            get {
+                return ResourceManager.GetString("UpdateAnswerSuccessMessage", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateAnswerErrorMessage {
+            get {
+                return ResourceManager.GetString("UpdateAnswerErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string EditAnswerButton {
+            get {
+                return ResourceManager.GetString("EditAnswerButton", resourceCulture);
+            }
+        }
     }
 }

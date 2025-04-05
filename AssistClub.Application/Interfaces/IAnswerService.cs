@@ -43,4 +43,17 @@ public interface IAnswerService
     /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
     /// </returns>
     Task<bool> UpdateAnswerOfficialStatusAsync(Guid id, bool isOfficial);
+    
+    /// <summary>
+    /// Updates an existing answer in the database.
+    /// </summary>
+    /// <param name="id">The unique identifier of the answer to be updated.</param>
+    /// <param name="answerRequest">The <see cref="AnswerRequest"/> containing the updated answer details.</param>
+    /// <returns>
+    /// A boolean indicating whether the update was successful (<c>true</c> if successful, <c>false</c> otherwise).
+    /// </returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown if the answer content exceeds <see cref="AnswerRequest.ContentMaxLength"/> characters.
+    /// </exception>
+    Task<bool> UpdateAnswerAsync(Guid id, AnswerRequest answerRequest);
 }

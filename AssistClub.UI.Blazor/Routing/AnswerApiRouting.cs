@@ -33,4 +33,13 @@ public static class AnswerApiRouting
     /// The route for updating the official status of the specified answer.
     /// </returns>
     public static string UpdateOfficialStatusRoute(Guid answerId) => $"{Base}/official-status/{answerId}";
+    
+    /// <summary>
+    /// Endpoint for updating an existing answer.
+    /// </summary>
+    /// <param name="answerId">The unique identifier of the answer to be updated.</param>
+    /// <returns>
+    /// The route for updating the specified answer.
+    /// </returns>
+    public static string UpdateRoute(Guid answerId) => $"{Base}/update/{answerId}";
 }

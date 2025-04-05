@@ -57,12 +57,12 @@ public class AnswerHttpClient(HttpClient http)
     }
     
     /// <summary>
-    /// Sends a request to update an existing answer in the backend system.
+    /// Sends a request to update the official status of an answer in the backend system.
     /// </summary>
     /// <param name="answerId">The unique identifier of the answer to be updated.</param>
     /// <param name="isOfficial">Indicates whether the answer should be marked as official or not.</param>
     /// <returns>
-    /// A boolean indicating whether the update was successful.
+    /// A boolean indicating whether the update was successful (<c>true</c> if successful, <c>false</c> otherwise).
     /// </returns>
     public async Task<bool> MarkAnswerAsOfficial(Guid answerId, bool isOfficial)
     {
@@ -74,6 +74,28 @@ public class AnswerHttpClient(HttpClient http)
         catch (Exception e)
         {
             Console.WriteLine($"Error marking answer as official: {e.Message}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Sends a request to update an existing answer in the backend system.
+    /// </summary>
+    /// <param name="id">The unique identifier of the answer to be updated.</param>
+    /// <param name="updatedAnswer">The <see cref="AnswerRequest"/> containing the updated answer details.</param>
+    /// <returns>
+    /// A boolean indicating whether the update was successful (<c>true</c> if successful, <c>false</c> otherwise).
+    /// </returns>
+    public async Task<bool> UpdateAnswerAsync(Guid id, AnswerRequest updatedAnswer)
+    {
+        try
+        {
+            var response = await http.PutAsJsonAsync(AnswerApiRouting.UpdateRoute(id), updatedAnswer);
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error updating answer: {e.Message}");
             return false;
         }
     }
