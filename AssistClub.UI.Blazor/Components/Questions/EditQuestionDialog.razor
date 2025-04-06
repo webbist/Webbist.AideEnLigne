@@ -8,11 +8,11 @@
         <div class="mb-3">
             <label class="text-black fw-medium mb-1">@Localizer["TitleLabel"]:</label>
             <div class="form-group">
-                <InputText class="form-control form--control" @bind-Value="_questionModel.Title" placeholder="Title placeholder" MaxLength="@QuestionRequest.TitleMaxLength" />
+                <InputText class="form-control" @bind-Value="_questionModel.Title" placeholder="Title placeholder" MaxLength="@QuestionRequest.TitleMaxLength" />
                 <ValidationMessage For="@(() => _questionModel.Title)" class="text-danger pt-1" />
             </div>
         </div>
-        <div class="mb-1">
+        <div class="mb-3">
             <label class="text-black fw-medium mb-1">@Localizer["ContentLabel"]:</label>
             <div class="form-group">
                 <RadzenHtmlEditor @bind-Value="_questionModel.Content" style="height: 300px;">
@@ -28,6 +28,18 @@
                     <RadzenHtmlEditorRemoveFormat />
                 </RadzenHtmlEditor>
                 <ValidationMessage For="@(() => _questionModel.Content)" class="text-danger pt-1" />
+            </div>
+        </div>
+        <div class="mb-1">
+            <label class="text-black fw-medium mb-1">Visibility:</label>
+            <div class="form-group">
+                <InputSelect class="form-control" @bind-Value="_questionModel.Visibility">
+                    @foreach (var visibility in Enum.GetValues(typeof(QuestionVisibility)).Cast<QuestionVisibility>())
+                    {
+                        <option value="@visibility">@visibility</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => _questionModel.Visibility)" class="text-danger pt-1" />
             </div>
         </div>
     </div>
@@ -50,7 +62,7 @@
             UserId = Question.User.Id,
             Title = Question.Title,
             Content = Question.Content,
-            Visibility = QuestionVisibility.Public,
+            Visibility = Enum.Parse<QuestionVisibility>(Question.Visibility, true),
             Status = Question.Status
         };
     }

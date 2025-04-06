@@ -1,21 +1,24 @@
 @page "/question/{id}"
+@using System.Security.Claims
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
 @using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.Components.Answers
 @using AssistClub.UI.Blazor.Components.Questions
+@using Microsoft.AspNetCore.Components.Authorization
 
 @rendermode InteractiveServer
 @inject QuestionHttpClient QuestionHttpClient
 @inject IStringLocalizer<QuestionResources> QuestionLocalizer
 @inject DialogService DialogService
 @inject NotificationService NotificationService
+@inject NavigationManager Nav
 
 @if (_question != null)
 {
     <PageTitle>@_question.Title</PageTitle>
     
-    <button class="btn btn-outline-primary mb-3 button-back" onclick="history.back();">
+    <button class="btn btn-outline-primary mb-3 button-back" @onclick="GoBack">
         <i class="bi bi-arrow-left-circle me-1"></i> @Localizer["BackButton"]
     </button>
     
@@ -23,9 +26,20 @@
         <div class="question-details">
             <div class="d-flex">
                 <h1 class="question-title">@_question.Title</h1>
-                <button class="btn btn-sm btn-light mb-auto ms-auto" @onclick="() => OpenEditDialog(_question)">
-                    <i class="bi bi-pencil-square"></i>
-                </button>
+                <AuthorizeView>
+                    <Authorized Context="auth">
+                        @{
+                            var isAdmin = auth.User.IsInRole("Admin");
+                            var isAuthor = auth.User.FindFirst(ClaimTypes.NameIdentifier)?.Value == _question.User.Id.ToString();
+                        }
+                        @if (isAdmin || isAuthor)
+                        {
+                            <button class="btn btn-sm btn-light mb-auto ms-auto" @onclick="() => OpenEditDialog(_question)">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                        }
+                    </Authorized>
+                </AuthorizeView>
             </div>
             <div class="question-info">
                 <span>
@@ -133,5 +147,10 @@ else
         };
         
         await DialogService.OpenAsync<EditQuestionDialog>(@QuestionLocalizer["EditQuestionDialogTitle"], parameters);
+    }
+    
+    private void GoBack()
+    {
+        Nav.NavigateTo("/");
     }
 }
