@@ -1,3 +1,4 @@
+@using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.Models
 @inject DialogService DialogService
 @rendermode InteractiveServer
@@ -36,7 +37,7 @@
                 <InputSelect class="form-control" @bind-Value="_questionModel.Visibility">
                     @foreach (var visibility in Enum.GetValues(typeof(QuestionVisibility)).Cast<QuestionVisibility>())
                     {
-                        <option value="@visibility">@visibility</option>
+                        <option value="@visibility">@visibility.ToVisibilityLocalizedLabel()</option>
                     }
                 </InputSelect>
                 <ValidationMessage For="@(() => _questionModel.Visibility)" class="text-danger pt-1" />
