@@ -31,4 +31,11 @@ public static class QuestionApiRouting
     /// <param name="id">The ID of the question.</param>
     /// <returns>The full URL for the question with the specified ID.</returns>
     public static string GetByIdRoute(Guid id) => $"{Base}/{id}";
+    
+    /// <summary>
+    /// Endpoint for updating a question by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the question.</param>
+    /// <returns>The full URL for the question update endpoint.</returns>
+    public static string UpdateRoute(Guid id) => $"{Base}/update/{id}";
 }

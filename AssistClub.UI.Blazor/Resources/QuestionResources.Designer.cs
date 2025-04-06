@@ -74,5 +74,11 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("NotFoundTitle", resourceCulture);
             }
         }
+        
+        internal static string EditQuestionDialogTitle {
+            get {
+                return ResourceManager.GetString("EditQuestionDialogTitle", resourceCulture);
+            }
+        }
     }
 }

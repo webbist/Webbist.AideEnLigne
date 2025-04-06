@@ -26,4 +26,7 @@
     <data name="NotFoundTitle" xml:space="preserve">
         <value>Pregunta no encontrada</value>
     </data>
+    <data name="EditQuestionDialogTitle" xml:space="preserve">
+        <value>Editar la pregunta</value>
+    </data>
 </root>

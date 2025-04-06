@@ -39,4 +39,7 @@
     <data name="ContentLabel" xml:space="preserve">
         <value>Contenu</value>
     </data>
+    <data name="TitleLabel" xml:space="preserve">
+        <value>Titre</value>
+    </data>
 </root>

@@ -86,5 +86,11 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("ContentLabel", resourceCulture);
             }
         }
+        
+        internal static string TitleLabel {
+            get {
+                return ResourceManager.GetString("TitleLabel", resourceCulture);
+            }
+        }
     }
 }

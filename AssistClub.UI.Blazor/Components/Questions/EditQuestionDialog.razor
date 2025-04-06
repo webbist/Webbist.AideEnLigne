@@ -1,0 +1,65 @@
+@using AssistClub.UI.Blazor.Models
+@inject DialogService DialogService
+@rendermode InteractiveServer
+
+<EditForm Model="_questionModel" OnValidSubmit="UpdateQuestion">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <div class="mb-3">
+            <label class="text-black fw-medium mb-1">@Localizer["TitleLabel"]:</label>
+            <div class="form-group">
+                <InputText class="form-control form--control" @bind-Value="_questionModel.Title" placeholder="Title placeholder" MaxLength="@QuestionRequest.TitleMaxLength" />
+                <ValidationMessage For="@(() => _questionModel.Title)" class="text-danger pt-1" />
+            </div>
+        </div>
+        <div class="mb-1">
+            <label class="text-black fw-medium mb-1">@Localizer["ContentLabel"]:</label>
+            <div class="form-group">
+                <RadzenHtmlEditor @bind-Value="_questionModel.Content" style="height: 300px;">
+                    <RadzenHtmlEditorUndo />
+                    <RadzenHtmlEditorRedo />
+                    <RadzenHtmlEditorSeparator />
+                    <RadzenHtmlEditorBold />
+                    <RadzenHtmlEditorItalic />
+                    <RadzenHtmlEditorUnderline />
+                    <RadzenHtmlEditorStrikeThrough />
+                    <RadzenHtmlEditorSeparator />
+                    <RadzenHtmlEditorColor />
+                    <RadzenHtmlEditorRemoveFormat />
+                </RadzenHtmlEditor>
+                <ValidationMessage For="@(() => _questionModel.Content)" class="text-danger pt-1" />
+            </div>
+        </div>
+    </div>
+    <div class="mt-3 text-end">
+        <button type="submit" class="btn btn-primary">@Localizer["SaveButton"]</button>
+        <button class="btn btn-secondary ms-2" type="button" @onclick="Close">@Localizer["CancelButton"]</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public QuestionApiResponse Question { get; set; }
+    [Parameter] public EventCallback<QuestionRequest> OnQuestionUpdated { get; set; }
+    
+    private QuestionRequest _questionModel = new();
+    
+    protected override void OnInitialized()
+    {
+        _questionModel = new QuestionRequest
+        {
+            UserId = Question.User.Id,
+            Title = Question.Title,
+            Content = Question.Content,
+            Visibility = QuestionVisibility.Public,
+            Status = Question.Status
+        };
+    }
+    
+    private async Task UpdateQuestion()
+    {
+        await OnQuestionUpdated.InvokeAsync(_questionModel);
+        DialogService.Close();
+    }
+    
+    private void Close() => DialogService.Close();
+}

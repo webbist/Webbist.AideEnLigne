@@ -3,10 +3,13 @@
 @using AssistClub.UI.Blazor.Models
 @using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.Components.Answers
+@using AssistClub.UI.Blazor.Components.Questions
 
 @rendermode InteractiveServer
 @inject QuestionHttpClient QuestionHttpClient
 @inject IStringLocalizer<QuestionResources> QuestionLocalizer
+@inject DialogService DialogService
+@inject NotificationService NotificationService
 
 @if (_question != null)
 {
@@ -18,7 +21,12 @@
     
     <RadzenCard class="rz-mx-auto">
         <div class="question-details">
-            <h1 class="question-title">@_question.Title</h1>
+            <div class="d-flex">
+                <h1 class="question-title">@_question.Title</h1>
+                <button class="btn btn-sm btn-light mb-auto ms-auto" @onclick="() => OpenEditDialog(_question)">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+            </div>
             <div class="question-info">
                 <span>
                     @QuestionLocalizer["AskedLabel"]:
@@ -89,5 +97,41 @@ else
     {
         await RefreshAnswers();
         await ReloadQuestionAsync();
+    }
+    
+    private async Task OpenEditDialog(QuestionApiResponse question)
+    {
+        var parameters = new Dictionary<string, object>
+        {
+            { "Question", question },
+            { "OnQuestionUpdated", EventCallback.Factory.Create<QuestionRequest>(this, async (updatedQuestion) =>
+                {
+                    var success = await QuestionHttpClient.UpdateQuestionAsync(question.Id, updatedQuestion);
+                    if (success)
+                    {
+                        await ReloadQuestionAsync();
+                        NotificationService.Notify(new NotificationMessage
+                        {
+                            Severity = NotificationSeverity.Success,
+                            Summary = Localizer["Success"],
+                            Detail = QuestionLocalizer["UpdateQuestionSuccessMessage"],
+                            Duration = 4000
+                        });
+                    }
+                    else
+                    {
+                        NotificationService.Notify(new NotificationMessage
+                        {
+                            Severity = NotificationSeverity.Error,
+                            Summary = Localizer["Error"],
+                            Detail = QuestionLocalizer["UpdateQuestionErrorMessage"],
+                            Duration = 4000
+                        });
+                    }
+                })
+            }
+        };
+        
+        await DialogService.OpenAsync<EditQuestionDialog>(@QuestionLocalizer["EditQuestionDialogTitle"], parameters);
     }
 }

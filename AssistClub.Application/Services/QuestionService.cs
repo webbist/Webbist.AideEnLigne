@@ -121,4 +121,41 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
         }
         return null;
     }
+
+    /// <summary>
+    /// Updates an existing question in the system.
+    /// </summary>
+    /// <param name="id">The ID of the question to update.</param>
+    /// <param name="questionRequest">The <see cref="QuestionRequestDto"/> containing updated question details.</param>
+    /// <returns>
+    /// A <c>bool</c> indicating whether the update was successful or not.
+    /// </returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown if the question title exceeds <see cref="QuestionRequestDto.TitleMaxLength"/> characters
+    /// or the content exceeds <see cref="QuestionRequestDto.ContentMaxLength"/> characters.
+    /// </exception>
+    public async Task<bool> UpdateQuestionAsync(Guid id, QuestionRequestDto questionRequest)
+    {
+        if (questionRequest.Title.Length > QuestionRequestDto.TitleMaxLength)
+        {
+            throw new ArgumentException($"Question title exceeds the maximum character limit of {QuestionRequestDto.TitleMaxLength}.");
+        }
+        
+        if (questionRequest.Content.Length > QuestionRequestDto.ContentMaxLength)
+        {
+            throw new ArgumentException($"Question content exceeds the maximum character limit of {QuestionRequestDto.ContentMaxLength}.");
+        }
+        
+        var question = new Question
+        {
+            Id = id,
+            UserId = questionRequest.UserId,
+            Title = questionRequest.Title,
+            Content = questionRequest.Content,
+            UpdatedAt = DateTime.UtcNow,
+            Visibility = questionRequest.Visibility.ToString().ToLower()
+        };
+        
+        return await questionRepository.UpdateQuestionAsync(question);
+    }
 }

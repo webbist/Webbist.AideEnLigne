@@ -66,8 +66,23 @@ public class QuestionRepository(AssistClubDbContext db, ILogger<QuestionReposito
     /// <returns><c>true</c> if the update was successful; otherwise, <c>false</c>.</returns>
     public async Task<bool> UpdateQuestionAsync(Question question)
     {
-        db.Questions.Update(question);
-        return await db.SaveChangesAsync() > 0;
+        try
+        {
+            var existingQuestion = await db.Questions.FindAsync(question.Id);
+            if (existingQuestion == null) return false;
+            existingQuestion.UserId = question.UserId;
+            existingQuestion.Title = question.Title;
+            existingQuestion.Content = question.Content;
+            existingQuestion.UpdatedAt = question.UpdatedAt;
+            existingQuestion.Visibility = question.Visibility;
+            db.Questions.Update(existingQuestion);
+            return await db.SaveChangesAsync() > 0;
+        }
+        catch (DbUpdateException e)
+        {
+            logger.LogError(e, "An error occurred while updating the question.");
+            throw;
+        }
     }
 
     /// <summary>
