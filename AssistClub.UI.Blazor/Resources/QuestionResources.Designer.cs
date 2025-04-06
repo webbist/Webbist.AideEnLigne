@@ -80,5 +80,17 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("EditQuestionDialogTitle", resourceCulture);
             }
         }
+        
+        internal static string UpdateQuestionSuccessMessage {
+            get {
+                return ResourceManager.GetString("UpdateQuestionSuccessMessage", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateQuestionErrorMessage {
+            get {
+                return ResourceManager.GetString("UpdateQuestionErrorMessage", resourceCulture);
+            }
+        }
     }
 }

@@ -29,4 +29,10 @@
     <data name="EditQuestionDialogTitle" xml:space="preserve">
         <value>Editar la pregunta</value>
     </data>
+    <data name="UpdateQuestionSuccessMessage" xml:space="preserve">
+        <value>Pregunta actualizada con éxito.</value>
+    </data>
+    <data name="UpdateQuestionErrorMessage" xml:space="preserve">
+        <value>Error al actualizar la pregunta.</value>
+    </data>
 </root>
