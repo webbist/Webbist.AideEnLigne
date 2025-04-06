@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="mb-1">
-            <label class="text-black fw-medium mb-1">Visibility:</label>
+            <label class="text-black fw-medium mb-1">@Localizer["VisibilityLabel"]:</label>
             <div class="form-group">
                 <InputSelect class="form-control" @bind-Value="_questionModel.Visibility">
                     @foreach (var visibility in Enum.GetValues(typeof(QuestionVisibility)).Cast<QuestionVisibility>())

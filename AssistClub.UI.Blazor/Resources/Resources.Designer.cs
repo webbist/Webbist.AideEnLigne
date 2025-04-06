@@ -92,5 +92,11 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("TitleLabel", resourceCulture);
             }
         }
+        
+        internal static string VisibilityLabel {
+            get {
+                return ResourceManager.GetString("VisibilityLabel", resourceCulture);
+            }
+        }
     }
 }

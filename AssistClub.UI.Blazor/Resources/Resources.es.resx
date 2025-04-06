@@ -35,4 +35,7 @@
     <data name="TitleLabel" xml:space="preserve">
         <value>Título</value>
     </data>
+    <data name="VisibilityLabel" xml:space="preserve">
+        <value>Visibilidad</value>
+    </data>
 </root>
