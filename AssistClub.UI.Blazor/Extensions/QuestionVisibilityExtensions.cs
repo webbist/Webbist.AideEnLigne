@@ -1,4 +1,4 @@
-using AssistClub.UI.Blazor.Models;
+using AssistClub.UI.Blazor.Components.Enums;
 using AssistClub.UI.Blazor.Resources;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging.Abstractions;

@@ -153,7 +153,7 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
             Title = questionRequest.Title,
             Content = questionRequest.Content,
             UpdatedAt = DateTime.UtcNow,
-            Visibility = questionRequest.Visibility.ToString().ToLower()
+            Visibility = questionRequest.Visibility.ToString()
         };
         
         return await questionRepository.UpdateQuestionAsync(question);
