@@ -14,21 +14,21 @@ namespace AssistClub.UI.Blazor.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class QuestionVisibilityResources {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal QuestionVisibilityResources() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.Resources", typeof(Resources).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.QuestionVisibilityResources", typeof(QuestionVisibilityResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,57 +45,15 @@ namespace AssistClub.UI.Blazor.Resources {
             }
         }
         
-        internal static string Loading {
+        internal static string VisibilityPublic {
             get {
-                return ResourceManager.GetString("Loading", resourceCulture);
+                return ResourceManager.GetString("VisibilityPublic", resourceCulture);
             }
         }
         
-        internal static string Error {
+        internal static string VisibilityPrivate {
             get {
-                return ResourceManager.GetString("Error", resourceCulture);
-            }
-        }
-        
-        internal static string BackButton {
-            get {
-                return ResourceManager.GetString("BackButton", resourceCulture);
-            }
-        }
-        
-        internal static string Success {
-            get {
-                return ResourceManager.GetString("Success", resourceCulture);
-            }
-        }
-        
-        internal static string SaveButton {
-            get {
-                return ResourceManager.GetString("SaveButton", resourceCulture);
-            }
-        }
-        
-        internal static string CancelButton {
-            get {
-                return ResourceManager.GetString("CancelButton", resourceCulture);
-            }
-        }
-        
-        internal static string ContentLabel {
-            get {
-                return ResourceManager.GetString("ContentLabel", resourceCulture);
-            }
-        }
-        
-        internal static string TitleLabel {
-            get {
-                return ResourceManager.GetString("TitleLabel", resourceCulture);
-            }
-        }
-        
-        internal static string VisibilityLabel {
-            get {
-                return ResourceManager.GetString("VisibilityLabel", resourceCulture);
+                return ResourceManager.GetString("VisibilityPrivate", resourceCulture);
             }
         }
     }

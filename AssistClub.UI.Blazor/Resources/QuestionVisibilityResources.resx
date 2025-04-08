@@ -18,31 +18,10 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Loading" xml:space="preserve">
-        <value>Chargement...</value>
+    <data name="VisibilityPublic" xml:space="preserve">
+        <value>Publique</value>
     </data>
-    <data name="Error" xml:space="preserve">
-        <value>Erreur</value>
-    </data>
-    <data name="BackButton" xml:space="preserve">
-        <value>Retour</value>
-    </data>
-    <data name="Success" xml:space="preserve">
-        <value>Succès</value>
-    </data>
-    <data name="SaveButton" xml:space="preserve">
-        <value>Enregistrer</value>
-    </data>
-    <data name="CancelButton" xml:space="preserve">
-        <value>Annuler</value>
-    </data>
-    <data name="ContentLabel" xml:space="preserve">
-        <value>Contenu</value>
-    </data>
-    <data name="TitleLabel" xml:space="preserve">
-        <value>Titre</value>
-    </data>
-    <data name="VisibilityLabel" xml:space="preserve">
-        <value>Visibilité</value>
+    <data name="VisibilityPrivate" xml:space="preserve">
+        <value>Privée</value>
     </data>
 </root>

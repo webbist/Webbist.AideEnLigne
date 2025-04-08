@@ -73,4 +73,26 @@ public class QuestionHttpClient(HttpClient http)
             return null;
         }
     }
+    
+    /// <summary>
+    /// Sends a request to update an existing question in the system.
+    /// </summary>
+    /// <param name="id">The ID of the question to update.</param>
+    /// <param name="updatedQuestion">The <see cref="QuestionRequest"/> entity containing updated question details.</param>
+    /// <returns>
+    /// A <c>bool</c> indicating whether the update was successful or not.
+    /// </returns>
+    public async Task<bool> UpdateQuestionAsync(Guid id, QuestionRequest updatedQuestion)
+    {
+        try
+        {
+            var result = await http.PutAsJsonAsync(QuestionApiRouting.UpdateRoute(id), updatedQuestion);
+            return result.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error updating question: {e.Message}");
+            return false;
+        }
+    }
 }

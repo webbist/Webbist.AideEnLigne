@@ -96,4 +96,29 @@ public class QuestionController(IQuestionService questionService, ILogger<Questi
             return StatusCode(500, e.Message);
         }
     }
+    
+    /// <summary>
+    /// Updates an existing question in the system.
+    /// </summary>
+    /// <param name="id">The ID of the question to update.</param>
+    /// <param name="questionDto">The updated question data.</param>
+    /// <returns>
+    /// <c>200 OK</c>: If the update was successful.<br/>
+    /// <c>404 Not Found</c>: If the question with the specified ID does not exist.<br/>
+    /// <c>500 Internal Server Error</c>: If an unexpected error occurs.
+    /// </returns>
+    [HttpPut("Update/{id}")]
+    public async Task<IActionResult> UpdateQuestion(Guid id, QuestionRequestDto questionDto)
+    {
+        try
+        {
+            var result = await questionService.UpdateQuestionAsync(id, questionDto);
+            return result ? Ok() : NotFound();
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "An error occurred while updating the question.");
+            return StatusCode(500, e.Message);
+        }
+    }
 }

@@ -43,4 +43,18 @@ public interface IQuestionService
     /// <param name="id">The ID of the question.</param>
     /// <returns>The <see cref="QuestionResponseDto"/> if found; otherwise, <c>null</c>.</returns>
     Task<QuestionResponseDto?> GetQuestionByIdAsync(Guid id);
+
+    /// <summary>
+    /// Updates an existing question in the system.
+    /// </summary>
+    /// <param name="id">The ID of the question to update.</param>
+    /// <param name="questionRequest">The <see cref="QuestionRequestDto"/> containing updated question details.</param>
+    /// <returns>
+    /// A <c>bool</c> indicating whether the update was successful or not.
+    /// </returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown if the question title exceeds <see cref="QuestionRequestDto.TitleMaxLength"/> characters
+    /// or the content exceeds <see cref="QuestionRequestDto.ContentMaxLength"/> characters.
+    /// </exception>
+    Task<bool> UpdateQuestionAsync(Guid id, QuestionRequestDto questionRequest);
 }

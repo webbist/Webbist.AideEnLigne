@@ -57,6 +57,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>QuestionStatusResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\QuestionVisibilityResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>QuestionVisibilityResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -114,6 +118,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>QuestionStatusResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\QuestionVisibilityResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>QuestionVisibilityResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

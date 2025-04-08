@@ -32,4 +32,10 @@
     <data name="ContentLabel" xml:space="preserve">
         <value>Contenido</value>
     </data>
+    <data name="TitleLabel" xml:space="preserve">
+        <value>Título</value>
+    </data>
+    <data name="VisibilityLabel" xml:space="preserve">
+        <value>Visibilidad</value>
+    </data>
 </root>
