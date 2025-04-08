@@ -11,16 +11,13 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="StatusOpenLabel" xml:space="preserve">
+    <data name="Open" xml:space="preserve">
         <value>Abierta</value>
     </data>
-    <data name="StatusPendingLabel" xml:space="preserve">
+    <data name="Pending" xml:space="preserve">
         <value>Pendiente</value>
     </data>
-    <data name="StatusResolvedLabel" xml:space="preserve">
+    <data name="Resolved" xml:space="preserve">
         <value>Resuelta</value>
-    </data>
-    <data name="StatusUnknownLabel" xml:space="preserve">
-        <value>Desconocido</value>
     </data>
 </root>

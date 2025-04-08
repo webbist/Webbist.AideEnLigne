@@ -1,3 +1,4 @@
+using AssistClub.UI.Blazor.Components.Enums;
 using AssistClub.UI.Blazor.Models;
 using AssistClub.UI.Blazor.Routing;
 
@@ -57,23 +58,23 @@ public class AnswerHttpClient(HttpClient http)
     }
     
     /// <summary>
-    /// Sends a request to update the official status of an answer in the backend system.
+    /// Sends a request to update the status of an existing answer in the backend system.
     /// </summary>
     /// <param name="answerId">The unique identifier of the answer to be updated.</param>
-    /// <param name="isOfficial">Indicates whether the answer should be marked as official or not.</param>
+    /// <param name="newStatus">The new status to be set for the answer.</param>
     /// <returns>
     /// A boolean indicating whether the update was successful (<c>true</c> if successful, <c>false</c> otherwise).
     /// </returns>
-    public async Task<bool> MarkAnswerAsOfficial(Guid answerId, bool isOfficial)
+    public async Task<bool> UpdateAnswerStatusAsync(Guid answerId, AnswerStatus newStatus)
     {
         try
         {
-            var result = await http.PutAsJsonAsync(AnswerApiRouting.UpdateOfficialStatusRoute(answerId), isOfficial);
+            var result = await http.PutAsJsonAsync(AnswerApiRouting.UpdateStatusRoute(answerId), newStatus);
             return result.IsSuccessStatusCode;
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error marking answer as official: {e.Message}");
+            Console.WriteLine($"Error updating answer status: {e.Message}");
             return false;
         }
     }

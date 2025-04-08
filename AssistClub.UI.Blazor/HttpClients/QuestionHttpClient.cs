@@ -1,3 +1,4 @@
+using AssistClub.UI.Blazor.Components.Enums;
 using AssistClub.UI.Blazor.Routing;
 using AssistClub.UI.Blazor.Models;
 

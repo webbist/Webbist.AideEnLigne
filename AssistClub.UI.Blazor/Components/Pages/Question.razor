@@ -6,13 +6,16 @@
 @using AssistClub.UI.Blazor.Components.Answers
 @using AssistClub.UI.Blazor.Components.Questions
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization
 
 @rendermode InteractiveServer
+@attribute [Authorize]
 @inject QuestionHttpClient QuestionHttpClient
 @inject IStringLocalizer<QuestionResources> QuestionLocalizer
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 @inject NavigationManager Nav
+@inject IStringLocalizer<QuestionStatusResources> QuestionStatusResources
 
 @if (_question != null)
 {
@@ -48,7 +51,7 @@
                 </span>
                 <span>
                     @QuestionLocalizer["StatusLabel"]:
-                    <span class="info-status">@_question.Status.ToStatusLocalizedLabel()</span>
+                    <span class="info-status">@QuestionStatusResources[_question.Status]</span>
                 </span>
             </div>
             <div class="question-content">
@@ -66,8 +69,8 @@
         </div>
     </RadzenCard>
     
-    <AnswerList @ref="_answerList" QuestionId="@_question.Id" OnOfficialStatusChanged="ReloadQuestionAsync"/>
-    <AnswerForm QuestionId="@_question.Id" OnAnswerCreated="OnAnswerCreated"/>
+    <AnswerList @ref="_answerList" QuestionId="@_question.Id" OfficialStatusChanged="ReloadQuestionAsync"/>
+    <AnswerForm QuestionId="@_question.Id" AnswerCreated="OnAnswerCreated"/>
 }
 else
 {

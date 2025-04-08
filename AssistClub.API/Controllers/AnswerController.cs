@@ -1,5 +1,6 @@
 using AssistClub.Application.DTOs;
 using AssistClub.Application.Interfaces;
+using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 
@@ -74,26 +75,26 @@ public class AnswerController(IAnswerService answerService, ILogger<AnswerContro
     }
     
     /// <summary>
-    /// Updates the official status of an answer.
+    /// Updates the status of an answer.
     /// </summary>
     /// <param name="id">The ID of the answer to be updated.</param>
-    /// <param name="isOfficial">Indicates whether the answer is official or not.</param>
+    /// <param name="newStatus">The new status to be set for the answer.</param>
     /// <returns>
-    /// - <c>200 OK</c>: If the answer was successfully marked as official or not.<br/>
+    /// - <c>200 OK</c>: If the answer status was successfully updated. <br/>
     /// - <c>404 Not Found</c>: If the answer with the specified ID does not exist. <br/>
     /// - <c>500 Internal Server Error</c>: If an unexpected error occurs.
     /// </returns>
-    [HttpPut("Official-status/{id}")]
-    public async Task<IActionResult> UpdateOfficialStatus(Guid id, [FromBody] bool isOfficial)
+    [HttpPut("Status/{id}")]
+    public async Task<IActionResult> UpdateAnswerStatus(Guid id, [FromBody] AnswerStatus newStatus)
     {
         try
         {
-            var result = await answerService.UpdateAnswerOfficialStatusAsync(id, isOfficial);
+            var result = await answerService.UpdateAnswerStatusAsync(id, newStatus);
             return result ? Ok() : NotFound();
         }
         catch (Exception e)
         {
-            logger.LogError(e, "An error occurred while marking the answer as official.");
+            logger.LogError(e, "An error occurred while updating the answer status.");
             return StatusCode(500, e.Message);
         }
     }

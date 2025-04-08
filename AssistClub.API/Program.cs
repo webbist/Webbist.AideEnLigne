@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using AssistClub.Application;
 using AssistClub.Infrastructure;
 using Microsoft.AspNetCore.OData;
@@ -11,14 +12,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters
+                .Add(new JsonStringEnumConverter());
+        })
     .AddOData(options =>
-    {
-        options.Select()
-            .Filter()
-            .OrderBy()
-            .Expand()
-            .SetMaxTop(100);
-    });
+        {
+            options.Select()
+                .Filter()
+                .OrderBy()
+                .Expand()
+                .SetMaxTop(100);
+        });
 builder.Services.AddRouting(r => r.LowercaseUrls = true);
 builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
     app =>

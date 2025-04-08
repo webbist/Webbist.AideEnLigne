@@ -41,7 +41,7 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
             Title = questionDto.Title,
             Content = questionDto.Content,
             CreatedAt = DateTime.UtcNow,
-            Visibility = questionDto.Visibility.ToString().ToLower(),
+            Visibility = questionDto.Visibility.ToString(),
             Status = questionDto.Status
         };
         

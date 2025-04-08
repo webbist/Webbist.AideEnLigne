@@ -26,13 +26,13 @@ public static class AnswerApiRouting
     public const string GetAllRoute = $"{Base}/all";
     
     /// <summary>
-    /// Endpoint for updating the official status of an answer.
+    /// Endpoint for updating the status of an answer.
     /// </summary>
     /// <param name="answerId">The unique identifier of the answer to be updated.</param>
     /// <returns>
-    /// The route for updating the official status of the specified answer.
+    /// The route for updating the status of the specified answer.
     /// </returns>
-    public static string UpdateOfficialStatusRoute(Guid answerId) => $"{Base}/official-status/{answerId}";
+    public static string UpdateStatusRoute(Guid answerId) => $"{Base}/status/{answerId}";
     
     /// <summary>
     /// Endpoint for updating an existing answer.

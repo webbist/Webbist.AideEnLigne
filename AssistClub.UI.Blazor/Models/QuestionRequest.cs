@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using AssistClub.UI.Blazor.Components.Enums;
 using AssistClub.UI.Blazor.DataAnnotations;
 
 namespace AssistClub.UI.Blazor.Models;
@@ -46,14 +47,5 @@ public class QuestionRequest
     /// <summary>
     /// Gets or sets the status of the question (<c>open</c>, <c>pending</c>, or <c>resolved</c>).
     /// </summary>
-    public string Status { get; set; } = "open";
-}
-
-/// <summary>
-/// Represents the visibility of a question (<c>Public</c> or <c>Private</c>).
-/// </summary>
-public enum QuestionVisibility
-{
-    Public,
-    Private
+    public string Status { get; set; } = QuestionStatus.Open.ToString();
 }
