@@ -68,5 +68,23 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("Success", resourceCulture);
             }
         }
+        
+        internal static string SaveButton {
+            get {
+                return ResourceManager.GetString("SaveButton", resourceCulture);
+            }
+        }
+        
+        internal static string CancelButton {
+            get {
+                return ResourceManager.GetString("CancelButton", resourceCulture);
+            }
+        }
+        
+        internal static string ContentLabel {
+            get {
+                return ResourceManager.GetString("ContentLabel", resourceCulture);
+            }
+        }
     }
 }

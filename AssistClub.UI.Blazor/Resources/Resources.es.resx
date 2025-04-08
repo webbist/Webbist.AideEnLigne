@@ -23,4 +23,13 @@
     <data name="Success" xml:space="preserve">
         <value>Éxito</value>
     </data>
+    <data name="SaveButton" xml:space="preserve">
+        <value>Guardar</value>
+    </data>
+    <data name="CancelButton" xml:space="preserve">
+        <value>Cancelar</value>
+    </data>
+    <data name="ContentLabel" xml:space="preserve">
+        <value>Contenido</value>
+    </data>
 </root>

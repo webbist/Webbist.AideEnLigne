@@ -63,7 +63,7 @@ public class AnswerHttpClient(HttpClient http)
     /// <param name="answerId">The unique identifier of the answer to be updated.</param>
     /// <param name="newStatus">The new status to be set for the answer.</param>
     /// <returns>
-    /// A boolean indicating whether the update was successful.
+    /// A boolean indicating whether the update was successful (<c>true</c> if successful, <c>false</c> otherwise).
     /// </returns>
     public async Task<bool> UpdateAnswerStatusAsync(Guid answerId, AnswerStatus newStatus)
     {
@@ -75,6 +75,28 @@ public class AnswerHttpClient(HttpClient http)
         catch (Exception e)
         {
             Console.WriteLine($"Error updating answer status: {e.Message}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Sends a request to update an existing answer in the backend system.
+    /// </summary>
+    /// <param name="id">The unique identifier of the answer to be updated.</param>
+    /// <param name="updatedAnswer">The <see cref="AnswerRequest"/> containing the updated answer details.</param>
+    /// <returns>
+    /// A boolean indicating whether the update was successful (<c>true</c> if successful, <c>false</c> otherwise).
+    /// </returns>
+    public async Task<bool> UpdateAnswerAsync(Guid id, AnswerRequest updatedAnswer)
+    {
+        try
+        {
+            var response = await http.PutAsJsonAsync(AnswerApiRouting.UpdateRoute(id), updatedAnswer);
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error updating answer: {e.Message}");
             return false;
         }
     }

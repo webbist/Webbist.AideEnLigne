@@ -55,6 +55,7 @@ public class AnswerRepository(AssistClubDbContext db, ILogger<AnswerRepository> 
     /// <returns>
     /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
     /// </returns>
+    /// <exception cref="DbUpdateException">Thrown if an error occurs while saving the answer to the database.</exception>
     public async Task<bool> UpdateAnswerStatusAsync(Guid answerId, AnswerStatus newStatus)
     {
         try
@@ -76,6 +77,32 @@ public class AnswerRepository(AssistClubDbContext db, ILogger<AnswerRepository> 
         catch (DbUpdateException e)
         {
             logger.LogError(e, "An error occurred while updating the official status of the answer.");
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Updates an existing answer in the database.
+    /// </summary>
+    /// <param name="updatedAnswer">The <see cref="Answer"/> entity to update.</param>
+    /// <returns>
+    /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
+    /// </returns>
+    /// <exception cref="DbUpdateException">Thrown if an error occurs while saving the answer to the database.</exception>
+    public async Task<bool> UpdateAnswerAsync(Answer updatedAnswer)
+    {
+        try
+        {
+            var answer = await db.Answers.FindAsync(updatedAnswer.Id);
+            if (answer == null) return false;
+            answer.Content = updatedAnswer.Content;
+            answer.UpdatedAt = updatedAnswer.UpdatedAt;
+            db.Answers.Update(answer);
+            return await db.SaveChangesAsync() > 0;
+        }
+        catch (DbUpdateException e)
+        {
+            logger.LogError(e, "An error occurred while updating the answer.");
             throw;
         }
     }

@@ -17,6 +17,7 @@ public interface IAnswerRepository
     /// </summary>
     /// <param name="answer">The <see cref="Answer"/> entity to add.</param>
     /// <returns>The <see cref="Answer"/> entity that was added.</returns>
+    /// <exception cref="DbUpdateException">Thrown if an error occurs while saving the answer to the database.</exception>
     Task<Answer> CreateAnswerAsync(Answer answer);
     
     /// <summary>
@@ -35,5 +36,16 @@ public interface IAnswerRepository
     /// <returns>
     /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
     /// </returns>
+    /// <exception cref="DbUpdateException">Thrown if an error occurs while saving the answer to the database.</exception>
     Task<bool> UpdateAnswerStatusAsync(Guid answerId, AnswerStatus newStatus);
+    
+    /// <summary>
+    /// Updates an existing answer in the database.
+    /// </summary>
+    /// <param name="updatedAnswer">The <see cref="Answer"/> entity to update.</param>
+    /// <returns>
+    /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
+    /// </returns>
+    /// <exception cref="DbUpdateException">Thrown if an error occurs while saving the answer to the database.</exception>
+    Task<bool> UpdateAnswerAsync(Answer updatedAnswer);
 }

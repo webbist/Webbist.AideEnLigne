@@ -30,4 +30,13 @@
     <data name="Success" xml:space="preserve">
         <value>Succès</value>
     </data>
+    <data name="SaveButton" xml:space="preserve">
+        <value>Enregistrer</value>
+    </data>
+    <data name="CancelButton" xml:space="preserve">
+        <value>Annuler</value>
+    </data>
+    <data name="ContentLabel" xml:space="preserve">
+        <value>Contenu</value>
+    </data>
 </root>

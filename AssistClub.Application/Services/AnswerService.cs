@@ -93,4 +93,30 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
     {
         return await answerRepository.UpdateAnswerStatusAsync(id, newStatus);
     }
+
+    /// <summary>
+    /// Updates an existing answer in the database.
+    /// </summary>
+    /// <param name="id">The unique identifier of the answer to be updated.</param>
+    /// <param name="answerRequest">The <see cref="AnswerRequest"/> containing the updated answer details.</param>
+    /// <returns>
+    /// A boolean indicating whether the update was successful (<c>true</c> if successful, <c>false</c> otherwise).
+    /// </returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown if the answer content exceeds <see cref="AnswerRequest.ContentMaxLength"/> characters.
+    /// </exception>
+    public async Task<bool> UpdateAnswerAsync(Guid id, AnswerRequest answerRequest)
+    {
+        if (answerRequest.Content.Length > AnswerRequest.ContentMaxLength)
+        {
+            throw new ArgumentException($"Answer content exceeds the maximum character limit of {AnswerRequest.ContentMaxLength}.");
+        }
+        var updatedAnswer = new Answer
+        {
+            Id = id,
+            Content = answerRequest.Content,
+            UpdatedAt = DateTime.UtcNow
+        };
+        return await answerRepository.UpdateAnswerAsync(updatedAnswer);
+    }
 }
