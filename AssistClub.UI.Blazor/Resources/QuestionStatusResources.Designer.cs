@@ -14,21 +14,21 @@ namespace AssistClub.UI.Blazor.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class AnswerListResources {
+    internal class QuestionStatusResources {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AnswerListResources() {
+        internal QuestionStatusResources() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.AnswerListResources", typeof(AnswerListResources).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.QuestionStatusResources", typeof(QuestionStatusResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,57 +45,21 @@ namespace AssistClub.UI.Blazor.Resources {
             }
         }
         
-        internal static string AnswerCountSingularLabel {
+        internal static string Open {
             get {
-                return ResourceManager.GetString("AnswerCountSingularLabel", resourceCulture);
+                return ResourceManager.GetString("Open", resourceCulture);
             }
         }
         
-        internal static string PagingSummary {
+        internal static string Pending {
             get {
-                return ResourceManager.GetString("PagingSummary", resourceCulture);
+                return ResourceManager.GetString("Pending", resourceCulture);
             }
         }
         
-        internal static string EmptyText {
+        internal static string Resolved {
             get {
-                return ResourceManager.GetString("EmptyText", resourceCulture);
-            }
-        }
-        
-        internal static string AnsweredLabel {
-            get {
-                return ResourceManager.GetString("AnsweredLabel", resourceCulture);
-            }
-        }
-        
-        internal static string ByLabel {
-            get {
-                return ResourceManager.GetString("ByLabel", resourceCulture);
-            }
-        }
-        
-        internal static string AnswerCountPluralLabel {
-            get {
-                return ResourceManager.GetString("AnswerCountPluralLabel", resourceCulture);
-            }
-        }
-        
-        internal static string MarkOfficialButton {
-            get {
-                return ResourceManager.GetString("MarkOfficialButton", resourceCulture);
-            }
-        }
-        
-        internal static string UnmarkOfficialButton {
-            get {
-                return ResourceManager.GetString("UnmarkOfficialButton", resourceCulture);
-            }
-        }
-        
-        internal static string OfficialAnswerBadgeLabel {
-            get {
-                return ResourceManager.GetString("OfficialAnswerBadgeLabel", resourceCulture);
+                return ResourceManager.GetString("Resolved", resourceCulture);
             }
         }
     }

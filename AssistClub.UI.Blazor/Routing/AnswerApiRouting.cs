@@ -24,4 +24,13 @@ public static class AnswerApiRouting
     /// Endpoint for retrieving all answers.
     /// </summary>
     public const string GetAllRoute = $"{Base}/all";
+    
+    /// <summary>
+    /// Endpoint for updating the status of an answer.
+    /// </summary>
+    /// <param name="answerId">The unique identifier of the answer to be updated.</param>
+    /// <returns>
+    /// The route for updating the status of the specified answer.
+    /// </returns>
+    public static string UpdateStatusRoute(Guid answerId) => $"{Base}/status/{answerId}";
 }

@@ -10,6 +10,8 @@ public partial class Answer
 
     public string Content { get; set; } = null!;
 
+    public string Status { get; set; } = null!;
+
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }

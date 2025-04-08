@@ -1,6 +1,7 @@
 using AssistClub.Application.DTOs;
 using AssistClub.Application.Interfaces;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace AssistClub.Application.Services;
 
@@ -32,6 +33,7 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
             QuestionId = answerRequest.QuestionId,
             UserId = answerRequest.UserId,
             Content = answerRequest.Content,
+            Status = AnswerStatus.Pending.ToString(),
             CreatedAt = DateTime.UtcNow
         };
         
@@ -42,6 +44,7 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
             Id = createdAnswer.Id,
             QuestionId = createdAnswer.QuestionId,
             Content = createdAnswer.Content,
+            Status = createdAnswer.Status,
             CreatedAt = createdAnswer.CreatedAt,
             UpdatedAt = createdAnswer.UpdatedAt
         };
@@ -71,9 +74,23 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
                     Microsite = a.User.Microsite
                 },
                 Content = a.Content,
+                Status = a.Status,
                 CreatedAt = a.CreatedAt,
                 UpdatedAt = a.UpdatedAt
             }
         ).AsQueryable();
+    }
+
+    /// <summary>
+    /// Updates the status of an answer and the associated question status.
+    /// </summary>
+    /// <param name="id">The unique identifier of the answer to be updated.</param>
+    /// <param name="newStatus">The new status to be set for the answer.</param>
+    /// <returns>
+    /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
+    /// </returns>
+    public async Task<bool> UpdateAnswerStatusAsync(Guid id, AnswerStatus newStatus)
+    {
+        return await answerRepository.UpdateAnswerStatusAsync(id, newStatus);
     }
 }

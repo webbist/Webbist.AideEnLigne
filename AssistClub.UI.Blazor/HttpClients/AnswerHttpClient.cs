@@ -1,3 +1,4 @@
+using AssistClub.UI.Blazor.Components.Enums;
 using AssistClub.UI.Blazor.Models;
 using AssistClub.UI.Blazor.Routing;
 
@@ -53,6 +54,28 @@ public class AnswerHttpClient(HttpClient http)
         {
             Console.WriteLine($"Error getting answers: {e.Message}");
             return null;
+        }
+    }
+    
+    /// <summary>
+    /// Sends a request to update the status of an existing answer in the backend system.
+    /// </summary>
+    /// <param name="answerId">The unique identifier of the answer to be updated.</param>
+    /// <param name="newStatus">The new status to be set for the answer.</param>
+    /// <returns>
+    /// A boolean indicating whether the update was successful.
+    /// </returns>
+    public async Task<bool> UpdateAnswerStatusAsync(Guid answerId, AnswerStatus newStatus)
+    {
+        try
+        {
+            var result = await http.PutAsJsonAsync(AnswerApiRouting.UpdateStatusRoute(answerId), newStatus);
+            return result.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error updating answer status: {e.Message}");
+            return false;
         }
     }
 }

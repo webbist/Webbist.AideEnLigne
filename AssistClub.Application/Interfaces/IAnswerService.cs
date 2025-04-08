@@ -1,4 +1,5 @@
 using AssistClub.Application.DTOs;
+using Domain.Enums;
 
 namespace AssistClub.Application.Interfaces;
 
@@ -33,4 +34,14 @@ public interface IAnswerService
     /// An <see cref="IQueryable{T}"/> of <see cref="AnswerResponse"/> containing the answers.
     /// </returns>
     Task<IQueryable<AnswerResponse>> GetAnswersAsync();
+    
+    /// <summary>
+    /// Updates the status of an answer and the associated question status.
+    /// </summary>
+    /// <param name="id">The unique identifier of the answer to be updated.</param>
+    /// <param name="newStatus">The new status to be set for the answer.</param>
+    /// <returns>
+    /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
+    /// </returns>
+    Task<bool> UpdateAnswerStatusAsync(Guid id, AnswerStatus newStatus);
 }

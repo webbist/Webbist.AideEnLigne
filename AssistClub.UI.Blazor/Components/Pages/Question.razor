@@ -3,10 +3,13 @@
 @using AssistClub.UI.Blazor.Models
 @using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.Components.Answers
+@using Microsoft.AspNetCore.Authorization
 
 @rendermode InteractiveServer
+@attribute [Authorize]
 @inject QuestionHttpClient QuestionHttpClient
 @inject IStringLocalizer<QuestionResources> QuestionLocalizer
+@inject IStringLocalizer<QuestionStatusResources> QuestionStatusResources
 
 @if (_question != null)
 {
@@ -26,7 +29,7 @@
                 </span>
                 <span>
                     @QuestionLocalizer["StatusLabel"]:
-                    <span class="info-status">@_question.Status</span>
+                    <span class="info-status">@QuestionStatusResources[_question.Status]</span>
                 </span>
             </div>
             <div class="question-content">
@@ -44,8 +47,8 @@
         </div>
     </RadzenCard>
     
-    <AnswerList @ref="_answerList" QuestionId="@_question.Id"/>
-    <AnswerForm QuestionId="@_question.Id" OnAnswerCreated="RefreshAnswers"/>
+    <AnswerList @ref="_answerList" QuestionId="@_question.Id" OfficialStatusChanged="ReloadQuestionAsync"/>
+    <AnswerForm QuestionId="@_question.Id" AnswerCreated="OnAnswerCreated"/>
 }
 else
 {
@@ -77,5 +80,17 @@ else
         {
             await _answerList.RefreshAsync();
         }
+    }
+    
+    private async Task ReloadQuestionAsync()
+    {
+        _question = await QuestionHttpClient.GetQuestionAsync(Guid.Parse(Id));
+        StateHasChanged();
+    }
+    
+    private async Task OnAnswerCreated()
+    {
+        await RefreshAnswers();
+        await ReloadQuestionAsync();
     }
 }

@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.Enums;
 
 namespace AssistClub.Application.Interfaces;
 
@@ -12,7 +13,7 @@ namespace AssistClub.Application.Interfaces;
 public interface IAnswerRepository
 {
     /// <summary>
-    /// Adds a new answer to the database.
+    /// Adds a new answer to the database and updates the status of the associated question.
     /// </summary>
     /// <param name="answer">The <see cref="Answer"/> entity to add.</param>
     /// <returns>The <see cref="Answer"/> entity that was added.</returns>
@@ -25,4 +26,14 @@ public interface IAnswerRepository
     /// An <see cref="IQueryable{T}"/> representing the answers in the database.
     /// </returns>
     Task<IQueryable<Answer>> GetAnswers();
+
+    /// <summary>
+    /// Updates the status of an answer and the associated question status.
+    /// </summary>
+    /// <param name="answerId">The unique identifier of the answer to be updated.</param>
+    /// <param name="newStatus">The new status to be set for the answer.</param>
+    /// <returns>
+    /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
+    /// </returns>
+    Task<bool> UpdateAnswerStatusAsync(Guid answerId, AnswerStatus newStatus);
 }

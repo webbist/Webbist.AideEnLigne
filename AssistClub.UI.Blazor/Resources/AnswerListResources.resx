@@ -36,4 +36,13 @@
     <data name="AnswerCountPluralLabel" xml:space="preserve">
         <value>Réponses</value>
     </data>
+    <data name="MarkOfficialButton" xml:space="preserve">
+        <value>Marquer comme officielle</value>
+    </data>
+    <data name="UnmarkOfficialButton" xml:space="preserve">
+        <value>Retirer le statut officiel</value>
+    </data>
+    <data name="OfficialAnswerBadgeLabel" xml:space="preserve">
+        <value>Réponse officielle</value>
+    </data>
 </root>
