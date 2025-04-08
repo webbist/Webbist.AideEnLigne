@@ -18,18 +18,6 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="StatusOpenLabel" xml:space="preserve">
-        <value>Ouverte</value>
-    </data>
-    <data name="StatusPendingLabel" xml:space="preserve">
-        <value>En attente</value>
-    </data>
-    <data name="StatusResolvedLabel" xml:space="preserve">
-        <value>Résolue</value>
-    </data>
-    <data name="StatusUnknownLabel" xml:space="preserve">
-        <value>Inconnue</value>
-    </data>
     <data name="Open" xml:space="preserve">
         <value>Ouverte</value>
     </data>
