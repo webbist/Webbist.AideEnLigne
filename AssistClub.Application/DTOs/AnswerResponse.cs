@@ -29,9 +29,9 @@ public class AnswerResponse
     public string Content { get; set; }
     
     /// <summary>
-    /// Gets or sets a value indicating whether the answer is official.
+    /// Gets or sets the status of the answer (<c>Pending</c>, <c>Approved</c>, or <c>Archived</c>).
     /// </summary>
-    public bool IsOfficial { get; set; }
+    public string Status { get; set; }
     
     /// <summary>
     /// Gets or sets the timestamp indicating when the answer was created.

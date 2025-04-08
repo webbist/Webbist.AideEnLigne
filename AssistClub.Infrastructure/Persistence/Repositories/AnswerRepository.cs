@@ -19,13 +19,13 @@ public class AnswerRepository(AssistClubDbContext db, ILogger<AnswerRepository> 
     {
         try
         {
-            var result = db.Answers.Add(answer);
             var question = await db.Questions.FindAsync(answer.QuestionId);
             if (question != null)
             {
-                question.Status = QuestionStatus.Pending.ToString().ToLower();
+                question.Status = QuestionStatus.Pending.ToString();
                 db.Questions.Update(question);
             }
+            var result = db.Answers.Add(answer);
             await db.SaveChangesAsync();
             return result.Entity;
         }
@@ -48,27 +48,27 @@ public class AnswerRepository(AssistClubDbContext db, ILogger<AnswerRepository> 
     }
     
     /// <summary>
-    /// Updates the official status of an answer and the associated question status.
+    /// Updates the status of an answer and the associated question status.
     /// </summary>
     /// <param name="answerId">The unique identifier of the answer to be updated.</param>
-    /// <param name="isOfficial">Indicates whether the answer is official or not.</param>
+    /// <param name="newStatus">The new status to be set for the answer.</param>
     /// <returns>
     /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
     /// </returns>
-    public async Task<bool> UpdateAnswerOfficialStatusAsync(Guid answerId, bool isOfficial)
+    public async Task<bool> UpdateAnswerStatusAsync(Guid answerId, AnswerStatus newStatus)
     {
         try
         {
             var answer = await db.Answers.FindAsync(answerId);
             if (answer == null) return false;
-            answer.IsOfficial = isOfficial;
+            answer.Status = newStatus.ToString();
             db.Answers.Update(answer);
             var question = await db.Questions.FindAsync(answer.QuestionId);
             if (question != null)
             {
-                question.Status = isOfficial
-                    ? QuestionStatus.Resolved.ToString().ToLower()
-                    : QuestionStatus.Pending.ToString().ToLower();
+                question.Status = newStatus == AnswerStatus.Official
+                    ? QuestionStatus.Resolved.ToString()
+                    : QuestionStatus.Pending.ToString();
                 db.Questions.Update(question);
             }
             return await db.SaveChangesAsync() > 0;

@@ -1,7 +1,7 @@
-namespace Domain.Enums;
+namespace AssistClub.UI.Blazor.Components.Enums;
 
 /// <summary>
-/// Represents the possible statuses of a question.
+/// Represents the status of a question (<c>Open</c>, <c>Pending</c>, or <c>Resolved</c>).
 /// </summary>
 public enum QuestionStatus
 {

@@ -68,5 +68,23 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("StatusUnknownLabel", resourceCulture);
             }
         }
+        
+        internal static string Open {
+            get {
+                return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        internal static string Pending {
+            get {
+                return ResourceManager.GetString("Pending", resourceCulture);
+            }
+        }
+        
+        internal static string Resolved {
+            get {
+                return ResourceManager.GetString("Resolved", resourceCulture);
+            }
+        }
     }
 }

@@ -1,3 +1,4 @@
+@using AssistClub.UI.Blazor.Components.Enums
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
 @using AssistClub.UI.Blazor.Extensions
@@ -27,11 +28,11 @@
                         <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu">
-                        @if (!HasOfficialAnswer || answer.IsOfficial)
+                        @if (!HasOfficialAnswer || answer.Status == AnswerStatus.Official.ToString())
                         {
                             <li>
-                                <button class="dropdown-item" @onclick="@(() => ToggleOfficialStatus(answer.Id, answer.IsOfficial))">
-                                    @(answer.IsOfficial
+                                <button class="dropdown-item" @onclick="@(() => ToggleOfficialStatus(answer.Id, Enum.Parse<AnswerStatus>(answer.Status)))">
+                                    @(answer.Status == AnswerStatus.Official.ToString()
                                         ? AnswerListLocalizer["UnmarkOfficialButton"]
                                         : AnswerListLocalizer["MarkOfficialButton"])
                                 </button>
@@ -43,7 +44,7 @@
         </div>
         <div class="answer-info text-end">
             <div class="answer-date d-flex">
-                @if (answer.IsOfficial)
+                @if (answer.Status == AnswerStatus.Official.ToString())
                 {
                     <span class="badge-official badge bg-success me-2">@AnswerListLocalizer["OfficialAnswerBadgeLabel"]</span>
                 }
@@ -65,7 +66,7 @@
 
 @code {
     [Parameter] public Guid QuestionId { get; set; }
-    [Parameter] public EventCallback OnOfficialStatusChanged { get; set; }
+    [Parameter] public EventCallback OfficialStatusChanged { get; set; }
     private IEnumerable<AnswerApiResponse>? _answers;
     
     protected override async Task OnInitializedAsync()
@@ -84,15 +85,20 @@
         _answers = await AnswerHttpClient.GetAnswersAsync(QuestionId);
     }
     
-    private async Task ToggleOfficialStatus(Guid answerId, bool currentStatus)
+    private async Task ToggleOfficialStatus(Guid answerId, AnswerStatus currentStatus)
     {
-        var success = await AnswerHttpClient.MarkAnswerAsOfficial(answerId, !currentStatus);
+        var newStatus = currentStatus == AnswerStatus.Official
+            ? AnswerStatus.Pending
+            : AnswerStatus.Official;
+
+        var success = await AnswerHttpClient.UpdateAnswerStatusAsync(answerId, newStatus);
+    
         if (success)
         {
             await RefreshAsync();
-            await OnOfficialStatusChanged.InvokeAsync();
+            await OfficialStatusChanged.InvokeAsync();
         }
     }
     
-    private bool HasOfficialAnswer => _answers?.Any(a => a.IsOfficial) == true;
+    private bool HasOfficialAnswer => _answers?.Any(a => a.Status == AnswerStatus.Official.ToString()) ?? false;
 }

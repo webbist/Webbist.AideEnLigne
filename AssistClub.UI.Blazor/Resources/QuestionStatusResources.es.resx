@@ -23,4 +23,13 @@
     <data name="StatusUnknownLabel" xml:space="preserve">
         <value>Desconocido</value>
     </data>
+    <data name="Open" xml:space="preserve">
+        <value>Abierta</value>
+    </data>
+    <data name="Pending" xml:space="preserve">
+        <value>Pendiente</value>
+    </data>
+    <data name="Resolved" xml:space="preserve">
+        <value>Resuelta</value>
+    </data>
 </root>
