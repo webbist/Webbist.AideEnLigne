@@ -10,7 +10,7 @@ public partial class Answer
 
     public string Content { get; set; } = null!;
 
-    public bool IsOfficial { get; set; }
+    public string Status { get; set; } = null!;
 
     public DateTime? CreatedAt { get; set; }
 

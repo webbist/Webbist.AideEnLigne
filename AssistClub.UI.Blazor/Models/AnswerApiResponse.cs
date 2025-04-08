@@ -26,9 +26,9 @@ public class AnswerApiResponse
     public string Content { get; set; }
     
     /// <summary>
-    /// Gets or sets a value indicating whether the answer is marked as official.
+    /// Gets or sets the status of the answer, indicating whether it is <c>Official</c>, <c>Pending</c> or <c>Archived</c>.
     /// </summary>
-    public bool IsOfficial { get; set; }
+    public string Status { get; set; }
     
     /// <summary>
     /// Gets or sets the date and time the answer was created.

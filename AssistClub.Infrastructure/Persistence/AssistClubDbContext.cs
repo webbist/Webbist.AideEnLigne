@@ -27,12 +27,13 @@ public partial class AssistClubDbContext : DbContext
     {
         modelBuilder.Entity<Answer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Answers__3214EC07618CBE75");
+            entity.HasKey(e => e.Id).HasName("PK__Answers__3214EC0758CA3685");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.Status).HasMaxLength(50);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Question).WithMany(p => p.Answers)
@@ -47,7 +48,7 @@ public partial class AssistClubDbContext : DbContext
 
         modelBuilder.Entity<Question>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Question__3214EC07832D3D47");
+            entity.HasKey(e => e.Id).HasName("PK__Question__3214EC0787B01AC0");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt)
@@ -65,9 +66,9 @@ public partial class AssistClubDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07FDB72547");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07D3B156ED");
 
-            entity.HasIndex(e => e.Email, "UQ__Users__A9D105347AA84E1F").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Users__A9D105341BD98AD9").IsUnique();
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Club).HasMaxLength(100);

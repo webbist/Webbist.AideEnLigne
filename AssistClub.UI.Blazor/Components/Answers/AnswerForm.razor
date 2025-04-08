@@ -39,7 +39,7 @@
 
 @code {
     [Parameter] public Guid QuestionId { get; set; }
-    [Parameter] public EventCallback OnAnswerCreated { get; set; }
+    [Parameter] public EventCallback AnswerCreated { get; set; }
     private AnswerRequest _answerModel = new();
 
     private async Task PublishAnswer()
@@ -75,7 +75,7 @@
         else
         {
             _answerModel = new AnswerRequest();
-            await OnAnswerCreated.InvokeAsync();
+            await AnswerCreated.InvokeAsync();
             NotificationService.Notify(new NotificationMessage
             {
                 Severity = NotificationSeverity.Success,

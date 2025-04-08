@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using System.Net
 @using System.Text.RegularExpressions
+@using AssistClub.UI.Blazor.Components.Enums
 @using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
@@ -8,8 +9,10 @@
 
 @rendermode InteractiveServer
 @attribute [Authorize]
+
 @inject QuestionHttpClient QuestionHttpClient
 @inject IStringLocalizer<AllQuestionsResources> AllQuestionsLocalizer
+@inject IStringLocalizer<QuestionStatusResources> QuestionStatusResources
 
 <PageTitle>@AllQuestionsLocalizer["PageTitle"]</PageTitle>
 
@@ -38,7 +41,7 @@
                                 <h5 class="mb-0 align-content-center">@(question.User.Firstname + " " + question.User.Lastname)</h5>
                             </a>
                             <small class="d-block text-end">
-                                <span class="text-black d-block lh-18">@question.Status.ToStatusLocalizedLabel()</span>
+                                <span class="text-black d-block lh-18">@QuestionStatusResources[question.Status]</span>
                                 <span class="d-block lh-18 fs-12">@question.CreatedAt.GetTimeAgo()</span>
                             </small>
                         </div>

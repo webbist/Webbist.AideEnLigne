@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.Enums;
 
 namespace AssistClub.Application.Interfaces;
 
@@ -28,15 +29,15 @@ public interface IAnswerRepository
     Task<IQueryable<Answer>> GetAnswers();
 
     /// <summary>
-    /// Updates the official status of an answer and the associated question status.
+    /// Updates the status of an answer and the associated question status.
     /// </summary>
     /// <param name="answerId">The unique identifier of the answer to be updated.</param>
-    /// <param name="isOfficial">Indicates whether the answer is official or not.</param>
+    /// <param name="newStatus">The new status to be set for the answer.</param>
     /// <returns>
     /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
     /// </returns>
     /// <exception cref="DbUpdateException">Thrown if an error occurs while saving the answer to the database.</exception>
-    Task<bool> UpdateAnswerOfficialStatusAsync(Guid answerId, bool isOfficial);
+    Task<bool> UpdateAnswerStatusAsync(Guid answerId, AnswerStatus newStatus);
     
     /// <summary>
     /// Updates an existing answer in the database.
