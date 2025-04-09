@@ -10,6 +10,7 @@
 @inject IStringLocalizer<AnswerListResources> AnswerListLocalizer
 @inject DialogService DialogService
 @inject NotificationService NotificationService
+@inject TooltipService TooltipService
 
 <div class="total-answers">
     <h5>@(_answers?.Count() ?? 0) @(_answers?.Count() == 1 ? AnswerListLocalizer["AnswerCountSingularLabel"] : AnswerListLocalizer["AnswerCountPluralLabel"])</h5>
@@ -32,27 +33,27 @@
                     }
                     @if (isAdmin || isAuthor)
                     {
-                        <div class="dropdown ms-auto">
-                            <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                <i class="bi bi-three-dots-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu">
+                        <div class="btn-toolbar ms-auto" role="toolbar">
+                            <div class="btn-group my-auto" role="group">
                                 @if (isAdmin && (!HasOfficialAnswer || answer.Status == AnswerStatus.Official.ToString()))
                                 {
-                                    <li>
-                                        <button class="dropdown-item" @onclick="@(() => ToggleOfficialStatus(answer.Id, Enum.Parse<AnswerStatus>(answer.Status)))">
-                                            @(answer.Status == AnswerStatus.Official.ToString()
-                                                ? AnswerListLocalizer["UnmarkOfficialButton"]
-                                                : AnswerListLocalizer["MarkOfficialButton"])
-                                        </button>
-                                    </li>
-                                }
-                                <li>
-                                    <button class="dropdown-item" @onclick="@(() => OpenEditDialog(answer))">
-                                        @AnswerListLocalizer["EditAnswerButton"]
+                                    <button @ref="@_buttonRefMap[answer.Id]" @onmouseenter="@(() => ShowTooltip(_buttonRefMap[answer.Id], answer.Status))" 
+                                            class="btn btn-sm @(answer.Status == AnswerStatus.Official.ToString() 
+                                                                  ? "btn-outline-danger" 
+                                                                  : "btn-outline-success")"
+                                            @onclick="@(() => ToggleOfficialStatus(answer.Id, Enum.Parse<AnswerStatus>(answer.Status)))">
+                                        <i class="bi @(answer.Status == AnswerStatus.Official.ToString()
+                                                         ? "bi-x-circle"
+                                                         : "bi-check-circle")"></i>
                                     </button>
-                                </li>
-                            </ul>
+                                }
+
+                                <button class="btn btn-outline-secondary btn-sm"
+                                        title="@AnswerListLocalizer["EditAnswerButton"]"
+                                        @onclick="@(() => OpenEditDialog(answer))">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                            </div>
                         </div>
                     }
                 </Authorized>
@@ -84,6 +85,7 @@
     [Parameter] public Guid QuestionId { get; set; }
     [Parameter] public EventCallback OfficialStatusChanged { get; set; }
     private IEnumerable<AnswerApiResponse>? _answers;
+    private Dictionary<Guid, ElementReference> _buttonRefMap = new();
     
     protected override async Task OnInitializedAsync()
     {
@@ -152,5 +154,21 @@
         };
 
         await DialogService.OpenAsync<EditAnswerDialog>(AnswerListLocalizer["EditAnswerDialogTitle"], parameters);
+    }
+
+    void ShowTooltip(ElementReference elementReference, string status)
+    {
+        TooltipService.Open(
+            elementReference, 
+            status == AnswerStatus.Official.ToString() 
+                ? AnswerListLocalizer["UnmarkOfficialButton"] 
+                : AnswerListLocalizer["MarkOfficialButton"],
+            new TooltipOptions
+            {
+                Duration = null,
+                Style = status == AnswerStatus.Official.ToString() 
+                    ? "background: var(--bs-danger);"
+                    : "background: var(--bs-success);"
+            });
     }
 }
