@@ -21,44 +21,48 @@
                 PagingSummaryFormat="@AnswerListLocalizer["PagingSummary"]" ShowEmptyMessage="true" 
                 EmptyText="@AnswerListLocalizer["EmptyText"]">
     <Template Context="answer">
-        <div class="d-flex">
-            <div class="answer-body">
-                @((MarkupString)answer.Content)
-            </div>
-            <AuthorizeView>
-                <Authorized Context="auth">
-                    @{
-                        var isAdmin = auth.UserIsAdmin();
-                        var isAuthor = auth.UserIsAuthor(answer.User.Id);
-                    }
-                    @if (isAdmin || isAuthor)
-                    {
-                        <div class="btn-toolbar ms-auto" role="toolbar">
-                            <div class="btn-group mb-auto" role="group">
-                                @if (isAdmin && (!HasOfficialAnswer || answer.Status == AnswerStatus.Official.ToString()))
-                                {
-                                    <button @ref="@_buttonRefMap[answer.Id]" @onmouseenter="@(() => ShowTooltip(_buttonRefMap[answer.Id], answer.Status))"
-                                            @onmouseleave="HideTooltip"
-                                            class="btn btn-sm @(answer.Status == AnswerStatus.Official.ToString() 
-                                                                  ? "btn-outline-danger" 
-                                                                  : "btn-outline-success")"
-                                            @onclick="@(() => ToggleOfficialStatus(answer.Id, Enum.Parse<AnswerStatus>(answer.Status)))">
-                                        <i class="bi @(answer.Status == AnswerStatus.Official.ToString()
-                                                         ? "bi-x-circle"
-                                                         : "bi-check-circle")"></i>
-                                    </button>
-                                }
-
-                                <button class="btn btn-outline-secondary btn-sm"
-                                        title="@AnswerListLocalizer["EditAnswerButton"]"
-                                        @onclick="@(() => OpenEditDialog(answer))">
-                                    <i class="bi bi-pencil-square"></i>
+        <AuthorizeView>
+            <Authorized Context="auth">
+                @{
+                    var isAdmin = auth.UserIsAdmin();
+                    var isAuthor = auth.UserIsAuthor(answer.User.Id);
+                }
+                @if (isAdmin || isAuthor)
+                {
+                    <div class="btn-toolbar" role="toolbar">
+                        <div class="btn-group ms-auto mb-1" role="group">
+                            @if (isAdmin && (!HasOfficialAnswer || answer.Status == AnswerStatus.Official.ToString()))
+                            {
+                                <button @ref="@_buttonRefMap[answer.Id]" @onmouseenter="@(() => ShowTooltip(_buttonRefMap[answer.Id], answer.Status))"
+                                        @onmouseleave="HideTooltip"
+                                        class="btn btn-sm @(answer.Status == AnswerStatus.Official.ToString()
+                                                              ? "btn-outline-danger"
+                                                              : "btn-outline-success")"
+                                        @onclick="@(() => ToggleOfficialStatus(answer.Id, Enum.Parse<AnswerStatus>(answer.Status)))">
+                                    <i class="bi @(answer.Status == AnswerStatus.Official.ToString()
+                                                     ? "bi-x-circle"
+                                                     : "bi-check-circle")"></i>
                                 </button>
-                            </div>
+                            }
+
+                            <button class="btn btn-outline-secondary btn-sm"
+                                    title="@AnswerListLocalizer["EditAnswerButton"]"
+                                    @onclick="@(() => OpenEditDialog(answer))">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+
+                            <button class="btn btn-outline-danger btn-sm"
+                                    title="@AnswerListLocalizer["DeleteAnswerButton"]"
+                                    @onclick="@(() => ConfirmDelete(answer.Id))">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </div>
-                    }
-                </Authorized>
-            </AuthorizeView>
+                    </div>
+                }
+            </Authorized>
+        </AuthorizeView>
+        <div class="answer-body">
+            @((MarkupString)answer.Content)
         </div>
         <div class="answer-info text-end">
             <div class="answer-date d-flex">
@@ -180,5 +184,46 @@
         if (!_currentTooltipRef.HasValue) return;
         TooltipService.Close();
         _currentTooltipRef = null;
+    }
+    
+    private async Task ConfirmDelete(Guid answerId)
+    {
+        var confirmed = await DialogService.Confirm(
+            AnswerListLocalizer["DeleteAnswerConfirmMessage"],
+            AnswerListLocalizer["DeleteAnswerConfirmTitle"],
+            new ConfirmOptions { OkButtonText = Localizer["ConfirmButton"], CancelButtonText = Localizer["CancelButton"] });
+
+        if (confirmed == true)
+        {
+            await DeleteAnswer(answerId);
+        }
+    }
+    
+    private async Task DeleteAnswer(Guid answerId)
+    {
+        var success = await AnswerHttpClient.DeleteAnswerAsync(answerId);
+
+        if (success)
+        {
+            await RefreshAsync();
+            await OfficialStatusChanged.InvokeAsync();
+            NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Success,
+                Summary = Localizer["Success"],
+                Detail = AnswerListLocalizer["DeleteAnswerSuccessMessage"],
+                Duration = 4000
+            });
+        }
+        else
+        {
+            NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = Localizer["Error"],
+                Detail = AnswerListLocalizer["DeleteAnswerErrorMessage"],
+                Duration = 4000
+            });
+        }
     }
 }

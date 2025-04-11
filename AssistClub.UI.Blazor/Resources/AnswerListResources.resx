@@ -57,4 +57,19 @@
     <data name="EditAnswerButton" xml:space="preserve">
         <value>Modifier la réponse</value>
     </data>
+    <data name="DeleteAnswerConfirmMessage" xml:space="preserve">
+        <value>Êtes-vous sûr de vouloir supprimer cette réponse?</value>
+    </data>
+    <data name="DeleteAnswerConfirmTitle" xml:space="preserve">
+        <value>Confirmer la suppression</value>
+    </data>
+    <data name="DeleteAnswerButton" xml:space="preserve">
+        <value>Supprimer la réponse</value>
+    </data>
+    <data name="DeleteAnswerSuccessMessage" xml:space="preserve">
+        <value>Réponse supprimée avec succès.</value>
+    </data>
+    <data name="DeleteAnswerErrorMessage" xml:space="preserve">
+        <value>Échec de la suppression de la réponse.</value>
+    </data>
 </root>

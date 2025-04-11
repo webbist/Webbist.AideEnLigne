@@ -110,5 +110,11 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("UpdatedLabel", resourceCulture);
             }
         }
+        
+        internal static string ConfirmButton {
+            get {
+                return ResourceManager.GetString("ConfirmButton", resourceCulture);
+            }
+        }
     }
 }

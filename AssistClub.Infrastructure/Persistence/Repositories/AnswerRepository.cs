@@ -20,7 +20,7 @@ public class AnswerRepository(AssistClubDbContext db, ILogger<AnswerRepository> 
         try
         {
             var question = await db.Questions.FindAsync(answer.QuestionId);
-            if (question != null)
+            if (question != null && question.Status == QuestionStatus.Open.ToString())
             {
                 question.Status = QuestionStatus.Pending.ToString();
                 db.Questions.Update(question);
@@ -105,5 +105,45 @@ public class AnswerRepository(AssistClubDbContext db, ILogger<AnswerRepository> 
             logger.LogError(e, "An error occurred while updating the answer.");
             throw;
         }
+    }
+
+    /// <summary>
+    /// Deletes an answer from the database by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the answer to be deleted.</param>
+    /// <returns>
+    /// Returns <c>true</c> if the deletion was successful; otherwise, <c>false</c>.
+    /// </returns>
+    public async Task<bool> DeleteAnswerAsync(Guid id)
+    {
+        var answer = await db.Answers.FindAsync(id);
+        if (answer == null)
+        {
+            logger.LogInformation("Attempted to delete answer with ID {Id}, but it was not found in the database.", id);
+            return true;
+        }
+        db.Answers.Remove(answer);
+        var result = await db.SaveChangesAsync();
+        
+        var remainingAnswers = await db.Answers
+            .Where(a => a.QuestionId == answer.QuestionId)
+            .ToListAsync();
+        
+        var question = await db.Questions.FindAsync(answer.QuestionId);
+        if (question != null)
+        {
+            Console.WriteLine(remainingAnswers.Count);
+            if (remainingAnswers.Count == 0)
+            {
+                question.Status = QuestionStatus.Open.ToString();
+            }
+            else if (answer.Status == AnswerStatus.Official.ToString())
+            {
+                question.Status = QuestionStatus.Pending.ToString();
+            }
+            db.Questions.Update(question);
+            await db.SaveChangesAsync();
+        }
+        return result == 1;
     }
 }

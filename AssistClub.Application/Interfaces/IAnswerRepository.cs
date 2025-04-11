@@ -48,4 +48,13 @@ public interface IAnswerRepository
     /// </returns>
     /// <exception cref="DbUpdateException">Thrown if an error occurs while saving the answer to the database.</exception>
     Task<bool> UpdateAnswerAsync(Answer updatedAnswer);
+
+    /// <summary>
+    /// Deletes an answer from the database by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the answer to be deleted.</param>
+    /// <returns>
+    /// Returns <c>true</c> if the deletion was successful; otherwise, <c>false</c>.
+    /// </returns>
+    Task<bool> DeleteAnswerAsync(Guid id);
 }

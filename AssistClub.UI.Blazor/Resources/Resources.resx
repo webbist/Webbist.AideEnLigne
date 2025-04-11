@@ -51,4 +51,7 @@
     <data name="UpdatedLabel" xml:space="preserve">
         <value>Modifié</value>
     </data>
+    <data name="ConfirmButton" xml:space="preserve">
+        <value>Confirmer</value>
+    </data>
 </root>

@@ -50,4 +50,19 @@
     <data name="EditAnswerButton" xml:space="preserve">
         <value>Editar respuesta</value>
     </data>
+    <data name="DeleteAnswerButton" xml:space="preserve">
+        <value>Borrar la respuesta</value>
+    </data>
+    <data name="DeleteAnswerConfirmMessage" xml:space="preserve">
+        <value>¿Estás seguro de que deseas borrar esta respuesta?</value>
+    </data>
+    <data name="DeleteAnswerConfirmTitle" xml:space="preserve">
+        <value>Confirmar borrado</value>
+    </data>
+    <data name="DeleteAnswerSuccessMessage" xml:space="preserve">
+        <value>Respuesta eliminada correctamente.</value>
+    </data>
+    <data name="DeleteAnswerErrorMessage" xml:space="preserve">
+        <value>Error al eliminar la respuesta.</value>
+    </data>
 </root>
