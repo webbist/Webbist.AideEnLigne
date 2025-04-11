@@ -1,6 +1,4 @@
 ﻿@page "/"
-@using System.Net
-@using System.Text.RegularExpressions
 @using AssistClub.UI.Blazor.Components.Enums
 @using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.HttpClients
@@ -32,7 +30,7 @@
                         <NavLink href="@($"question/{question.Id}")">@question.Title</NavLink>
                     </h5>
                     <p class="mb-2 truncate-text lh-20 fs-13">
-                        @GetPlainTextFromHtml(question.Content)
+                        @question.Content.GetPlainTextFromHtml()
                     </p>
                     <div class="question-footer d-flex align-items-center px-0 border-bottom-0 pb-0">
                         <div class="info-footer d-flex flex-wrap align-items-center justify-content-between">
@@ -58,11 +56,5 @@
     protected override async Task OnInitializedAsync()
     {
         _questions = await QuestionHttpClient.GetQuestionsAsync(QuestionVisibility.Public);
-    }
-    
-    private string GetPlainTextFromHtml(string input)
-    {
-        string decoded = WebUtility.HtmlDecode(input);
-        return Regex.Replace(decoded, "<.*?>", " ");
     }
 }

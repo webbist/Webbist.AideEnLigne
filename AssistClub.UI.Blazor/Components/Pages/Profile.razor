@@ -4,6 +4,7 @@
 @using AssistClub.UI.Blazor.Models
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
+@using AssistClub.UI.Blazor.Components.Profile
 
 @rendermode InteractiveServer
 @attribute [Authorize]
@@ -16,18 +17,30 @@
 
 @if (_user != null)
 {
-    <div class="card">
-        <div class="card-header">
-            <h4>@ProfileLocalizer["PageTitle"]</h4>
-        </div>
-        <div class="card-body">
-            <p><strong>@ProfileLocalizer["FullnameLabel"]:</strong> @_user.Fullname</p>
-            <p><strong>@ProfileLocalizer["EmailLabel"]:</strong> @_user.Email</p>
-            <p><strong>@ProfileLocalizer["PhotoLabel"]:</strong> @_user.Photo</p>
-            <p><strong>@ProfileLocalizer["ClubLabel"]:</strong> @_user.Club</p>
-            <p><strong>@ProfileLocalizer["MicrositeLabel"]:</strong> @_user.Microsite</p>
-        </div>
-    </div>
+    <RadzenTabs>
+        <Tabs>
+            <RadzenTabsItem Text="Profile">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>@ProfileLocalizer["PageTitle"]</h4>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>@ProfileLocalizer["FullnameLabel"]:</strong> @_user.Fullname</p>
+                        <p><strong>@ProfileLocalizer["EmailLabel"]:</strong> @_user.Email</p>
+                        <p><strong>@ProfileLocalizer["PhotoLabel"]:</strong> @_user.Photo</p>
+                        <p><strong>@ProfileLocalizer["ClubLabel"]:</strong> @_user.Club</p>
+                        <p><strong>@ProfileLocalizer["MicrositeLabel"]:</strong> @_user.Microsite</p>
+                    </div>
+                </div>
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="My Questions">
+                <UserQuestionList UserId="_user.Id" />
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="My Answers">
+                <UserAnswerList UserId="_user.Id" />
+            </RadzenTabsItem>
+        </Tabs>
+    </RadzenTabs>
 } else
 {
     <p>@Localizer["Loading"]</p>

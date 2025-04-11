@@ -1,0 +1,62 @@
+@using AssistClub.UI.Blazor.Components.Enums
+@using AssistClub.UI.Blazor.Extensions
+@using AssistClub.UI.Blazor.HttpClients
+@using AssistClub.UI.Blazor.Models
+
+@inject AnswerHttpClient AnswerHttpClient
+@inject IStringLocalizer<UserAnswerListResources> UserAnswerListLocalizer
+
+@if (_answers == null)
+{
+    <p>@Localizer["Loading"]</p>
+}
+else
+{
+    <h4>@UserAnswerListLocalizer["TotalLabel"] (@_answers.Count())</h4>
+    <RadzenDataList WrapItems="false" AllowPaging="true" Data="_answers" TItem="AnswerApiResponse" PageSize="10"
+                    PagerHorizontalAlign="HorizontalAlign.Center" 
+                    ShowEmptyMessage="true" EmptyText="@UserAnswerListLocalizer["EmptyText"]">
+        <Template Context="answer">
+            <div class="answer-body">
+                <h5 class="fs-6 truncate-text">
+                    <NavLink href="@($"question/{answer.QuestionId}")">
+                        @answer.Content.GetPlainTextFromHtml()
+                    </NavLink>
+                </h5>
+                <div class="d-flex flex-wrap align-items-center">
+                    <span class="badge-official badge me-2 @(answer.Status == AnswerStatus.Official.ToString()
+                                                               ? "bg-success"
+                                                               : answer.Status == AnswerStatus.Pending.ToString()
+                                                                   ? "bg-warning"
+                                                                   : "bg-danger")">
+                        @answer.Status
+                    </span>
+                    <div class="answer-info mb-0 mt-2 mt-lg-auto d-flex flex-wrap">
+                        <span class="answer-info-span">
+                            <span class="info-status-span">@Localizer["CreatedLabel"]: </span>
+                            @answer.CreatedAt.GetTimeAgo()
+                        </span>
+                        @if (answer.UpdatedAt != null)
+                        {
+                            <span class="answer-info-span">
+                                <span class="info-status-span"> @Localizer["UpdatedLabel"]: </span>
+                                @answer.UpdatedAt.Value.GetTimeAgo()
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </Template>
+    </RadzenDataList>
+}
+
+@code {
+    [Parameter] public Guid UserId { get; set; }
+
+    private IEnumerable<AnswerApiResponse>? _answers;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _answers = await AnswerHttpClient.GetAnswersByUserIdAsync(UserId);
+    }
+}

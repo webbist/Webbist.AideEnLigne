@@ -38,4 +38,10 @@
     <data name="VisibilityLabel" xml:space="preserve">
         <value>Visibility</value>
     </data>
+    <data name="CreatedLabel" xml:space="preserve">
+        <value>Created</value>
+    </data>
+    <data name="UpdatedLabel" xml:space="preserve">
+        <value>Updated</value>
+    </data>
 </root>

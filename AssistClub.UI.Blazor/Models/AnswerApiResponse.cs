@@ -33,7 +33,7 @@ public class AnswerApiResponse
     /// <summary>
     /// Gets or sets the date and time the answer was created.
     /// </summary>
-    public DateTime? CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
     
     /// <summary>
     /// Gets or sets the date and time the answer was last updated.

@@ -61,6 +61,14 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>QuestionVisibilityResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\UserAnswerListResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserAnswerListResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\UserQuestionListResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserQuestionListResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -123,6 +131,16 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>QuestionVisibilityResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\UserAnswerListResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UserAnswerListResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\UserQuestionListResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UserQuestionListResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
