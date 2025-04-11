@@ -38,4 +38,13 @@ public static class QuestionApiRouting
     /// <param name="id">The ID of the question.</param>
     /// <returns>The full URL for the question update endpoint.</returns>
     public static string UpdateRoute(Guid id) => $"{Base}/update/{id}";
+    
+    /// <summary>
+    /// Endpoint for deleting a question by its ID.
+    /// </summary>
+    /// <param name="questionId">The ID of the question to be deleted.</param>
+    /// <returns>
+    /// The full URL for the question deletion endpoint.
+    /// </returns>
+    public static string DeleteRoute(Guid questionId) => $"{Base}/delete/{questionId}";
 }

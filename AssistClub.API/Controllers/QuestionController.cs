@@ -121,4 +121,27 @@ public class QuestionController(IQuestionService questionService, ILogger<Questi
             return StatusCode(500, e.Message);
         }
     }
+    
+    /// <summary>
+    /// Deletes a question from the system by its unique identifier.
+    /// </summary>
+    /// <param name="id">The ID of the question to delete.</param>
+    /// <returns>
+    /// <c>200 OK</c>: If the deletion was successful.<br/>
+    /// <c>500 Internal Server Error</c>: If an unexpected error occurs.
+    /// </returns>
+    [HttpDelete("Delete/{id}")]
+    public async Task<IActionResult> DeleteQuestion(Guid id)
+    {
+        try
+        {
+            var result = await questionService.DeleteQuestionAsync(id);
+            return Ok(result);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "An error occurred while deleting the question.");
+            return StatusCode(500, e.Message);
+        }
+    }
 }

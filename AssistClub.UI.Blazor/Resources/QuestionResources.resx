@@ -42,4 +42,22 @@
     <data name="UpdateQuestionErrorMessage" xml:space="preserve">
         <value>Échec de la mise à jour de la question.</value>
     </data>
+    <data name="EditQuestionButton" xml:space="preserve">
+        <value>Modifier la question</value>
+    </data>
+    <data name="DeleteQuestionButton" xml:space="preserve">
+        <value>Supprimer la question</value>
+    </data>
+    <data name="DeleteQuestionConfirmMessage" xml:space="preserve">
+        <value>Êtes-vous sûr de vouloir supprimer cette question?</value>
+    </data>
+    <data name="DeleteQuestionConfirmTitle" xml:space="preserve">
+        <value>Confirmer la suppression</value>
+    </data>
+    <data name="DeleteQuestionSuccessMessage" xml:space="preserve">
+        <value>Question supprimée avec succès.</value>
+    </data>
+    <data name="DeleteQuestionErrorMessage" xml:space="preserve">
+        <value>Échec de la suppression de la question.</value>
+    </data>
 </root>
