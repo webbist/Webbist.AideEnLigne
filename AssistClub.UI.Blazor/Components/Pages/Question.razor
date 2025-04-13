@@ -4,6 +4,7 @@
 @using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.Components.Answers
 @using AssistClub.UI.Blazor.Components.Questions
+@using AssistClub.UI.Blazor.Routing
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Authorization
 
@@ -15,6 +16,7 @@
 @inject NotificationService NotificationService
 @inject NavigationManager Nav
 @inject IStringLocalizer<QuestionStatusResources> QuestionStatusResources
+@inject IConfiguration Configuration
 
 @if (_question != null)
 {
@@ -64,6 +66,23 @@
             </div>
             <div class="question-content">
                 @((MarkupString)_question.Content)
+                @if (!string.IsNullOrEmpty(_question.AttachmentName))
+                {
+                    var fileUrl = $"{Configuration["Api:BaseUrl"]}/{FileApiRouting.DownloadFileRoute}/{_question.AttachmentName}";
+
+                    <div class="mt-3">
+                        @if (_question.AttachmentName.EndsWith(".jpg") || _question.AttachmentName.EndsWith(".jpeg") || _question.AttachmentName.EndsWith(".png"))
+                        {
+                            <img src="@fileUrl" alt="@QuestionLocalizer["AttachmentAltText"]" style="max-width: 100%; height: auto;" class="img-thumbnail" />
+                        }
+                        else
+                        {
+                            <a class="button-download btn btn-outline-primary" href="@fileUrl" target="_blank" download>
+                                <i class="bi bi-download"></i> @QuestionLocalizer["DownloadAttachmentButton"]
+                            </a>
+                        }
+                    </div>
+                }
             </div>
             <div class="question-author">
                 <span class="author-span">@QuestionLocalizer["AskedByLabel"]:</span>
@@ -187,6 +206,12 @@ else
         var success = await QuestionHttpClient.DeleteQuestionAsync(questionId);
         if (success)
         {
+            if (_question != null && !string.IsNullOrEmpty(_question.AttachmentName))
+            {
+                var deleteSuccess= await QuestionHttpClient.DeleteFileAsync(_question.AttachmentName);
+                if (!deleteSuccess) Console.WriteLine("File not found or could not be deleted.");
+            }
+            
             NotificationService.Notify(new NotificationMessage
             {
                 Severity = NotificationSeverity.Success,

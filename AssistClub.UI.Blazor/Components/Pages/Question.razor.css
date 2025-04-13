@@ -40,12 +40,12 @@
     font-size: 14px;
 }
 
-.button-back {
+.button-back, .button-download {
     border-color: #006bb7;
     color: #006bb7;
 }
 
-.button-back:hover {
+.button-back:hover, .button-download:hover {
     background-color: #006bb7;
     color: white;
 }

@@ -75,6 +75,7 @@ public class QuestionRepository(AssistClubDbContext db, ILogger<QuestionReposito
             existingQuestion.Content = question.Content;
             existingQuestion.UpdatedAt = question.UpdatedAt;
             existingQuestion.Visibility = question.Visibility;
+            existingQuestion.AttachmentName = question.AttachmentName;
             db.Questions.Update(existingQuestion);
             return await db.SaveChangesAsync() > 0;
         }

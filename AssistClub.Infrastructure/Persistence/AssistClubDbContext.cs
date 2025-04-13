@@ -51,6 +51,7 @@ public partial class AssistClubDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Question__3214EC0787B01AC0");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.AttachmentName).HasMaxLength(255);
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");

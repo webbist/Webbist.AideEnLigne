@@ -24,7 +24,10 @@
                     <DataAnnotationsValidator />
                     <div class="card-body">
                         <div class="input-box">
-                            <label class="text-black fw-medium mb-0">@AskQuestionLocalizer["FormTitleLabel"]</label>
+                            <label class="text-black fw-medium mb-0">
+                                @AskQuestionLocalizer["FormTitleLabel"]
+                                <span class="text-danger">*</span>
+                            </label>
                             <p class="fs-13 lh-20">@AskQuestionLocalizer["TitleHint"]</p>
                             <div class="form-group">
                                 <InputText class="form-control form--control" @bind-Value="_questionModel.Title" placeholder=@AskQuestionLocalizer["FormTitlePlaceholder"] MaxLength="@QuestionRequest.TitleMaxLength"/>
@@ -32,7 +35,10 @@
                             </div>
                         </div>
                         <div class="input-box">
-                            <label class="text-black fw-medium mb-0">@AskQuestionLocalizer["FormContentLabel"]</label>
+                            <label class="text-black fw-medium mb-0">
+                                @AskQuestionLocalizer["FormContentLabel"]
+                                <span class="text-danger">*</span>
+                            </label>
                             <p class="fs-13 lh-20">@AskQuestionLocalizer["FormContentHint"]</p>
                             <div class="form-group">
                                 <RadzenHtmlEditor @bind-Value="_questionModel.Content" style="height: 200px;" UploadUrl="upload/image">
@@ -51,6 +57,18 @@
                             </div>
                         </div>
                         <div class="input-box">
+                            <label class="text-black fw-medium mb-0">
+                                @string.Format(AskQuestionLocalizer["FormFileLabelWithSize"], QuestionRequest.AttachmentMaxSize / 1024 / 1024)
+                            </label>
+                            <RadzenFileInput TValue="string"
+                                             @bind-Value="_fileContent"
+                                             @bind-FileName="_fileName"
+                                             Style="width: 100%"
+                                             MaxFileSize="QuestionRequest.AttachmentMaxSize"
+                                             ChooseText="@AskQuestionLocalizer["FormFileInputLabel"]"
+                                             Accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+                        </div>
+                        <div class="input-box">
                             <div class="btn-box">
                                 <button type="submit" class="btn btn-primary">@AskQuestionLocalizer["FormSubmitButton"]</button>
                             </div>
@@ -64,6 +82,8 @@
 
 @code {
     private QuestionRequest _questionModel = new();
+    private string? _fileContent;
+    private string? _fileName;
 
     private async Task PublishQuestion()
     {
@@ -81,6 +101,38 @@
             return;
         }
         _questionModel.UserId = userId;
+        
+        if (_fileContent != null && !string.IsNullOrEmpty(_fileName))
+        {
+            var base64 = _fileContent.Substring(_fileContent.IndexOf(",") + 1);
+            var cleanedBytes = Convert.FromBase64String(base64);
+            
+            var content = new MultipartFormDataContent
+            {
+                { new ByteArrayContent(cleanedBytes), "file", _fileName }
+            };
+            
+            var response = await QuestionHttpClient.UploadFileAsync(content);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseJson = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+                if (responseJson != null && responseJson.TryGetValue("filePath", out var filePath))
+                {
+                    _questionModel.AttachmentName = filePath;
+                }
+            }
+            else
+            {
+                ShowNotification(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = Localizer["Error"],
+                    Detail = AskQuestionLocalizer["FileUploadErrorMessage"],
+                    Duration = 4000
+                });
+                return;
+            }
+        }
         
         var result = await QuestionHttpClient.CreateQuestionAsync(_questionModel);
 

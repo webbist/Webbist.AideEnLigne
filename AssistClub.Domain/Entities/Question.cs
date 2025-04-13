@@ -18,6 +18,8 @@ public partial class Question
 
     public string Status { get; set; } = null!;
 
+    public string? AttachmentName { get; set; }
+
     public virtual ICollection<Answer> Answers { get; set; } = new List<Answer>();
 
     public virtual User User { get; set; } = null!;

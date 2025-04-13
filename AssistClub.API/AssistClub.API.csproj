@@ -22,4 +22,9 @@
       <ProjectReference Include="..\AssistClub.Infrastructure\AssistClub.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="uploads\" />
+      <Folder Include="wwwroot\uploads\" />
+    </ItemGroup>
+
 </Project>

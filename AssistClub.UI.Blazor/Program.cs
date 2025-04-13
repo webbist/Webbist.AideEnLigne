@@ -37,6 +37,11 @@ builder.Services.AddAuthentication(options =>
         options.ClaimActions.MapJsonKey("urn:google:image", "picture");
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     });
+builder.Services.AddServerSideBlazor()
+    .AddHubOptions(options =>
+    {
+        options.MaximumReceiveMessageSize = 10 * 1024 * 1024;
+    });
 
 var app = builder.Build();
 

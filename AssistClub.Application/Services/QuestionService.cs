@@ -42,7 +42,8 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
             Content = questionDto.Content,
             CreatedAt = DateTime.UtcNow,
             Visibility = questionDto.Visibility.ToString(),
-            Status = questionDto.Status
+            Status = questionDto.Status,
+            AttachmentName = questionDto.AttachmentName
         };
         
         var createdQuestion = await questionRepository.CreateQuestionAsync(question);
@@ -53,7 +54,8 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
             Content = createdQuestion.Content,
             CreatedAt = createdQuestion.CreatedAt,
             Visibility = createdQuestion.Visibility,
-            Status = createdQuestion.Status
+            Status = createdQuestion.Status,
+            AttachmentName = createdQuestion.AttachmentName
         };
     }
     
@@ -84,7 +86,8 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
             CreatedAt = q.CreatedAt,
             Visibility = q.Visibility,
             UpdatedAt = q.UpdatedAt,
-            Status = q.Status
+            Status = q.Status,
+            AttachmentName = q.AttachmentName
         }).AsQueryable();
     }
 
@@ -116,7 +119,8 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
                 CreatedAt = question.CreatedAt,
                 Visibility = question.Visibility,
                 UpdatedAt = question.UpdatedAt,
-                Status = question.Status
+                Status = question.Status,
+                AttachmentName = question.AttachmentName
             };
         }
         return null;
@@ -153,7 +157,8 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
             Title = questionRequest.Title,
             Content = questionRequest.Content,
             UpdatedAt = DateTime.UtcNow,
-            Visibility = questionRequest.Visibility.ToString()
+            Visibility = questionRequest.Visibility.ToString(),
+            AttachmentName = questionRequest.AttachmentName
         };
         
         return await questionRepository.UpdateQuestionAsync(question);

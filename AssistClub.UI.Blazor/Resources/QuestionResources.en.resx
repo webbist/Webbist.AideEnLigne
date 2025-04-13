@@ -53,4 +53,16 @@
     <data name="DeleteQuestionErrorMessage" xml:space="preserve">
         <value>Failed to delete the question.</value>
     </data>
+    <data name="DownloadAttachmentButton" xml:space="preserve">
+        <value>Download attachment</value>
+    </data>
+    <data name="AttachmentAltText" xml:space="preserve">
+        <value>Attachment</value>
+    </data>
+    <data name="FormFileChooseButton" xml:space="preserve">
+        <value>Change file</value>
+    </data>
+    <data name="FormFileLabelWithSize" xml:space="preserve">
+        <value>Attachment (Max {0} Mb)</value>
+    </data>
 </root>
