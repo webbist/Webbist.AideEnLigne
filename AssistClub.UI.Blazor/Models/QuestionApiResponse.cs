@@ -29,6 +29,11 @@ public class QuestionApiResponse
     /// Gets or sets the date and time when the question was created.
     /// </summary>
     public DateTime CreatedAt { get; set; }
+
+    /// <summary>
+    /// Gets or sets the date and time when the question was last updated.
+    /// </summary>
+    public DateTime? UpdatedAt { get; set; }
     
     /// <summary>
     /// Gets or sets the visibility of the question (<c>public</c> or <c>private</c>).

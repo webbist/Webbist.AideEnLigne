@@ -34,10 +34,11 @@
                     @if (isAdmin || isAuthor)
                     {
                         <div class="btn-toolbar ms-auto" role="toolbar">
-                            <div class="btn-group my-auto" role="group">
+                            <div class="btn-group mb-auto" role="group">
                                 @if (isAdmin && (!HasOfficialAnswer || answer.Status == AnswerStatus.Official.ToString()))
                                 {
-                                    <button @ref="@_buttonRefMap[answer.Id]" @onmouseenter="@(() => ShowTooltip(_buttonRefMap[answer.Id], answer.Status))" 
+                                    <button @ref="@_buttonRefMap[answer.Id]" @onmouseenter="@(() => ShowTooltip(_buttonRefMap[answer.Id], answer.Status))"
+                                            @onmouseleave="HideTooltip"
                                             class="btn btn-sm @(answer.Status == AnswerStatus.Official.ToString() 
                                                                   ? "btn-outline-danger" 
                                                                   : "btn-outline-success")"
@@ -66,7 +67,7 @@
                     <span class="badge-official badge bg-success me-2">@AnswerListLocalizer["OfficialAnswerBadgeLabel"]</span>
                 }
                 @AnswerListLocalizer["AnsweredLabel"]:&nbsp;
-                <span>@answer.CreatedAt?.GetTimeAgo()</span>
+                <span>@answer.CreatedAt.GetTimeAgo()</span>
             </div>
             <div>
                 <span class="author-span">@AnswerListLocalizer["ByLabel"]:</span>
@@ -86,6 +87,7 @@
     [Parameter] public EventCallback OfficialStatusChanged { get; set; }
     private IEnumerable<AnswerApiResponse>? _answers;
     private Dictionary<Guid, ElementReference> _buttonRefMap = new();
+    private ElementReference? _currentTooltipRef;
     
     protected override async Task OnInitializedAsync()
     {
@@ -158,6 +160,7 @@
 
     void ShowTooltip(ElementReference elementReference, string status)
     {
+        _currentTooltipRef = elementReference;
         TooltipService.Open(
             elementReference, 
             status == AnswerStatus.Official.ToString() 
@@ -170,5 +173,12 @@
                     ? "background: var(--bs-danger);"
                     : "background: var(--bs-success);"
             });
+    }
+    
+    void HideTooltip()
+    {
+        if (!_currentTooltipRef.HasValue) return;
+        TooltipService.Close();
+        _currentTooltipRef = null;
     }
 }

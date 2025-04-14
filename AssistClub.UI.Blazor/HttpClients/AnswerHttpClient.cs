@@ -100,4 +100,27 @@ public class AnswerHttpClient(HttpClient http)
             return false;
         }
     }
+    
+    /// <summary>
+    /// Sends a request to retrieve all answers associated with a specific user.
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user whose answers are being retrieved.</param>
+    /// <returns>
+    /// A collection of <see cref="AnswerApiResponse"/> entities if successful; otherwise, <c>null</c> in case of an error.
+    /// </returns>
+    public async Task<IEnumerable<AnswerApiResponse>?> GetAnswersByUserIdAsync(Guid userId)
+    {
+        try
+        {
+            var query = $"$orderby=CreatedAt desc&$filter=User/Id eq {userId}";
+            var url = $"{AnswerApiRouting.GetAllRoute}?{query}";
+            var result = await http.GetFromJsonAsync<IEnumerable<AnswerApiResponse>>(url);
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error getting answers by user ID: {e.Message}");
+            return null;
+        }
+    }
 }

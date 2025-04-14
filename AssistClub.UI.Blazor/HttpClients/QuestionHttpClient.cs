@@ -60,6 +60,13 @@ public class QuestionHttpClient(HttpClient http)
         }
     }
 
+    /// <summary>
+    /// Sends a request to retrieve a specific question by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the question to retrieve.</param>
+    /// <returns>
+    /// The <see cref="QuestionApiResponse"/> entity if successful; otherwise, <c>null</c> in case of an error.
+    /// </returns>
     public async Task<QuestionApiResponse?> GetQuestionAsync(Guid id)
     {
         try
@@ -93,6 +100,29 @@ public class QuestionHttpClient(HttpClient http)
         {
             Console.WriteLine($"Error updating question: {e.Message}");
             return false;
+        }
+    }
+    
+    /// <summary>
+    /// Sends a request to retrieve all questions created by a specific user.
+    /// </summary>
+    /// <param name="userId">The ID of the user whose questions to retrieve.</param>
+    /// <returns>
+    /// A collection of <see cref="QuestionApiResponse"/> entities if successful; otherwise, <c>null</c> in case of an error.
+    /// </returns>
+    public async Task<IEnumerable<QuestionApiResponse>?> GetQuestionsByUserIdAsync(Guid userId)
+    {
+        try
+        {
+            var query = $"$orderby=CreatedAt desc&$filter=User/Id eq {userId}";
+            var url = $"{QuestionApiRouting.GetAllRoute}?{query}";
+            var result = await http.GetFromJsonAsync<IEnumerable<QuestionApiResponse>>(url);
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error getting questions by user ID: {e.Message}");
+            return null;
         }
     }
 }

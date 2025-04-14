@@ -1,0 +1,19 @@
+.answer-info {
+    font-size: 13px;
+}
+
+.answer-info-span {
+    padding-right: .8rem;
+}
+
+.info-status-span {
+    font-weight: 500;
+}
+
+.truncate-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
