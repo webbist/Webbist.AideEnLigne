@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS Answers;
 DROP TABLE IF EXISTS Questions;
 DROP TABLE IF EXISTS Users;
 
-DROP DATABASE IF EXISTS AssistClubDB
+DROP DATABASE IF EXISTS AssistClubDB;
 
 CREATE DATABASE AssistClubDB;
 
@@ -28,6 +28,7 @@ CREATE TABLE Questions (
                            UpdatedAt DATETIME NULL,
                            Visibility NVARCHAR(50) NOT NULL CHECK (Visibility IN ('public', 'private')),
                            Status NVARCHAR(50) NOT NULL CHECK (Status IN ('open', 'pending', 'resolved')),
+                           AttachmentName NVARCHAR(255) NULL,
 
                            CONSTRAINT FK_Questions_Users FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
 );
@@ -37,8 +38,10 @@ CREATE TABLE Answers (
                          QuestionId UNIQUEIDENTIFIER NOT NULL,
                          UserId UNIQUEIDENTIFIER NOT NULL,
                          Content NVARCHAR(MAX) NOT NULL,
+                         Status NVARCHAR(50) NOT NULL CHECK (Status IN ('pending', 'official', 'archived')),
                          CreatedAt DATETIME DEFAULT GETDATE(),
                          UpdatedAt DATETIME NULL,
+                         AttachmentName NVARCHAR(255) NULL
 
                          CONSTRAINT FK_Answers_Questions FOREIGN KEY (QuestionId) REFERENCES Questions(Id) ON DELETE CASCADE,
                          CONSTRAINT FK_Answers_Users FOREIGN KEY (UserId) REFERENCES Users(Id)

@@ -116,5 +116,41 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("ConfirmButton", resourceCulture);
             }
         }
+        
+        internal static string AttachmentAltText {
+            get {
+                return ResourceManager.GetString("AttachmentAltText", resourceCulture);
+            }
+        }
+        
+        internal static string DownloadAttachmentButton {
+            get {
+                return ResourceManager.GetString("DownloadAttachmentButton", resourceCulture);
+            }
+        }
+        
+        internal static string FormFileLabelWithSize {
+            get {
+                return ResourceManager.GetString("FormFileLabelWithSize", resourceCulture);
+            }
+        }
+        
+        internal static string FormFileChangeButton {
+            get {
+                return ResourceManager.GetString("FormFileChangeButton", resourceCulture);
+            }
+        }
+        
+        internal static string FileUploadErrorMessage {
+            get {
+                return ResourceManager.GetString("FileUploadErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string FormFileInputLabel {
+            get {
+                return ResourceManager.GetString("FormFileInputLabel", resourceCulture);
+            }
+        }
     }
 }

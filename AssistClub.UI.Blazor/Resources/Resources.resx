@@ -54,4 +54,22 @@
     <data name="ConfirmButton" xml:space="preserve">
         <value>Confirmer</value>
     </data>
+    <data name="AttachmentAltText" xml:space="preserve">
+        <value>Fichier joint</value>
+    </data>
+    <data name="DownloadAttachmentButton" xml:space="preserve">
+        <value>Télécharger la pièce jointe</value>
+    </data>
+    <data name="FormFileLabelWithSize" xml:space="preserve">
+        <value>Pièce jointe (Max {0} Mo)</value>
+    </data>
+    <data name="FormFileChangeButton" xml:space="preserve">
+        <value>Changer le fichier</value>
+    </data>
+    <data name="FileUploadErrorMessage" xml:space="preserve">
+        <value>Erreur lors du téléversement du fichier joint.</value>
+    </data>
+    <data name="FormFileInputLabel" xml:space="preserve">
+        <value>Choisir un fichier</value>
+    </data>
 </root>

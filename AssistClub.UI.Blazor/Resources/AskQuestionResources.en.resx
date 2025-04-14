@@ -56,12 +56,6 @@
     <data name="FormUserErrorMessage" xml:space="preserve">
         <value>Unable to identify the user. Please log in again.</value>
     </data>
-    <data name="FormFileInputLabel" xml:space="preserve">
-        <value>Choose file</value>
-    </data>
-    <data name="FileUploadErrorMessage" xml:space="preserve">
-        <value>Error uploading the attached file.</value>
-    </data>
     <data name="FormFileLabelWithSize" xml:space="preserve">
         <value>Attachment (Max {0} Mb)</value>
     </data>

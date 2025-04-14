@@ -58,14 +58,14 @@
                         </div>
                         <div class="input-box">
                             <label class="text-black fw-medium mb-0">
-                                @string.Format(AskQuestionLocalizer["FormFileLabelWithSize"], QuestionRequest.AttachmentMaxSize / 1024 / 1024)
+                                @string.Format(Localizer["FormFileLabelWithSize"], QuestionRequest.AttachmentMaxSize / 1024 / 1024)
                             </label>
                             <RadzenFileInput TValue="string"
                                              @bind-Value="_fileContent"
                                              @bind-FileName="_fileName"
                                              Style="width: 100%"
                                              MaxFileSize="QuestionRequest.AttachmentMaxSize"
-                                             ChooseText="@AskQuestionLocalizer["FormFileInputLabel"]"
+                                             ChooseText="@Localizer["FormFileInputLabel"]"
                                              Accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
                         </div>
                         <div class="input-box">
@@ -127,7 +127,7 @@
                 {
                     Severity = NotificationSeverity.Error,
                     Summary = Localizer["Error"],
-                    Detail = AskQuestionLocalizer["FileUploadErrorMessage"],
+                    Detail = Localizer["FileUploadErrorMessage"],
                     Duration = 4000
                 });
                 return;

@@ -39,4 +39,9 @@ public class AnswerApiResponse
     /// Gets or sets the date and time the answer was last updated.
     /// </summary>
     public DateTime? UpdatedAt { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the name of the file attached to the answer.
+    /// </summary>
+    public string? AttachmentName { get; set; }
 }

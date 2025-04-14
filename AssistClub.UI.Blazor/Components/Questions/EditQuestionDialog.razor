@@ -5,7 +5,6 @@
 
 @inject DialogService DialogService
 @inject QuestionHttpClient QuestionHttpClient
-@inject IStringLocalizer<QuestionResources> QuestionLocalizer
 @rendermode InteractiveServer
 
 <EditForm Model="_questionModel" OnValidSubmit="UpdateQuestion">
@@ -50,7 +49,7 @@
         </div>
         <div class="mb-1">
             <label class="text-black fw-medium mb-1">
-                @string.Format(QuestionLocalizer["FormFileLabelWithSize"], QuestionRequest.AttachmentMaxSize / 1024 / 1024):
+                @string.Format(Localizer["FormFileLabelWithSize"], QuestionRequest.AttachmentMaxSize / 1024 / 1024):
             </label>
             <p class="fs-13 lh-20 mb-2">@_questionModel.AttachmentName</p>
             <RadzenFileInput TValue="string"
@@ -58,7 +57,7 @@
                              @bind-FileName="_fileName"
                              Style="width: 100%"
                              MaxFileSize="QuestionRequest.AttachmentMaxSize"
-                             ChooseText="@QuestionLocalizer["FormFileChooseButton"]"
+                             ChooseText="@Localizer["FormFileChangeButton"]"
                              Accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
         </div>
     </div>
@@ -114,10 +113,6 @@
                     _questionModel.AttachmentName = filePath;
                 }
             }
-        }
-        else
-        {
-            _questionModel.AttachmentName = Question.AttachmentName;
         }
         
         await OnQuestionUpdated.InvokeAsync(_questionModel);

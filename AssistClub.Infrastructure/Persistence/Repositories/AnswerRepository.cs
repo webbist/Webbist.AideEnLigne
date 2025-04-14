@@ -97,6 +97,7 @@ public class AnswerRepository(AssistClubDbContext db, ILogger<AnswerRepository> 
             if (answer == null) return false;
             answer.Content = updatedAnswer.Content;
             answer.UpdatedAt = updatedAnswer.UpdatedAt;
+            answer.AttachmentName = updatedAnswer.AttachmentName;
             db.Answers.Update(answer);
             return await db.SaveChangesAsync() > 0;
         }

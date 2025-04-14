@@ -73,12 +73,12 @@
                     <div class="mt-3">
                         @if (_question.AttachmentName.EndsWith(".jpg") || _question.AttachmentName.EndsWith(".jpeg") || _question.AttachmentName.EndsWith(".png"))
                         {
-                            <img src="@fileUrl" alt="@QuestionLocalizer["AttachmentAltText"]" style="max-width: 100%; height: auto;" class="img-thumbnail" />
+                            <img src="@fileUrl" alt="@Localizer["AttachmentAltText"]" style="max-width: 100%; height: auto;" class="img-thumbnail" />
                         }
                         else
                         {
                             <a class="button-download btn btn-outline-primary" href="@fileUrl" target="_blank" download>
-                                <i class="bi bi-download"></i> @QuestionLocalizer["DownloadAttachmentButton"]
+                                <i class="bi bi-download"></i> @Localizer["DownloadAttachmentButton"]
                             </a>
                         }
                     </div>

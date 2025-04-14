@@ -34,7 +34,8 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
             UserId = answerRequest.UserId,
             Content = answerRequest.Content,
             Status = AnswerStatus.Pending.ToString(),
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            AttachmentName = answerRequest.AttachmentName
         };
         
         var createdAnswer = await answerRepository.CreateAnswerAsync(answer);
@@ -46,7 +47,8 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
             Content = createdAnswer.Content,
             Status = createdAnswer.Status,
             CreatedAt = createdAnswer.CreatedAt,
-            UpdatedAt = createdAnswer.UpdatedAt
+            UpdatedAt = createdAnswer.UpdatedAt,
+            AttachmentName = answerRequest.AttachmentName
         };
     }
 
@@ -76,7 +78,8 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
                 Content = a.Content,
                 Status = a.Status,
                 CreatedAt = a.CreatedAt,
-                UpdatedAt = a.UpdatedAt
+                UpdatedAt = a.UpdatedAt,
+                AttachmentName = a.AttachmentName
             }
         ).AsQueryable();
     }
@@ -115,7 +118,8 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
         {
             Id = id,
             Content = answerRequest.Content,
-            UpdatedAt = DateTime.UtcNow
+            UpdatedAt = DateTime.UtcNow,
+            AttachmentName = answerRequest.AttachmentName
         };
         return await answerRepository.UpdateAnswerAsync(updatedAnswer);
     }

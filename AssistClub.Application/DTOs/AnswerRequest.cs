@@ -27,4 +27,9 @@ public class AnswerRequest
     /// Gets or sets the full content of the answer.
     /// </summary>
     public string Content { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the name of the uploaded attachment file.
+    /// </summary>
+    public string? AttachmentName { get; set; }
 }

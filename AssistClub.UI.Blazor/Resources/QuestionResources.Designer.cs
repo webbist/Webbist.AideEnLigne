@@ -128,29 +128,5 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("DeleteQuestionErrorMessage", resourceCulture);
             }
         }
-        
-        internal static string DownloadAttachmentButton {
-            get {
-                return ResourceManager.GetString("DownloadAttachmentButton", resourceCulture);
-            }
-        }
-        
-        internal static string AttachmentAltText {
-            get {
-                return ResourceManager.GetString("AttachmentAltText", resourceCulture);
-            }
-        }
-        
-        internal static string FormFileChooseButton {
-            get {
-                return ResourceManager.GetString("FormFileChooseButton", resourceCulture);
-            }
-        }
-        
-        internal static string FormFileLabelWithSize {
-            get {
-                return ResourceManager.GetString("FormFileLabelWithSize", resourceCulture);
-            }
-        }
     }
 }

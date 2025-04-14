@@ -42,4 +42,9 @@ public class AnswerResponse
     /// Gets or sets the timestamp indicating when the answer was last updated.
     /// </summary>
     public DateTime? UpdatedAt { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the name of the uploaded attachment file.
+    /// </summary>
+    public string? AttachmentName { get; set; }
 }

@@ -47,4 +47,22 @@
     <data name="ConfirmButton" xml:space="preserve">
         <value>Confirm</value>
     </data>
+    <data name="AttachmentAltText" xml:space="preserve">
+        <value>Attachment</value>
+    </data>
+    <data name="DownloadAttachmentButton" xml:space="preserve">
+        <value>Download attachment</value>
+    </data>
+    <data name="FormFileChangeButton" xml:space="preserve">
+        <value>Change file</value>
+    </data>
+    <data name="FormFileLabelWithSize" xml:space="preserve">
+        <value>Attachment (Max {0} Mb)</value>
+    </data>
+    <data name="FileUploadErrorMessage" xml:space="preserve">
+        <value>Error uploading the attached file.</value>
+    </data>
+    <data name="FormFileInputLabel" xml:space="preserve">
+        <value>Choose file</value>
+    </data>
 </root>
