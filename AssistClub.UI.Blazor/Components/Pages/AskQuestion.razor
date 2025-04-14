@@ -9,6 +9,7 @@
 @attribute [Authorize]
 
 @inject QuestionHttpClient QuestionHttpClient
+@inject FileHttpClient FileHttpClient
 @inject NavigationManager NavigationManager
 @inject NotificationService NotificationService
 @inject IStringLocalizer<AskQuestionResources> AskQuestionLocalizer
@@ -112,7 +113,7 @@
                 { new ByteArrayContent(cleanedBytes), "file", _fileName }
             };
             
-            var response = await QuestionHttpClient.UploadFileAsync(content);
+            var response = await FileHttpClient.UploadFileAsync(content);
             if (response.IsSuccessStatusCode)
             {
                 var responseJson = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();

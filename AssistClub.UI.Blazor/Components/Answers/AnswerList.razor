@@ -203,7 +203,6 @@
     {
         if (!_currentTooltipRef.HasValue) return;
         TooltipService.Close();
-        _currentTooltipRef = null;
     }
     
     private async Task ConfirmDelete(Guid answerId, string attachmentName)

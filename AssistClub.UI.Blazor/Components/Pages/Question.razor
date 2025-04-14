@@ -11,6 +11,7 @@
 @rendermode InteractiveServer
 @attribute [Authorize]
 @inject QuestionHttpClient QuestionHttpClient
+@inject FileHttpClient FileHttpClient
 @inject IStringLocalizer<QuestionResources> QuestionLocalizer
 @inject DialogService DialogService
 @inject NotificationService NotificationService
@@ -208,7 +209,7 @@ else
         {
             if (_question != null && !string.IsNullOrEmpty(_question.AttachmentName))
             {
-                var deleteSuccess= await QuestionHttpClient.DeleteFileAsync(_question.AttachmentName);
+                var deleteSuccess= await FileHttpClient.DeleteFileAsync(_question.AttachmentName);
                 if (!deleteSuccess) Console.WriteLine("File not found or could not be deleted.");
             }
             
