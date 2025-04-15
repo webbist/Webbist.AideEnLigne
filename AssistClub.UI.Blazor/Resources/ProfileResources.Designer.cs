@@ -80,5 +80,17 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("PageTitle", resourceCulture);
             }
         }
+        
+        internal static string TabProfileLabel {
+            get {
+                return ResourceManager.GetString("TabProfileLabel", resourceCulture);
+            }
+        }
+        
+        internal static string TabActivityLabel {
+            get {
+                return ResourceManager.GetString("TabActivityLabel", resourceCulture);
+            }
+        }
     }
 }

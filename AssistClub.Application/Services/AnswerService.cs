@@ -43,7 +43,15 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
         return new AnswerResponse
         {
             Id = createdAnswer.Id,
-            QuestionId = createdAnswer.QuestionId,
+            Question = new QuestionResponseDto
+            {
+                Id = createdAnswer.Question.Id,
+                Title = createdAnswer.Question.Title,
+                CreatedAt = createdAnswer.Question.CreatedAt,
+                UpdatedAt = createdAnswer.Question.UpdatedAt,
+                Visibility = createdAnswer.Question.Visibility,
+                Status = createdAnswer.Question.Status
+            },
             Content = createdAnswer.Content,
             Status = createdAnswer.Status,
             CreatedAt = createdAnswer.CreatedAt,
@@ -64,7 +72,19 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
         return answers.Select(a => new AnswerResponse
             {
                 Id = a.Id,
-                QuestionId = a.QuestionId,
+                Question = new QuestionResponseDto
+                {
+                    Id = a.Question.Id,
+                    User = new UserResponseDto
+                    {
+                        Id = a.Question.User.Id
+                    },
+                    Title = a.Question.Title,
+                    CreatedAt = a.Question.CreatedAt,
+                    UpdatedAt = a.Question.UpdatedAt,
+                    Visibility = a.Question.Visibility,
+                    Status = a.Question.Status,
+                },
                 User = new UserResponseDto
                 {
                     Id = a.User.Id,

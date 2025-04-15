@@ -19,7 +19,7 @@
 {
     <RadzenTabs>
         <Tabs>
-            <RadzenTabsItem Text="Profile">
+            <RadzenTabsItem Text="@ProfileLocalizer["TabProfileLabel"]">
                 <div class="card">
                     <div class="card-header">
                         <h4>@ProfileLocalizer["PageTitle"]</h4>
@@ -33,11 +33,8 @@
                     </div>
                 </div>
             </RadzenTabsItem>
-            <RadzenTabsItem Text="My Questions">
+            <RadzenTabsItem Text="@ProfileLocalizer["TabActivityLabel"]">
                 <UserQuestionList UserId="_user.Id" />
-            </RadzenTabsItem>
-            <RadzenTabsItem Text="My Answers">
-                <UserAnswerList UserId="_user.Id" />
             </RadzenTabsItem>
         </Tabs>
     </RadzenTabs>

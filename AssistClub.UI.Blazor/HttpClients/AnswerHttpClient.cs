@@ -45,7 +45,7 @@ public class AnswerHttpClient(HttpClient http)
     {
         try
         {
-            var query = $"$orderby=CreatedAt asc&$filter=QuestionId eq {questionId}";
+            var query = $"$orderby=CreatedAt asc&$filter=Question/Id eq {questionId}";
             var url = $"{AnswerApiRouting.GetAllRoute}?{query}";
             var result = await http.GetFromJsonAsync<IEnumerable<AnswerApiResponse>>(url);
             return result;

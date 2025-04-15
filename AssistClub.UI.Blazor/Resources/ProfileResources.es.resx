@@ -29,4 +29,10 @@
     <data name="PageTitle" xml:space="preserve">
         <value>Perfil de usuario</value>
     </data>
+    <data name="TabProfileLabel" xml:space="preserve">
+        <value>Perfil</value>
+    </data>
+    <data name="TabActivityLabel" xml:space="preserve">
+        <value>Actividad</value>
+    </data>
 </root>

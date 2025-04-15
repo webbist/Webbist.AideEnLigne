@@ -4,7 +4,9 @@
 @using AssistClub.UI.Blazor.Models
 
 @inject QuestionHttpClient QuestionHttpClient
+@inject AnswerHttpClient AnswerHttpClient
 @inject IStringLocalizer<UserQuestionListResources> UserQuestionListLocalizer
+@inject IStringLocalizer<QuestionStatusResources> QuestionStatusLocalizer
 
 @if (_questions == null)
 {
@@ -22,12 +24,15 @@ else
                     <NavLink href="@($"question/{question.Id}")">@question.Title</NavLink>
                 </h5>
                 <div class="d-flex flex-wrap align-items-center">
-                    <span class="badge-official badge me-2 @(question.Status == QuestionStatus.Resolved.ToString()
-                                                           ? "bg-success" 
-                                                           : question.Status == QuestionStatus.Pending.ToString()
-                                                               ? "bg-warning"
-                                                               : "bg-primary")">
-                        @question.Status
+                    <span class="badge me-2 @(question.Status == QuestionStatus.Resolved.ToString()
+                                                               ? "bg-success" 
+                                                               : question.Status == QuestionStatus.Pending.ToString()
+                                                                   ? "bg-warning"
+                                                                   : "bg-primary")">
+                        @QuestionStatusLocalizer[question.Status]
+                    </span>
+                    <span class="badge-activity badge @(question.User.Id == UserId ? "bg-dark" : "bg-secondary")">
+                        @(question.User.Id == UserId ? UserQuestionListLocalizer["CreatedByYouLabel"] : UserQuestionListLocalizer["AnsweredByYouLabel"])
                     </span>
                     <div class="question-info mb-0 mt-2 mt-lg-auto d-flex flex-wrap">
                         <span class="question-info-span">
@@ -59,6 +64,18 @@ else
     
     protected override async Task OnInitializedAsync()
     {
-        _questions = await QuestionHttpClient.GetQuestionsByUserIdAsync(UserId);
+        var createdQuestions = await QuestionHttpClient.GetQuestionsByUserIdAsync(UserId) ?? [];
+        var userAnswers = await AnswerHttpClient.GetAnswersByUserIdAsync(UserId) ?? [];
+        
+        var participatedQuestions = userAnswers
+            .Select(a => a.Question)
+            .DistinctBy(q => q.Id)
+            .ToList();
+        
+        _questions = createdQuestions
+            .Concat(participatedQuestions)
+            .DistinctBy(q => q.Id)
+            .OrderByDescending(q => q.CreatedAt)
+            .ToList();
     }
 }
