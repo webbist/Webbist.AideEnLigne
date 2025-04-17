@@ -1,4 +1,5 @@
 @page "/user"
+@page "/user/{UserId:guid}"
 @using System.Security.Claims
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
@@ -10,31 +11,67 @@
 @attribute [Authorize]
 
 @inject UserHttpClient UserHttpClient
+@inject QuestionHttpClient QuestionHttpClient
+@inject AnswerHttpClient AnswerHttpClient
 @inject IStringLocalizer<ProfileResources> ProfileLocalizer
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>@ProfileLocalizer["PageTitle"]</PageTitle>
 
+<h4>@ProfileLocalizer["PageTitle"]</h4>
 @if (_user != null)
 {
     <RadzenTabs>
         <Tabs>
             <RadzenTabsItem Text="@ProfileLocalizer["TabProfileLabel"]">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>@ProfileLocalizer["PageTitle"]</h4>
-                    </div>
-                    <div class="card-body">
-                        <p><strong>@ProfileLocalizer["FullnameLabel"]:</strong> @_user.Fullname</p>
-                        <p><strong>@ProfileLocalizer["EmailLabel"]:</strong> @_user.Email</p>
-                        <p><strong>@ProfileLocalizer["PhotoLabel"]:</strong> @_user.Photo</p>
-                        <p><strong>@ProfileLocalizer["ClubLabel"]:</strong> @_user.Club</p>
-                        <p><strong>@ProfileLocalizer["MicrositeLabel"]:</strong> @_user.Microsite</p>
-                    </div>
-                </div>
+                <RadzenCard class="rz-mx-auto mb-2">
+                    <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap" Gap="1rem" class="rz-p-4">
+                        <RadzenImage Path="@_user.Photo" Style="width: 100px; height: 100px; border-radius: 50%;" class="mx-auto mx-sm-0"/>
+                        <div class="d-flex flex-wrap">
+                            <RadzenColumn class="me-5">
+                                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">
+                                    @ProfileLocalizer["FullnameLabel"]:
+                                </RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body1">@_user.Fullname</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">
+                                    @ProfileLocalizer["ClubLabel"]:
+                                </RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body1">@_user.Club</RadzenText>
+                            </RadzenColumn>
+                            <RadzenColumn>
+                                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">
+                                    @ProfileLocalizer["EmailLabel"]:
+                                </RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body1">@_user.Email</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">
+                                    @ProfileLocalizer["MicrositeLabel"]:
+                                </RadzenText>
+                                <NavLink class="text-decoration-none" href="@_user.Microsite" target="_blank">
+                                    <RadzenText TextStyle="TextStyle.Body1">@_user.Microsite</RadzenText>
+                                </NavLink>
+                            </RadzenColumn>
+                        </div>
+                    </RadzenStack>
+                </RadzenCard>
+                <RadzenCardGroup Responsive="true" class="gap-3">
+                    <RadzenCard Variant="Variant.Filled">
+                        <div class="d-flex">
+                            <RadzenIcon Icon="quiz" class="my-auto fs-2 rounded-circle bg-success text-white p-4" />
+                            <h5 class="me-2 my-auto info-label">@ProfileLocalizer["CreatedQuestionsLabel"]:</h5>
+                            <h5 class="my-auto">@(_questions?.Count() ?? 0)</h5>
+                        </div>
+                    </RadzenCard>
+                    <RadzenCard Variant="Variant.Filled">
+                        <div class="d-flex">
+                            <RadzenIcon Icon="forum" class="my-auto fs-2 rounded-circle bg-primary text-white p-4"/>
+                            <h5 class="me-2 my-auto info-label">@ProfileLocalizer["AnsweredQuestionsLabel"]:</h5>
+                            <h5 class="my-auto">@(_answers?.Count() ?? 0)</h5>
+                        </div>
+                    </RadzenCard>
+                </RadzenCardGroup>
             </RadzenTabsItem>
             <RadzenTabsItem Text="@ProfileLocalizer["TabActivityLabel"]">
-                <UserQuestionList UserId="_user.Id" />
+                <UserQuestionList UserId="_user.Id" UserQuestions="_questions" UserAnswers="_answers"/>
             </RadzenTabsItem>
         </Tabs>
     </RadzenTabs>
@@ -44,13 +81,29 @@
 }
 
 @code {
+    [Parameter] public Guid UserId { get; set; }
     private UserViewModel? _user;
+    private IEnumerable<QuestionApiResponse>? _questions;
+    private IEnumerable<AnswerApiResponse>? _answers;
     
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var userEmail = authState.User.FindFirst(c => c.Type == ClaimTypes.Email)?.Value;
-        if (userEmail == null) return;
-        _user = await UserHttpClient.GetUserByEmail(userEmail);
+        if (UserId != Guid.Empty)
+        {
+            _user = await UserHttpClient.GetUserByIdAsync(UserId);
+        }
+        else
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var userEmail = authState.User.FindFirst(c => c.Type == ClaimTypes.Email)?.Value;
+            if (userEmail == null) return;
+            _user = await UserHttpClient.GetUserByEmail(userEmail);
+        }
+        
+        if (_user != null)
+        {
+            _questions = await QuestionHttpClient.GetQuestionsByUserIdAsync(_user.Id);
+            _answers = await AnswerHttpClient.GetAnswersByUserIdAsync(_user.Id);
+        }
     }
 }

@@ -70,4 +70,34 @@ public class UserController(IUserService userService, ILogger<UserController> lo
             return StatusCode(500, e.Message);
         }
     }
+    
+    /// <summary>
+    /// Retrieves user details based on the provided ID.
+    /// </summary>
+    /// <param name="id">The ID of the user to retrieve.</param>
+    /// <returns>
+    /// - <c>200 OK</c>: Returns the user data if found.<br/>
+    /// - <c>404 Not Found</c>: If no user is associated with the given ID.<br/>
+    /// - <c>500 Internal Server Error</c>: If an unexpected error occurs.
+    /// </returns>
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetUserById(Guid id)
+    {
+        try
+        {
+            var user = await userService.GetUserByIdAsync(id);
+            if (user == null)
+            {
+                logger.LogWarning("User with ID {id} not found.", id);
+                return NotFound();
+            }
+            logger.LogTrace("User found with ID {id}", id);
+            return Ok(user);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "An error occurred while getting the user.");
+            return StatusCode(500, e.Message);
+        }
+    }
 }

@@ -31,8 +31,8 @@ else
                                                                    : "bg-primary")">
                         @QuestionStatusLocalizer[question.Status]
                     </span>
-                    <span class="badge-activity badge @(question.User.Id == UserId ? "bg-dark" : "bg-secondary")">
-                        @(question.User.Id == UserId ? UserQuestionListLocalizer["CreatedByYouLabel"] : UserQuestionListLocalizer["AnsweredByYouLabel"])
+                    <span class="badge-activity mt-sm-0 mt-2 badge @(question.User.Id == UserId ? "bg-dark" : "bg-secondary")">
+                        @(question.User.Id == UserId ? UserQuestionListLocalizer["CreatedByUserLabel"] : UserQuestionListLocalizer["AnsweredByUserLabel"])
                     </span>
                     <div class="question-info mb-0 mt-2 mt-lg-auto d-flex flex-wrap">
                         <span class="question-info-span">
@@ -59,23 +59,22 @@ else
 
 @code {
     [Parameter] public Guid UserId { get; set; }
+    [Parameter] public IEnumerable<QuestionApiResponse> UserQuestions { get; set; } = new List<QuestionApiResponse>();
+    [Parameter] public IEnumerable<AnswerApiResponse> UserAnswers { get; set; } = new List<AnswerApiResponse>();
     
     private IEnumerable<QuestionApiResponse>? _questions;
     
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
-        var createdQuestions = await QuestionHttpClient.GetQuestionsByUserIdAsync(UserId) ?? [];
-        var userAnswers = await AnswerHttpClient.GetAnswersByUserIdAsync(UserId) ?? [];
-        
-        var participatedQuestions = userAnswers
+        var participatedQuestions = UserAnswers
             .Select(a => a.Question)
-            .DistinctBy(q => q.Id)
-            .ToList();
-        
-        _questions = createdQuestions
+            .DistinctBy(q => q.Id);
+
+        _questions = UserQuestions
             .Concat(participatedQuestions)
             .DistinctBy(q => q.Id)
-            .OrderByDescending(q => q.CreatedAt)
-            .ToList();
+            .OrderByDescending(q => q.CreatedAt);
+        
+        return Task.CompletedTask;
     }
 }

@@ -92,5 +92,17 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("TabActivityLabel", resourceCulture);
             }
         }
+        
+        internal static string CreatedQuestionsLabel {
+            get {
+                return ResourceManager.GetString("CreatedQuestionsLabel", resourceCulture);
+            }
+        }
+        
+        internal static string AnsweredQuestionsLabel {
+            get {
+                return ResourceManager.GetString("AnsweredQuestionsLabel", resourceCulture);
+            }
+        }
     }
 }

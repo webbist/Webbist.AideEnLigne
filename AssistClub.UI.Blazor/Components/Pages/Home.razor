@@ -34,10 +34,10 @@
                     </p>
                     <div class="question-footer d-flex align-items-center px-0 border-bottom-0 pb-0">
                         <div class="info-footer d-flex flex-wrap align-items-center justify-content-between">
-                            <a href="#" class="d-block d-flex">
+                            <NavLink href="@($"user/{question.User.Id}")" class="d-block d-flex">
                                 <img src="@(question.User.Photo ?? "default.jpeg")" alt="avatar" class="user-img rounded-circle">
                                 <h5 class="mb-0 align-content-center">@(question.User.Firstname + " " + question.User.Lastname)</h5>
-                            </a>
+                            </NavLink>
                             <small class="d-block text-end">
                                 <span class="text-black d-block lh-18">@QuestionStatusResources[question.Status]</span>
                                 <span class="d-block lh-18 fs-12">@question.CreatedAt.GetTimeAgo()</span>

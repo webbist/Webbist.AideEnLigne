@@ -68,5 +68,17 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("AnsweredByYouLabel", resourceCulture);
             }
         }
+        
+        internal static string CreatedByUserLabel {
+            get {
+                return ResourceManager.GetString("CreatedByUserLabel", resourceCulture);
+            }
+        }
+        
+        internal static string AnsweredByUserLabel {
+            get {
+                return ResourceManager.GetString("AnsweredByUserLabel", resourceCulture);
+            }
+        }
     }
 }

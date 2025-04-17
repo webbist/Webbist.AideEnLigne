@@ -65,4 +65,29 @@ public class UserService(IUserRepository userRepository) : IUserService
             Role = createdUser.Role
         };
     }
+    
+    /// <summary>
+    /// Retrieves a user by their ID.
+    /// </summary>
+    /// <param name="id">The ID of the user to retrieve.</param>
+    /// <returns>
+    /// A <see cref="UserResponseDto"/> containing user details if found; otherwise, <c>null</c>.
+    /// </returns>
+    public async Task<UserResponseDto?> GetUserByIdAsync(Guid id)
+    {
+        var user = await userRepository.GetUserByIdAsync(id);
+        if (user != null)
+            return new UserResponseDto
+            {
+                Id = user.Id,
+                Firstname = user.Firstname,
+                Lastname = user.Lastname,
+                Email = user.Email,
+                Photo = user.Photo,
+                Club = user.Club,
+                Microsite = user.Microsite,
+                Role = user.Role
+            };
+        return null;
+    }
 }
