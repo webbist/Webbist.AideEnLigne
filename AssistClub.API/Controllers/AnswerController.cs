@@ -123,4 +123,27 @@ public class AnswerController(IAnswerService answerService, ILogger<AnswerContro
             return StatusCode(500, e.Message);
         }
     }
+
+    /// <summary>
+    /// Deletes an answer from the system.
+    /// </summary>
+    /// <param name="id">The ID of the answer to be deleted.</param>
+    /// <returns>
+    /// - <c>200 OK</c>: If the answer was successfully deleted. <br/>
+    /// - <c>500 Internal Server Error</c>: If an unexpected error occurs.
+    /// </returns>
+    [HttpDelete("Delete/{id}")]
+    public async Task<IActionResult> DeleteAnswer(Guid id)
+    {
+        try
+        {
+            var result = await answerService.DeleteAnswerAsync(id);
+            return Ok(result);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "An error occurred while deleting the answer.");
+            return StatusCode(500, e.Message);
+        }
+    }
 }

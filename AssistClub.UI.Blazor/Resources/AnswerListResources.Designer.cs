@@ -122,5 +122,35 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("EditAnswerButton", resourceCulture);
             }
         }
+        
+        internal static string DeleteAnswerConfirmMessage {
+            get {
+                return ResourceManager.GetString("DeleteAnswerConfirmMessage", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteAnswerConfirmTitle {
+            get {
+                return ResourceManager.GetString("DeleteAnswerConfirmTitle", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteAnswerButton {
+            get {
+                return ResourceManager.GetString("DeleteAnswerButton", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteAnswerSuccessMessage {
+            get {
+                return ResourceManager.GetString("DeleteAnswerSuccessMessage", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteAnswerErrorMessage {
+            get {
+                return ResourceManager.GetString("DeleteAnswerErrorMessage", resourceCulture);
+            }
+        }
     }
 }

@@ -69,3 +69,7 @@ a {
 .fs-12 {
     font-size: 12px !important;
 }
+
+.rz-button.rz-primary.rz-shade-default {
+    background-color: #dc3545!important;
+}

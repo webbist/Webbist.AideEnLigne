@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/search/{Query?}"
 @using AssistClub.UI.Blazor.Components.Enums
 @using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.HttpClients
@@ -51,10 +52,23 @@
 </div>
 
 @code {
+    [Parameter] public string? Query { get; set; }
     private IEnumerable<QuestionApiResponse>? _questions;
 
     protected override async Task OnInitializedAsync()
     {
         _questions = await QuestionHttpClient.GetQuestionsAsync(QuestionVisibility.Public);
+        var allQuestions = await QuestionHttpClient.GetQuestionsAsync(QuestionVisibility.Public);
+
+        if (!string.IsNullOrWhiteSpace(Query) && allQuestions != null)
+        {
+            _questions = allQuestions
+                .Where(q => q.Title.Contains(Query, StringComparison.OrdinalIgnoreCase) || 
+                            q.Content.Contains(Query, StringComparison.OrdinalIgnoreCase));
+        }
+        else
+        {
+            _questions = allQuestions;
+        }
     }
 }

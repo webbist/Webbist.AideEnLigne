@@ -42,4 +42,13 @@ public static class AnswerApiRouting
     /// The route for updating the specified answer.
     /// </returns>
     public static string UpdateRoute(Guid answerId) => $"{Base}/update/{answerId}";
+    
+    /// <summary>
+    /// Endpoint for deleting an answer.
+    /// </summary>
+    /// <param name="answerId">The unique identifier of the answer to be deleted.</param>
+    /// <returns>
+    /// The route for deleting the specified answer.
+    /// </returns>
+    public static string DeleteRoute(Guid answerId) => $"{Base}/delete/{answerId}";
 }

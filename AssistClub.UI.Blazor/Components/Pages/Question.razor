@@ -1,5 +1,4 @@
 @page "/question/{id}"
-@using System.Security.Claims
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
 @using AssistClub.UI.Blazor.Extensions
@@ -27,23 +26,32 @@
     
     <RadzenCard class="rz-mx-auto">
         <div class="question-details">
-            <div class="d-flex">
-                <h1 class="question-title">@_question.Title</h1>
-                <AuthorizeView>
-                    <Authorized Context="auth">
-                        @{
-                            var isAdmin = auth.User.IsInRole("Admin");
-                            var isAuthor = auth.User.FindFirst(ClaimTypes.NameIdentifier)?.Value == _question.User.Id.ToString();
-                        }
-                        @if (isAdmin || isAuthor)
-                        {
-                            <button class="btn btn-sm btn-light mb-auto ms-auto" @onclick="() => OpenEditDialog(_question)">
-                                <i class="bi bi-pencil-square"></i>
-                            </button>
-                        }
-                    </Authorized>
-                </AuthorizeView>
-            </div>
+            <AuthorizeView>
+                <Authorized Context="auth">
+                    @{
+                        var isAdmin = auth.UserIsAdmin();
+                        var isAuthor = auth.UserIsAuthor(_question.User.Id);
+                    }
+                    @if (isAdmin || isAuthor)
+                    {
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="btn-group ms-auto mb-1" role="group">
+                                <button class="btn btn-sm btn-outline-secondary"
+                                        title="@QuestionLocalizer["EditQuestionButton"]"
+                                        @onclick="() => OpenEditDialog(_question)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger"
+                                        title="@QuestionLocalizer["DeleteQuestionButton"]"
+                                        @onclick="() => ConfirmDelete(_question.Id)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </Authorized>
+            </AuthorizeView>
+            <h1 class="question-title">@_question.Title</h1>
             <div class="question-info">
                 <span>
                     @QuestionLocalizer["AskedLabel"]:
@@ -155,5 +163,48 @@ else
     private void GoBack()
     {
         Nav.NavigateTo("/");
+    }
+
+    private async Task ConfirmDelete(Guid questionId)
+    {
+        var confirmed = await DialogService.Confirm(
+            QuestionLocalizer["DeleteQuestionConfirmMessage"],
+            QuestionLocalizer["DeleteQuestionConfirmTitle"],
+            new ConfirmOptions
+            {
+                OkButtonText = Localizer["ConfirmButton"],
+                CancelButtonText = Localizer["CancelButton"]
+            });
+        
+        if (confirmed == true)
+        {
+            await DeleteQuestion(questionId);
+        }
+    }
+    
+    private async Task DeleteQuestion(Guid questionId)
+    {
+        var success = await QuestionHttpClient.DeleteQuestionAsync(questionId);
+        if (success)
+        {
+            NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Success,
+                Summary = Localizer["Success"],
+                Detail = QuestionLocalizer["DeleteQuestionSuccessMessage"],
+                Duration = 4000
+            });
+            Nav.NavigateTo("/");
+        }
+        else
+        {
+            NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = Localizer["Error"],
+                Detail = QuestionLocalizer["DeleteQuestionErrorMessage"],
+                Duration = 4000
+            });
+        }
     }
 }

@@ -158,4 +158,16 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
         
         return await questionRepository.UpdateQuestionAsync(question);
     }
+    
+    /// <summary>
+    /// Deletes a question from the system.
+    /// </summary>
+    /// <param name="id">The ID of the question to delete.</param>
+    /// <returns>
+    /// A <c>bool</c> indicating whether the deletion was successful or not (<c>true</c> if successful, <c>false</c> otherwise).
+    /// </returns>
+    public async Task<bool> DeleteQuestionAsync(Guid id)
+    {
+        return await questionRepository.DeleteQuestionAsync(id);
+    }
 }

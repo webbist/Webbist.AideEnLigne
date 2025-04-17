@@ -57,4 +57,13 @@ public interface IAnswerService
     /// Thrown if the answer content exceeds <see cref="AnswerRequest.ContentMaxLength"/> characters.
     /// </exception>
     Task<bool> UpdateAnswerAsync(Guid id, AnswerRequest answerRequest);
+
+    /// <summary>
+    /// Deletes an answer from the system.
+    /// </summary>
+    /// <param name="answerId">The ID of the answer to be deleted.</param>
+    /// <returns>
+    /// A boolean indicating whether the deletion was successful (<c>true</c> if successful, <c>false</c> otherwise).
+    /// </returns>
+    Task<bool> DeleteAnswerAsync(Guid answerId);
 }

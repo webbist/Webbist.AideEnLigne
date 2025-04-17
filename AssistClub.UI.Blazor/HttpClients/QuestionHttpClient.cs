@@ -125,4 +125,25 @@ public class QuestionHttpClient(HttpClient http)
             return null;
         }
     }
+
+    /// <summary>
+    /// Sends a request to delete an existing question from the system.
+    /// </summary>
+    /// <param name="id">The ID of the question to delete.</param>
+    /// <returns>
+    /// A <c>bool</c> indicating whether the deletion was successful or not.
+    /// </returns>
+    public async Task<bool> DeleteQuestionAsync(Guid id)
+    {
+        try
+        {
+            var result = await http.DeleteAsync(QuestionApiRouting.DeleteRoute(id));
+            return result.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error deleting question: {e.Message}");
+            return false;
+        }
+    }
 }

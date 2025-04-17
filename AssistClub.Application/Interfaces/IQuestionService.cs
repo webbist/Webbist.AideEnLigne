@@ -57,4 +57,13 @@ public interface IQuestionService
     /// or the content exceeds <see cref="QuestionRequestDto.ContentMaxLength"/> characters.
     /// </exception>
     Task<bool> UpdateQuestionAsync(Guid id, QuestionRequestDto questionRequest);
+
+    /// <summary>
+    /// Deletes a question from the system.
+    /// </summary>
+    /// <param name="id">The ID of the question to delete.</param>
+    /// <returns>
+    /// A <c>bool</c> indicating whether the deletion was successful or not (<c>true</c> if successful, <c>false</c> otherwise).
+    /// </returns>
+    Task<bool> DeleteQuestionAsync(Guid id);
 }

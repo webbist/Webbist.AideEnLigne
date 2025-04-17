@@ -119,4 +119,16 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
         };
         return await answerRepository.UpdateAnswerAsync(updatedAnswer);
     }
+
+    /// <summary>
+    /// Deletes an answer from the system.
+    /// </summary>
+    /// <param name="answerId">The ID of the answer to be deleted.</param>
+    /// <returns>
+    /// A boolean indicating whether the deletion was successful (<c>true</c> if successful, <c>false</c> otherwise).
+    /// </returns>
+    public async Task<bool> DeleteAnswerAsync(Guid answerId)
+    {
+        return await answerRepository.DeleteAnswerAsync(answerId);
+    }
 }

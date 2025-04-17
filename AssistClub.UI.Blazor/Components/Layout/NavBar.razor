@@ -1,16 +1,18 @@
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Components.Authorization
+@rendermode InteractiveServer
 
 @inject IStringLocalizer<NavBarResources> NavBarLocalizer
+@inject NavigationManager Navigation
 
 <AuthorizeView>
     <Authorized>
-        <form class="d-flex me-auto mb-lg-0" role="search">
-            <input class="form-control me-2 search-bar" type="search" placeholder="@NavBarLocalizer["SearchPlaceholder"]" aria-label="Search">
-            <button class="btn btn-outline-primary" type="submit">
+        <div class="d-flex me-auto mb-lg-0" role="search">
+            <input class="form-control me-2 search-bar" type="search" placeholder="@NavBarLocalizer["SearchPlaceholder"]" aria-label="Search" @bind-value="_searchTerm" />
+            <button class="btn btn-outline-primary" type="button" @onclick="PerformSearch">
                 <i class="bi bi-search"></i>
             </button>
-        </form>
+        </div>
         <ul class="navbar-nav flex-row flex-wrap ms-md-auto align-items-center">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle ps-2 user" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -37,3 +39,12 @@
         </ul>
     </Authorized>
 </AuthorizeView>
+
+@code {
+    private string _searchTerm = string.Empty;
+
+    private void PerformSearch()
+    {
+        Navigation.NavigateTo(!string.IsNullOrWhiteSpace(_searchTerm) ? $"/search/{Uri.EscapeDataString(_searchTerm)}" : "/");
+    }
+}

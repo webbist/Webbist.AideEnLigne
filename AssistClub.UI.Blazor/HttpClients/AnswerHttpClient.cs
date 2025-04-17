@@ -123,4 +123,25 @@ public class AnswerHttpClient(HttpClient http)
             return null;
         }
     }
+
+    /// <summary>
+    /// Sends a request to delete an existing answer from the backend system.
+    /// </summary>
+    /// <param name="answerId">The unique identifier of the answer to be deleted.</param>
+    /// <returns>
+    /// A boolean indicating whether the deletion was successful (<c>true</c> if successful, <c>false</c> otherwise).
+    /// </returns>
+    public async Task<bool> DeleteAnswerAsync(Guid answerId)
+    {
+        try
+        {
+            var result = await http.DeleteAsync(AnswerApiRouting.DeleteRoute(answerId));
+            return result.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error deleting answer: {e.Message}");
+            return false;
+        }
+    }
 }
