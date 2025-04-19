@@ -59,4 +59,7 @@
     <data name="FormFileLabelWithSize" xml:space="preserve">
         <value>Archivo adjunto (Máx {0} Mb)</value>
     </data>
+    <data name="SuggestedQuestionsTitle" xml:space="preserve">
+        <value>Posibles preguntas similares ya existentes</value>
+    </data>
 </root>

@@ -1,3 +1,5 @@
+using AssistClub.UI.Blazor.Extensions;
+
 namespace AssistClub.UI.Blazor.Models;
 
 /// <summary>
@@ -24,6 +26,11 @@ public class QuestionApiResponse
     /// Gets or sets the full content of the question.
     /// </summary>
     public string Content { get; set; }
+    
+    /// <summary>
+    /// Gets the plain text content of the question by stripping HTML tags.
+    /// </summary>
+    public string PlainTextContent => Content.GetPlainTextFromHtml();
     
     /// <summary>
     /// Gets or sets the date and time when the question was created.

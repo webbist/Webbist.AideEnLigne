@@ -47,6 +47,14 @@
     text-decoration: none!important;
 }
 
+.truncate-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
 @media (min-width: 740px) {
     .xl\:block {
         display: block;
@@ -55,6 +63,6 @@
 
 @media (min-width: 1000px) {
     .search-bar {
-        width: 30rem;
+        width: 40rem;
     }
 }

@@ -66,4 +66,7 @@
     <data name="FormFileLabelWithSize" xml:space="preserve">
         <value>Pièce jointe (Max {0} Mo)</value>
     </data>
+    <data name="SuggestedQuestionsTitle" xml:space="preserve">
+        <value>Questions similaires déjà existantes</value>
+    </data>
 </root>

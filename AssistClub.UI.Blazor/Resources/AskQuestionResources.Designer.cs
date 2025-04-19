@@ -140,5 +140,11 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("FormFileLabelWithSize", resourceCulture);
             }
         }
+        
+        internal static string SuggestedQuestionsTitle {
+            get {
+                return ResourceManager.GetString("SuggestedQuestionsTitle", resourceCulture);
+            }
+        }
     }
 }

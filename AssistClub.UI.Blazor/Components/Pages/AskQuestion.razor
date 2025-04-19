@@ -1,5 +1,7 @@
 @page "/AskQuestion"
 @using System.Security.Claims
+@using AssistClub.UI.Blazor.Components.Enums
+@using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
 @using Microsoft.AspNetCore.Authorization
@@ -31,8 +33,26 @@
                             </label>
                             <p class="fs-13 lh-20">@AskQuestionLocalizer["TitleHint"]</p>
                             <div class="form-group">
-                                <InputText class="form-control form--control" @bind-Value="_questionModel.Title" placeholder=@AskQuestionLocalizer["FormTitlePlaceholder"] MaxLength="@QuestionRequest.TitleMaxLength"/>
+                                <RadzenTextBox @bind-Value="_questionModel.Title" class="form-control form--control" Placeholder=@AskQuestionLocalizer["FormTitlePlaceholder"] Style="position: relative;" MaxLength="@QuestionRequest.TitleMaxLength"
+                                               @oninput=@(args => OnTextChanged(args.Value.ToString())) @onfocusout="CloseSuggestions"/>
                                 <ValidationMessage For="@(() => _questionModel.Title)" class="text-danger pt-1" />
+                                @if (_suggestedQuestions?.Any() == true)
+                                {
+                                    <div class="search-suggestions border rounded shadow bg-white position-absolute" style="width: auto;">
+                                        <ul class="list-group list-group-flush">
+                                            <p class="suggestion-text">@AskQuestionLocalizer["SuggestedQuestionsTitle"]:</p>
+                                            @foreach (var question in _suggestedQuestions.Take(5))
+                                            {
+                                                <NavLink href="@($"question/{question.Id}")">
+                                                    <li class="list-group-item list-group-item-action">
+                                                        <span class="fw-bold truncate-text">@question.Title</span>
+                                                        <small class="text-muted truncate-text">@question.Content.GetPlainTextFromHtml()</small>
+                                                    </li>
+                                                </NavLink>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
                             </div>
                         </div>
                         <div class="input-box">
@@ -85,6 +105,53 @@
     private QuestionRequest _questionModel = new();
     private string? _fileContent;
     private string? _fileName;
+    private string _searchTerm = string.Empty;
+    private List<QuestionApiResponse> _suggestedQuestions = new();
+    private System.Timers.Timer? _debounceTimer;
+    
+    private async void CloseSuggestions()
+    {
+        try
+        {
+            await Task.Delay(100);
+            _suggestedQuestions.Clear();
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error closing suggestions: {e.Message}");
+        }
+    }
+    
+    private async Task OnTextChanged(string value)
+    {
+        _searchTerm = value;
+        _debounceTimer?.Stop();
+        _debounceTimer?.Dispose();
+        
+        if (!string.IsNullOrWhiteSpace(_searchTerm) && _searchTerm.Length > 3)
+        {
+            _debounceTimer = new System.Timers.Timer(500);
+            _debounceTimer.Elapsed += async (_, _) =>
+            {
+                _debounceTimer?.Stop();
+                _debounceTimer?.Dispose();
+                await InvokeAsync(async () =>
+                {
+                    var results = await QuestionHttpClient.SearchQuestionsAsync(_searchTerm, QuestionVisibility.Public);
+                    _suggestedQuestions = results?.ToList() ?? new();
+                    StateHasChanged();
+                });
+            };
+            _debounceTimer.AutoReset = false;
+            _debounceTimer.Start();
+        }
+        else
+        {
+            _suggestedQuestions.Clear();
+        }
+        await Task.CompletedTask;
+    }
 
     private async Task PublishQuestion()
     {
