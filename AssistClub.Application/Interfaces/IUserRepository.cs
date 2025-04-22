@@ -18,6 +18,9 @@ public interface IUserRepository
     /// <returns>
     /// A <see cref="User"/> entity if found; otherwise, <c>null</c>.
     /// </returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if multiple users are found with the same email address.
+    /// </exception>
     Task<User?> GetUserByEmailAsync(string email);
     
     /// <summary>
@@ -28,4 +31,16 @@ public interface IUserRepository
     /// The newly created <see cref="User"/> entity.
     /// </returns>
     Task<User> CreateUserAsync(User user);
+
+    /// <summary>
+    /// Retrieves a user by their ID.
+    /// </summary>
+    /// <param name="id">The ID of the user.</param>
+    /// <returns>
+    /// A <see cref="User"/> entity if found; otherwise, <c>null</c>.
+    /// </returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if multiple users are found with the same ID.
+    /// </exception>
+    Task<User?> GetUserByIdAsync(Guid id);
 }

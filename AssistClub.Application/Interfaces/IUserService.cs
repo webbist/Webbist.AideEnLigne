@@ -26,4 +26,13 @@ public interface IUserService
     /// <param name="user">The user details to create.</param>
     /// <returns>A <see cref="UserResponseDto"/> containing the created user details.</returns>
     Task<UserResponseDto> CreateUserAsync(UserRequest user);
+    
+    /// <summary>
+    /// Retrieves a user by their ID.
+    /// </summary>
+    /// <param name="id">The ID of the user to retrieve.</param>
+    /// <returns>
+    /// A <see cref="UserResponseDto"/> containing user details if found; otherwise, <c>null</c>.
+    /// </returns>
+    Task<UserResponseDto?> GetUserByIdAsync(Guid id);
 }

@@ -35,4 +35,10 @@
     <data name="TabActivityLabel" xml:space="preserve">
         <value>Actividad</value>
     </data>
+    <data name="CreatedQuestionsLabel" xml:space="preserve">
+        <value>Preguntas creadas</value>
+    </data>
+    <data name="AnsweredQuestionsLabel" xml:space="preserve">
+        <value>Preguntas respondidas</value>
+    </data>
 </root>

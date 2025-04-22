@@ -60,4 +60,34 @@ public class UserHttpClient(HttpClient http)
             return false;
         }
     }
+
+    /// <summary>
+    /// Retrieves a user's profile information by ID.
+    /// </summary>
+    /// <param name="id">The ID of the user to retrieve.</param>
+    /// <returns>A <see cref="UserViewModel"/> containing user details, or <c>null</c> if not found.</returns>
+    public async Task<UserViewModel?> GetUserByIdAsync(Guid id)
+    {
+        try
+        {
+            var result = await http.GetFromJsonAsync<UserApiResponse>(UserApiRouting.GetUserByIdRoute(id));
+            if (result != null)
+                return new UserViewModel
+                {
+                    Id = result.Id,
+                    Fullname = result.Firstname + " " + result.Lastname,
+                    Email = result.Email,
+                    Photo = result.Photo,
+                    Club = result.Club,
+                    Microsite = result.Microsite,
+                    Role = Enum.Parse<Role>(result.Role, true)
+                };
+            return null;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error retrieving user: {e.Message}");
+            return null;
+        }
+    }
 }

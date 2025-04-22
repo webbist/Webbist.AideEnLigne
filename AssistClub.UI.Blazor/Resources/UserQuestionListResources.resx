@@ -30,4 +30,10 @@
     <data name="AnsweredByYouLabel" xml:space="preserve">
         <value>Répondue par vous</value>
     </data>
+    <data name="CreatedByUserLabel" xml:space="preserve">
+        <value>Créée par l’utilisateur</value>
+    </data>
+    <data name="AnsweredByUserLabel" xml:space="preserve">
+        <value>Répondue par l’utilisateur</value>
+    </data>
 </root>

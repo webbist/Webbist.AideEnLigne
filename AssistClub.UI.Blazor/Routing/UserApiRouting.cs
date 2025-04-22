@@ -16,7 +16,7 @@ public static class UserApiRouting
     private const string Base = $"{Version}/user";
     
     /// <summary>
-    /// Endpoint for retrieving all users.
+    /// Endpoint for retrieving a user by email.
     /// </summary>
     /// <param name="email">The email of the user to retrieve.</param>
     /// <returns>The route to get a user by email.</returns>
@@ -26,4 +26,11 @@ public static class UserApiRouting
     /// Endpoint for creating a new user.
     /// </summary>
     public const string CreateRoute = $"{Base}/create";
+    
+    /// <summary>
+    /// Endpoint for retrieving a user by ID.
+    /// </summary>
+    /// <param name="id">The ID of the user to retrieve.</param>
+    /// <returns>The route to get a user by ID.</returns>
+    public static string GetUserByIdRoute(Guid id) => $"{Base}/{id}";
 }
