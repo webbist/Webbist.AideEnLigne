@@ -17,4 +17,10 @@
     <data name="EmptyText" xml:space="preserve">
         <value>No se encontraron preguntas.</value>
     </data>
+    <data name="CreatedByYouLabel" xml:space="preserve">
+        <value>Creado por ti</value>
+    </data>
+    <data name="AnsweredByYouLabel" xml:space="preserve">
+        <value>Respondido por ti</value>
+    </data>
 </root>

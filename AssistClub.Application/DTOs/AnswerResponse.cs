@@ -16,7 +16,7 @@ public class AnswerResponse
     /// <summary>
     /// Gets or sets the unique identifier of the question being answered.
     /// </summary>
-    public Guid QuestionId { get; set; }
+    public QuestionResponseDto Question { get; set; }
     
     /// <summary>
     /// Gets or sets the user who created the answer.

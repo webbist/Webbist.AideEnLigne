@@ -16,7 +16,7 @@
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 @inject NavigationManager Nav
-@inject IStringLocalizer<QuestionStatusResources> QuestionStatusResources
+@inject IStringLocalizer<QuestionStatusResources> QuestionStatusLocalizer
 @inject IConfiguration Configuration
 
 @if (_question != null)
@@ -62,7 +62,7 @@
                 </span>
                 <span>
                     @QuestionLocalizer["StatusLabel"]:
-                    <span class="info-status">@QuestionStatusResources[_question.Status]</span>
+                    <span class="info-status">@QuestionStatusLocalizer[_question.Status]</span>
                 </span>
             </div>
             <div class="question-content">

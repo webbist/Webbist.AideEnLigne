@@ -19,7 +19,7 @@ else
         <Template Context="answer">
             <div class="answer-body">
                 <h5 class="fs-6 truncate-text">
-                    <NavLink href="@($"question/{answer.QuestionId}")">
+                    <NavLink href="@($"question/{answer.Question.Id}")">
                         @answer.Content.GetPlainTextFromHtml()
                     </NavLink>
                 </h5>

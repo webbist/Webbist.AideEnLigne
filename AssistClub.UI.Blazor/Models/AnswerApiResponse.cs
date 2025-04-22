@@ -13,7 +13,7 @@ public class AnswerApiResponse
     /// <summary>
     /// Gets or sets the unique identifier of the question to which the answer belongs.
     /// </summary>
-    public Guid QuestionId { get; set; }
+    public QuestionApiResponse Question { get; set; }
     
     /// <summary>
     /// Gets or sets the user who submitted the answer.
