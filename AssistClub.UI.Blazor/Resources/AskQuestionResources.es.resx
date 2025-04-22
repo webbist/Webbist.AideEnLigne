@@ -56,4 +56,7 @@
     <data name="FormUserErrorMessage" xml:space="preserve">
         <value>No se pudo identificar al usuario. Por favor, vuelve a iniciar sesión.</value>
     </data>
+    <data name="FormFileLabelWithSize" xml:space="preserve">
+        <value>Archivo adjunto (Máx {0} Mb)</value>
+    </data>
 </root>

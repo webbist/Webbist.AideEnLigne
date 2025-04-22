@@ -14,6 +14,11 @@ public class AnswerRequest
     public const int ContentMaxLength = 2000;
     
     /// <summary>
+    /// Maximum allowed size for the attachment in bytes.
+    /// </summary>
+    public const int AttachmentMaxSize = 5 * 1024 * 1024;
+    
+    /// <summary>
     /// Gets or sets the unique identifier of the question to which the answer is being submitted.
     /// </summary>
     public Guid QuestionId { get; set; }
@@ -30,4 +35,9 @@ public class AnswerRequest
     [HtmlRequired(ErrorMessageResourceName = "FormContentEmptyMessage", ErrorMessageResourceType = typeof(Resources.AnswerFormResources))]
     [StringLength(ContentMaxLength, ErrorMessageResourceName = "ContentMaxLengthMessage", ErrorMessageResourceType = typeof(Resources.AnswerFormResources))]
     public string Content { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the name of the file attached to the answer.
+    /// </summary>
+    public string? AttachmentName { get; set; }
 }

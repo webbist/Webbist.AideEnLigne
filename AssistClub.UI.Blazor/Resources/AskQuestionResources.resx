@@ -63,4 +63,7 @@
     <data name="FormUserErrorMessage" xml:space="preserve">
         <value>Impossible d'identifier l'utilisateur. Veuillez vous reconnecter.</value>
     </data>
+    <data name="FormFileLabelWithSize" xml:space="preserve">
+        <value>Pièce jointe (Max {0} Mo)</value>
+    </data>
 </root>

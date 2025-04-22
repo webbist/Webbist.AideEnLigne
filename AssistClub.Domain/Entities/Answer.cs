@@ -16,6 +16,8 @@ public partial class Answer
 
     public DateTime? UpdatedAt { get; set; }
 
+    public string? AttachmentName { get; set; }
+
     public virtual Question Question { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;

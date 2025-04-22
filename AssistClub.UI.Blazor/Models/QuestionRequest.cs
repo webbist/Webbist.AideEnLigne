@@ -20,6 +20,11 @@ public class QuestionRequest
     public const int ContentMaxLength = 2000;
     
     /// <summary>
+    /// Maximum allowed size for the attachment in bytes.
+    /// </summary>
+    public const int AttachmentMaxSize = 5 * 1024 * 1024;
+    
+    /// <summary>
     /// Gets or sets the unique identifier of the user submitting the question.
     /// </summary>
     public Guid UserId { get; set; }
@@ -48,4 +53,9 @@ public class QuestionRequest
     /// Gets or sets the status of the question (<c>open</c>, <c>pending</c>, or <c>resolved</c>).
     /// </summary>
     public string Status { get; set; } = QuestionStatus.Open.ToString();
+    
+    /// <summary>
+    /// Gets or sets the name of the uploaded attachment file.
+    /// </summary>
+    public string? AttachmentName { get; set; }
 }

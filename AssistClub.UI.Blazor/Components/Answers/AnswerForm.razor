@@ -9,6 +9,7 @@
 @inject NotificationService NotificationService
 @inject AnswerHttpClient AnswerHttpClient
 @inject IStringLocalizer<AnswerFormResources> AnswerFormLocalizer
+@inject FileHttpClient FileHttpClient
 
 <EditForm Model="_answerModel" OnValidSubmit="PublishAnswer">
     <DataAnnotationsValidator />
@@ -29,6 +30,18 @@
             </RadzenHtmlEditor>
             <ValidationMessage For="@(() => _answerModel.Content)" class="text-danger pt-1"/>
         </div>
+        <div class="pb-3">
+            <label class="text-black fw-medium mb-0">
+                @string.Format(Localizer["FormFileLabelWithSize"], AnswerRequest.AttachmentMaxSize / 1024 / 1024)
+            </label>
+            <RadzenFileInput TValue="string"
+                             @bind-Value="_fileContent"
+                             @bind-FileName="_fileName"
+                             Style="width: 100%"
+                             MaxFileSize="AnswerRequest.AttachmentMaxSize"
+                             ChooseText="@Localizer["FormFileInputLabel"]"
+                             Accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+        </div>
         <div class="pb-2">
             <button type="submit" class="btn btn-primary">
                 @AnswerFormLocalizer["FormSubmitButton"]
@@ -40,7 +53,10 @@
 @code {
     [Parameter] public Guid QuestionId { get; set; }
     [Parameter] public EventCallback AnswerCreated { get; set; }
+    
     private AnswerRequest _answerModel = new();
+    private string? _fileContent;
+    private string? _fileName;
 
     private async Task PublishAnswer()
     {
@@ -59,6 +75,38 @@
         }
         _answerModel.UserId = userId;
         _answerModel.QuestionId = QuestionId;
+
+        if (_fileContent != null && !string.IsNullOrEmpty(_fileName))
+        {
+            var base64 = _fileContent.Substring(_fileContent.IndexOf(",") + 1);
+            var cleanedBytes = Convert.FromBase64String(base64);
+            
+            var content = new MultipartFormDataContent
+            {
+                { new ByteArrayContent(cleanedBytes), "file", _fileName }
+            };
+            
+            var response = await FileHttpClient.UploadFileAsync(content);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseJson = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+                if (responseJson != null && responseJson.TryGetValue("filePath", out var filePath))
+                {
+                    _answerModel.AttachmentName = filePath;
+                }
+            }
+            else
+            {
+                NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = Localizer["Error"],
+                    Detail = Localizer["FileUploadErrorMessage"],
+                    Duration = 4000
+                });
+                return;
+            }
+        }
         
         var result = await AnswerHttpClient.CreateAnswerAsync(_answerModel);
         

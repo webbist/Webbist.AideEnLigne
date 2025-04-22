@@ -20,6 +20,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<UserHttpClient>();
 builder.Services.AddScoped<QuestionHttpClient>();
 builder.Services.AddScoped<AnswerHttpClient>();
+builder.Services.AddScoped<FileHttpClient>();
 builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 builder.Services.AddAuthentication(options =>
     {
@@ -36,6 +37,11 @@ builder.Services.AddAuthentication(options =>
         options.AccessDeniedPath = "/sign-in";
         options.ClaimActions.MapJsonKey("urn:google:image", "picture");
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    });
+builder.Services.AddServerSideBlazor()
+    .AddHubOptions(options =>
+    {
+        options.MaximumReceiveMessageSize = 10 * 1024 * 1024;
     });
 
 var app = builder.Build();
