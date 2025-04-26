@@ -90,4 +90,46 @@ public class UserHttpClient(HttpClient http)
             return null;
         }
     }
+    
+    /// <summary>
+    /// Retrieves the notification preferences for a user by their ID.
+    /// </summary>
+    /// <param name="id">The ID of the user whose notification preferences to retrieve.</param>
+    /// <returns>
+    /// A <see cref="NotificationPreferenceRequest"/> containing the user's notification preferences, or <c>null</c> if not found.
+    /// </returns>
+    public async Task<NotificationPreferenceRequest?> GetNotificationPreferences(Guid id)
+    {
+        try
+        {
+            var result = await http.GetFromJsonAsync<NotificationPreferenceRequest>(UserApiRouting.GetNotificationPreferencesRoute(id));
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error retrieving notification preference: {e.Message}");
+            return null;
+        }
+    }
+    
+    /// <summary>
+    /// Updates the notification preferences for a user.
+    /// </summary>
+    /// <param name="notificationPreference">The <see cref="NotificationPreferenceRequest"/> containing the updated notification preferences.</param>
+    /// <returns>
+    /// <c>true</c> if the update was successful; otherwise, <c>false</c>.
+    /// </returns>
+    public async Task<bool> UpdateNotificationPreferences(NotificationPreferenceRequest notificationPreference)
+    {
+        try
+        {
+            var response = await http.PutAsJsonAsync(UserApiRouting.UpdateNotificationPreferencesRoute, notificationPreference);
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error updating notification preference: {e.Message}");
+            return false;
+        }
+    }
 }

@@ -33,4 +33,18 @@ public static class UserApiRouting
     /// <param name="id">The ID of the user to retrieve.</param>
     /// <returns>The route to get a user by ID.</returns>
     public static string GetUserByIdRoute(Guid id) => $"{Base}/{id}";
+    
+    /// <summary>
+    /// Endpoint for retrieving the notification preferences of a user.
+    /// </summary>
+    /// <param name="id">The ID of the user whose notification preferences to retrieve.</param>
+    /// <returns>
+    /// The route to get the notification preferences of a user.
+    /// </returns>
+    public static string GetNotificationPreferencesRoute(Guid id) => $"{Base}/notifications/{id}";
+    
+    /// <summary>
+    /// Endpoint for updating the notification preferences of a user.
+    /// </summary>
+    public const string UpdateNotificationPreferencesRoute = $"{Base}/notifications";
 }

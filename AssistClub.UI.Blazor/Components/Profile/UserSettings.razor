@@ -1,0 +1,133 @@
+@using AssistClub.UI.Blazor.HttpClients
+@using AssistClub.UI.Blazor.Models
+
+@inject UserHttpClient UserHttpClient
+@inject IStringLocalizer<UserSettingsResources> UserSettingsLocalizer
+@inject NotificationService NotificationService
+
+<h3 class="mb-3">@UserSettingsLocalizer["PageTitle"]</h3>
+
+@if (_preferences != null)
+{
+    <EditForm Model="_preferences" OnValidSubmit="SavePreferences">
+        <DataAnnotationsValidator />
+        <div class="list-settings d-flex flex-column gap-4">
+            <div class="setting">
+                <label>@UserSettingsLocalizer["NotifyOnNewClubQuestionLabel"]</label>
+                <RadzenSelectBar @bind-Value="_preferences.NotifyOnNewClubQuestion" TValue="bool">
+                    <Items>
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OnLabel"]" Value="true" />
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OffLabel"]" Value="false" />
+                    </Items>
+                </RadzenSelectBar>
+            </div>
+
+            <div class="setting">
+                <label>@UserSettingsLocalizer["NotifyOnAnswerPublishedOnMyQuestionLabel"]</label>
+                <RadzenSelectBar @bind-Value="_preferences.NotifyOnAnswerPublishedOnMyQuestion" TValue="bool">
+                    <Items>
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OnLabel"]" Value="true" />
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OffLabel"]" Value="false" />
+                    </Items>
+                </RadzenSelectBar>
+            </div>
+
+            <div class="setting">
+                <label>@UserSettingsLocalizer["NotifyOnAnswerToMyQuestionMarkedOfficialLabel"]</label>
+                <RadzenSelectBar @bind-Value="_preferences.NotifyOnAnswerToMyQuestionMarkedOfficial" TValue="bool">
+                    <Items>
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OnLabel"]" Value="true" />
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OffLabel"]" Value="false" />
+                    </Items>
+                </RadzenSelectBar>
+            </div>
+
+            <div class="setting">
+                <label>@UserSettingsLocalizer["NotifyOnMyQuestionOrAnswerModifiedByAdminLabel"]</label>
+                <RadzenSelectBar @bind-Value="_preferences.NotifyOnMyQuestionOrAnswerModifiedByAdmin" TValue="bool">
+                    <Items>
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OnLabel"]" Value="true" />
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OffLabel"]" Value="false" />
+                    </Items>
+                </RadzenSelectBar>
+            </div>
+
+            <div class="setting">
+                <label>@UserSettingsLocalizer["NotifyOnAnyOfficialAnswerInQuestionIrelatedLabel"]</label>
+                <RadzenSelectBar @bind-Value="_preferences.NotifyOnAnyOfficialAnswerInQuestionIrelated" TValue="bool">
+                    <Items>
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OnLabel"]" Value="true" />
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OffLabel"]" Value="false" />
+                    </Items>
+                </RadzenSelectBar>
+            </div>
+            
+            <div class="setting">
+                <label>@UserSettingsLocalizer["NotifyOnQuestionIrelatedModifiedByAuthorLabel"]</label>
+                <RadzenSelectBar @bind-Value="_preferences.NotifyOnQuestionIrelatedModifiedByAuthor" TValue="bool">
+                    <Items>
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OnLabel"]" Value="true"/>
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OffLabel"]" Value="false"/>
+                    </Items>
+                </RadzenSelectBar>
+            </div>
+            
+            <div class="setting">
+                <label>@UserSettingsLocalizer["NotifyOnNewAnswerInQuestionIrelatedLabel"]</label>
+                <RadzenSelectBar @bind-Value="_preferences.NotifyOnNewAnswerInQuestionIrelated" TValue="bool">
+                    <Items>
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OnLabel"]" Value="true" />
+                        <RadzenSelectBarItem Text="@UserSettingsLocalizer["OffLabel"]" Value="false" />
+                    </Items>
+                </RadzenSelectBar>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <RadzenButton ButtonStyle="ButtonStyle.Primary" Type="ButtonType.Submit" Icon="save">
+                    @Localizer["SaveButton"]
+                </RadzenButton>
+            </div>
+        </div>
+    </EditForm>
+}
+else
+{
+    <p>@Localizer["Loading"]</p>
+}
+
+@code {
+    [Parameter] public Guid UserId { get; set; }
+    [Parameter] public bool IsAdmin { get; set; }
+    private NotificationPreferenceRequest? _preferences;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _preferences = await UserHttpClient.GetNotificationPreferences(UserId);
+    }
+    
+    private async Task SavePreferences()
+    {
+        if (_preferences == null) return;
+        var result = await UserHttpClient.UpdateNotificationPreferences(_preferences);
+        if (result)
+        {
+            NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Success,
+                Summary = Localizer["Success"],
+                Detail = UserSettingsLocalizer["SuccessMessage"],
+                Duration = 4000
+            });
+        }
+        else
+        {
+            NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = Localizer["Error"],
+                Detail = UserSettingsLocalizer["ErrorMessage"],
+                Duration = 4000
+            });
+        }
+    }
+}

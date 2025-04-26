@@ -90,4 +90,53 @@ public class UserService(IUserRepository userRepository) : IUserService
             };
         return null;
     }
+    
+    /// <summary>
+    /// Retrieves the notification preferences for a user by their ID.
+    /// </summary>
+    /// <param name="userId">The ID of the user whose notification preferences to retrieve.</param>
+    /// <returns>
+    /// A <see cref="NotificationPreferenceRequest"/> containing the user's notification preferences if found; otherwise, <c>null</c>.
+    /// </returns>
+    public async Task<NotificationPreferenceRequest?> GetUserNotificationPreferencesAsync(Guid userId)
+    {
+        var preferences = await userRepository.GetUserNotificationPreferencesAsync(userId);
+        if (preferences != null)
+            return new NotificationPreferenceRequest
+            {
+                UserId = preferences.UserId,
+                NotifyOnNewClubQuestion = preferences.NotifyOnNewClubQuestion.Value,
+                NotifyOnAnswerPublishedOnMyQuestion = preferences.NotifyOnAnswerPublishedOnMyQuestion.Value,
+                NotifyOnAnswerToMyQuestionMarkedOfficial = preferences.NotifyOnAnswerToMyQuestionMarkedOfficial.Value,
+                NotifyOnMyQuestionOrAnswerModifiedByAdmin = preferences.NotifyOnMyQuestionOrAnswerModifiedByAdmin.Value,
+                NotifyOnAnyOfficialAnswerInQuestionIrelated = preferences.NotifyOnAnyOfficialAnswerInQuestionIrelated.Value,
+                NotifyOnQuestionIrelatedModifiedByAuthor = preferences.NotifyOnQuestionIrelatedModifiedByAuthor.Value,
+                NotifyOnNewAnswerInQuestionIrelated = preferences.NotifyOnNewAnswerInQuestionIrelated.Value
+            };
+        return null;
+    }
+
+    /// <summary>
+    /// Updates the notification preferences for a user.
+    /// </summary>
+    /// <param name="preferences">The <see cref="NotificationPreferenceRequest"/> containing the updated preferences.</param>
+    /// <returns>
+    /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
+    /// </returns>
+    public async Task<bool> UpdateUserNotificationPreferencesAsync(NotificationPreferenceRequest preferences)
+    {
+        var updatedPreferences = new NotificationPreference
+        {
+            UserId = preferences.UserId,
+            NotifyOnNewClubQuestion = preferences.NotifyOnNewClubQuestion,
+            NotifyOnAnswerPublishedOnMyQuestion = preferences.NotifyOnAnswerPublishedOnMyQuestion,
+            NotifyOnAnswerToMyQuestionMarkedOfficial = preferences.NotifyOnAnswerToMyQuestionMarkedOfficial,
+            NotifyOnMyQuestionOrAnswerModifiedByAdmin = preferences.NotifyOnMyQuestionOrAnswerModifiedByAdmin,
+            NotifyOnAnyOfficialAnswerInQuestionIrelated = preferences.NotifyOnAnyOfficialAnswerInQuestionIrelated,
+            NotifyOnQuestionIrelatedModifiedByAuthor = preferences.NotifyOnQuestionIrelatedModifiedByAuthor,
+            NotifyOnNewAnswerInQuestionIrelated = preferences.NotifyOnNewAnswerInQuestionIrelated
+        };
+        
+        return await userRepository.UpdateNotificationPreferencesAsync(updatedPreferences);
+    }
 }

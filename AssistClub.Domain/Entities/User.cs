@@ -20,5 +20,7 @@ public partial class User
 
     public virtual ICollection<Answer> Answers { get; set; } = new List<Answer>();
 
+    public virtual NotificationPreference? NotificationPreference { get; set; }
+
     public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
 }

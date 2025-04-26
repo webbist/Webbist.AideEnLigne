@@ -6,7 +6,7 @@ using Domain.Enums;
 namespace AssistClub.Application.Services;
 
 /// <inheritdoc/>
-public class AnswerService(IAnswerRepository answerRepository): IAnswerService
+public class AnswerService(IAnswerRepository answerRepository, Notification notification): IAnswerService
 {
     /// <summary>
     /// Creates a new answer in the system.
@@ -39,6 +39,8 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
         };
         
         var createdAnswer = await answerRepository.CreateAnswerAsync(answer);
+        
+        await notification.SendEmailOnNewAnswer(createdAnswer);
         
         return new AnswerResponse
         {
@@ -114,7 +116,10 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
     /// </returns>
     public async Task<bool> UpdateAnswerStatusAsync(Guid id, AnswerStatus newStatus)
     {
-        return await answerRepository.UpdateAnswerStatusAsync(id, newStatus);
+        var updateAnswer = await answerRepository.UpdateAnswerStatusAsync(id, newStatus);
+        if (updateAnswer == null) return false;
+        if (newStatus == AnswerStatus.Official) await notification.SendEmailOnOfficialAnswer(updateAnswer);
+        return true;
     }
 
     /// <summary>
@@ -141,7 +146,12 @@ public class AnswerService(IAnswerRepository answerRepository): IAnswerService
             UpdatedAt = DateTime.UtcNow,
             AttachmentName = answerRequest.AttachmentName
         };
-        return await answerRepository.UpdateAnswerAsync(updatedAnswer);
+        var result = await answerRepository.UpdateAnswerAsync(updatedAnswer);
+        if (result)
+        {
+            await notification.SendEmailOnUpdateAnswer(updatedAnswer);
+        }
+        return result;
     }
 
     /// <summary>

@@ -16,6 +16,8 @@ public partial class AssistClubDbContext : DbContext
 
     public virtual DbSet<Answer> Answers { get; set; }
 
+    public virtual DbSet<NotificationPreference> NotificationPreferences { get; set; }
+
     public virtual DbSet<Question> Questions { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -45,6 +47,30 @@ public partial class AssistClubDbContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Answers_Users");
+        });
+
+        modelBuilder.Entity<NotificationPreference>(entity =>
+        {
+            entity.HasKey(e => e.UserId).HasName("PK__Notifica__1788CC4CF2D008AF");
+
+            entity.Property(e => e.UserId).ValueGeneratedNever();
+            entity.Property(e => e.NotifyOnAnswerPublishedOnMyQuestion).HasDefaultValue(true);
+            entity.Property(e => e.NotifyOnAnswerToMyQuestionMarkedOfficial).HasDefaultValue(true);
+            entity.Property(e => e.NotifyOnAnyOfficialAnswerInQuestionIrelated)
+                .HasDefaultValue(true)
+                .HasColumnName("NotifyOnAnyOfficialAnswerInQuestionIRelated");
+            entity.Property(e => e.NotifyOnMyQuestionOrAnswerModifiedByAdmin).HasDefaultValue(true);
+            entity.Property(e => e.NotifyOnNewAnswerInQuestionIrelated)
+                .HasDefaultValue(true)
+                .HasColumnName("NotifyOnNewAnswerInQuestionIRelated");
+            entity.Property(e => e.NotifyOnNewClubQuestion).HasDefaultValue(true);
+            entity.Property(e => e.NotifyOnQuestionIrelatedModifiedByAuthor)
+                .HasDefaultValue(true)
+                .HasColumnName("NotifyOnQuestionIRelatedModifiedByAuthor");
+
+            entity.HasOne(d => d.User).WithOne(p => p.NotificationPreference)
+                .HasForeignKey<NotificationPreference>(d => d.UserId)
+                .HasConstraintName("FK_NotificationPreferences_Users");
         });
 
         modelBuilder.Entity<Question>(entity =>

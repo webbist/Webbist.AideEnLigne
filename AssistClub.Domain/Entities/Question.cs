@@ -20,6 +20,8 @@ public partial class Question
 
     public string? AttachmentName { get; set; }
 
+    public Guid? ModifiedBy { get; set; }
+
     public virtual ICollection<Answer> Answers { get; set; } = new List<Answer>();
 
     public virtual User User { get; set; } = null!;

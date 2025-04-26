@@ -69,6 +69,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>UserQuestionListResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\UserSettingsResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserSettingsResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -141,6 +145,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>UserQuestionListResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\UserSettingsResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UserSettingsResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

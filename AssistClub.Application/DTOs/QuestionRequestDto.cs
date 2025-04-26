@@ -49,4 +49,9 @@ public class QuestionRequestDto
     /// Gets or sets the name of the uploaded attachment file.
     /// </summary>
     public string? AttachmentName { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the unique identifier of the user who last modified the question.
+    /// </summary>
+    public Guid? ModifiedBy { get; set; }
 }

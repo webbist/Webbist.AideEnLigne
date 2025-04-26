@@ -29,6 +29,7 @@ CREATE TABLE Questions (
                            Visibility NVARCHAR(50) NOT NULL CHECK (Visibility IN ('public', 'private')),
                            Status NVARCHAR(50) NOT NULL CHECK (Status IN ('open', 'pending', 'resolved')),
                            AttachmentName NVARCHAR(255) NULL,
+                           ModifiedBy UNIQUEIDENTIFIER NULL,
 
                            CONSTRAINT FK_Questions_Users FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
 );
@@ -41,8 +42,26 @@ CREATE TABLE Answers (
                          Status NVARCHAR(50) NOT NULL CHECK (Status IN ('pending', 'official', 'archived')),
                          CreatedAt DATETIME DEFAULT GETDATE(),
                          UpdatedAt DATETIME NULL,
-                         AttachmentName NVARCHAR(255) NULL
+                         AttachmentName NVARCHAR(255) NULL,
+                         ModifiedBy UNIQUEIDENTIFIER NULL,
 
                          CONSTRAINT FK_Answers_Questions FOREIGN KEY (QuestionId) REFERENCES Questions(Id) ON DELETE CASCADE,
                          CONSTRAINT FK_Answers_Users FOREIGN KEY (UserId) REFERENCES Users(Id)
+);
+
+CREATE TABLE NotificationPreferences (
+    UserId UNIQUEIDENTIFIER  PRIMARY KEY NOT NULL,
+
+    -- Responsable de club
+    NotifyOnNewClubQuestion BIT DEFAULT 1,
+
+    -- Utilisateur
+    NotifyOnAnswerPublishedOnMyQuestion BIT DEFAULT 1,
+    NotifyOnAnswerToMyQuestionMarkedOfficial BIT DEFAULT 1,
+    NotifyOnMyQuestionOrAnswerModifiedByAdmin BIT DEFAULT 1,
+    NotifyOnAnyOfficialAnswerInQuestionIRelated BIT DEFAULT 1,
+    NotifyOnQuestionIRelatedModifiedByAuthor BIT DEFAULT 1,
+    NotifyOnNewAnswerInQuestionIRelated BIT DEFAULT 1,
+
+    CONSTRAINT FK_NotificationPreferences_Users FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
 );

@@ -1,0 +1,9 @@
+.list-settings .setting {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.setting label {
+    padding-bottom: 0.5rem;
+}

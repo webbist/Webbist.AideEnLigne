@@ -18,6 +18,8 @@ public partial class Answer
 
     public string? AttachmentName { get; set; }
 
+    public Guid? ModifiedBy { get; set; }
+
     public virtual Question Question { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
