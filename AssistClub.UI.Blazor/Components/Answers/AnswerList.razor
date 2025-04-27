@@ -36,7 +36,8 @@
                         <div class="btn-group ms-auto mb-1" role="group">
                             @if (isAdmin && (!HasOfficialAnswer || answer.Status == AnswerStatus.Official.ToString()))
                             {
-                                <button @ref="@_buttonRefMap[answer.Id]" @onmouseenter="@(() => ShowTooltip(_buttonRefMap[answer.Id], answer.Status))"
+                                <button @ref="@_buttonRefMap[answer.Id]" disabled="@_isProcessingOfficialToggle"
+                                        @onmouseenter="@(() => ShowTooltip(_buttonRefMap[answer.Id], answer.Status))"
                                         @onmouseleave="HideTooltip"
                                         class="btn btn-sm @(answer.Status == AnswerStatus.Official.ToString()
                                                               ? "btn-outline-danger"
@@ -112,6 +113,7 @@
     private IEnumerable<AnswerApiResponse>? _answers;
     private Dictionary<Guid, ElementReference> _buttonRefMap = new();
     private ElementReference? _currentTooltipRef;
+    private bool _isProcessingOfficialToggle;
     
     protected override async Task OnInitializedAsync()
     {
@@ -131,16 +133,25 @@
     
     private async Task ToggleOfficialStatus(Guid answerId, AnswerStatus currentStatus)
     {
-        var newStatus = currentStatus == AnswerStatus.Official
-            ? AnswerStatus.Pending
-            : AnswerStatus.Official;
-
-        var success = await AnswerHttpClient.UpdateAnswerStatusAsync(answerId, newStatus);
-    
-        if (success)
+        if (_isProcessingOfficialToggle) return;
+        _isProcessingOfficialToggle = true;
+        try
         {
-            await RefreshAsync();
-            await OfficialStatusChanged.InvokeAsync();
+            var newStatus = currentStatus == AnswerStatus.Official
+                ? AnswerStatus.Pending
+                : AnswerStatus.Official;
+
+            var success = await AnswerHttpClient.UpdateAnswerStatusAsync(answerId, newStatus);
+
+            if (success)
+            {
+                await RefreshAsync();
+                await OfficialStatusChanged.InvokeAsync();
+            }
+        }
+        finally
+        {
+            _isProcessingOfficialToggle = false;
         }
     }
     

@@ -22,7 +22,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
     /// </summary>
     /// <param name="emailRequest">The <see cref="EmailRequest"/> containing email details.</param>
     /// <returns>True if the email was sent successfully, false otherwise.</returns>
-    public async Task<bool> SendEmailAsync(EmailRequest emailRequest)
+    private async Task<bool> SendEmailAsync(EmailRequest emailRequest)
     {
         try
         {
@@ -102,7 +102,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
         emailTasks.Add(SendEmailAsync(new EmailRequest
         {
             To = author.Email,
-            Subject = "Votre question a été enregistrée sur {websiteName}",
+            Subject = $"Votre question a été enregistrée sur {websiteName}",
             Body = @$"
                    <p>Bonjour {author.Firstname},</p>
                    <p>Merci d'avoir posé votre question sur {websiteName} ! 🎉</p>

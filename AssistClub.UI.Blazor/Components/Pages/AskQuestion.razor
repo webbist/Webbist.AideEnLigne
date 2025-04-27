@@ -91,7 +91,7 @@
                         </div>
                         <div class="input-box">
                             <div class="btn-box">
-                                <button type="submit" class="btn btn-primary">@AskQuestionLocalizer["FormSubmitButton"]</button>
+                                <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">@AskQuestionLocalizer["FormSubmitButton"]</button>
                             </div>
                         </div>
                     </div>
@@ -108,6 +108,7 @@
     private string _searchTerm = string.Empty;
     private List<QuestionApiResponse> _suggestedQuestions = new();
     private System.Timers.Timer? _debounceTimer;
+    private bool _isSubmitting;
     
     private async void CloseSuggestions()
     {
@@ -155,77 +156,87 @@
 
     private async Task PublishQuestion()
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var userIdClaim = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (!Guid.TryParse(userIdClaim, out var userId))
+        if (_isSubmitting) return;
+        _isSubmitting = true;
+        try
         {
-            ShowNotification(new NotificationMessage
-            {
-                Severity = NotificationSeverity.Error,
-                Summary = Localizer["Error"],
-                Detail = AskQuestionLocalizer["FormUserErrorMessage"],
-                Duration = 4000
-            });
-            return;
-        }
-        _questionModel.UserId = userId;
-        
-        if (_fileContent != null && !string.IsNullOrEmpty(_fileName))
-        {
-            var base64 = _fileContent.Substring(_fileContent.IndexOf(",") + 1);
-            var cleanedBytes = Convert.FromBase64String(base64);
-            
-            var content = new MultipartFormDataContent
-            {
-                { new ByteArrayContent(cleanedBytes), "file", _fileName }
-            };
-            
-            var response = await FileHttpClient.UploadFileAsync(content);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseJson = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
-                if (responseJson != null && responseJson.TryGetValue("filePath", out var filePath))
-                {
-                    _questionModel.AttachmentName = filePath;
-                }
-            }
-            else
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var userIdClaim = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!Guid.TryParse(userIdClaim, out var userId))
             {
                 ShowNotification(new NotificationMessage
                 {
                     Severity = NotificationSeverity.Error,
                     Summary = Localizer["Error"],
-                    Detail = Localizer["FileUploadErrorMessage"],
+                    Detail = AskQuestionLocalizer["FormUserErrorMessage"],
                     Duration = 4000
                 });
                 return;
             }
-        }
-        
-        var result = await QuestionHttpClient.CreateQuestionAsync(_questionModel);
 
-        if (result == null)
-        {
-            ShowNotification(new NotificationMessage
+            _questionModel.UserId = userId;
+
+            if (_fileContent != null && !string.IsNullOrEmpty(_fileName))
             {
-                Severity = NotificationSeverity.Error,
-                Summary = Localizer["Error"],
-                Detail = AskQuestionLocalizer["FormErrorMessage"],
-                Duration = 4000
-            });
+                var base64 = _fileContent.Substring(_fileContent.IndexOf(",") + 1);
+                var cleanedBytes = Convert.FromBase64String(base64);
+
+                var content = new MultipartFormDataContent
+                {
+                    { new ByteArrayContent(cleanedBytes), "file", _fileName }
+                };
+
+                var response = await FileHttpClient.UploadFileAsync(content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseJson = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+                    if (responseJson != null && responseJson.TryGetValue("filePath", out var filePath))
+                    {
+                        _questionModel.AttachmentName = filePath;
+                    }
+                }
+                else
+                {
+                    ShowNotification(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Error,
+                        Summary = Localizer["Error"],
+                        Detail = Localizer["FileUploadErrorMessage"],
+                        Duration = 4000
+                    });
+                    return;
+                }
+            }
+
+            var result = await QuestionHttpClient.CreateQuestionAsync(_questionModel);
+
+            if (result == null)
+            {
+                ShowNotification(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = Localizer["Error"],
+                    Detail = AskQuestionLocalizer["FormErrorMessage"],
+                    Duration = 4000
+                });
+            }
+            else
+            {
+                _questionModel = new QuestionRequest();
+
+                ShowNotification(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = AskQuestionLocalizer["SuccessTitle"],
+                    Detail = AskQuestionLocalizer["SuccessMessage"],
+                    Duration = 4000
+                });
+                NavigationManager.NavigateTo("/");
+            }
         }
-        else
+        finally
         {
-            _questionModel = new QuestionRequest();
-        
-            ShowNotification(new NotificationMessage
-            {
-                Severity = NotificationSeverity.Success,
-                Summary = AskQuestionLocalizer["SuccessTitle"],
-                Detail = AskQuestionLocalizer["SuccessMessage"],
-                Duration = 4000
-            });
-            NavigationManager.NavigateTo("/");
+            _isSubmitting = false;
         }
     }
     
