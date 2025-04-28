@@ -59,4 +59,7 @@
     <data name="FormFileLabelWithSize" xml:space="preserve">
         <value>Attachment (Max {0} Mb)</value>
     </data>
+    <data name="SuggestedQuestionsTitle" xml:space="preserve">
+        <value>Possible existing similar questions</value>
+    </data>
 </root>

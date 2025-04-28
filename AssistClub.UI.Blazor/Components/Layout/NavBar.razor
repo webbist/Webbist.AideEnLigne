@@ -1,19 +1,38 @@
 @using System.Security.Claims
+@using AssistClub.UI.Blazor.Components.Enums
+@using AssistClub.UI.Blazor.HttpClients
+@using AssistClub.UI.Blazor.Models
 @using Microsoft.AspNetCore.Components.Authorization
 @rendermode InteractiveServer
 
 @inject IStringLocalizer<NavBarResources> NavBarLocalizer
 @inject NavigationManager Navigation
+@inject QuestionHttpClient QuestionHttpClient
 
 <AuthorizeView>
     <Authorized>
-        <div class="d-flex me-auto mb-lg-0" role="search">
-            <input class="form-control me-2 search-bar" type="search" placeholder="@NavBarLocalizer["SearchPlaceholder"]" aria-label="Search" @bind-value="_searchTerm" />
+        <div class="search-bar d-flex gap-2">
+            <RadzenAutoComplete @bind-Value="@_searchTerm" LoadData="@OnSearchChanged" Data="@_suggestedQuestions"
+                                TextProperty="@nameof(QuestionApiResponse.Title)" class="w-100">
+                <Template Context="question">
+                    <NavLink href="@($"question/{question.Id}")">
+                        <div class="d-flex flex-column">
+                            <h5 class="mb-1 fw-medium truncate-text">
+                                <NavLink href="@($"question/{question.Id}")">@question.Title</NavLink>
+                            </h5>
+                            <p class="mb-0 truncate-text lh-20 fs-13">
+                                @question.PlainTextContent
+                            </p>
+                        </div>
+                    </NavLink>
+                </Template>
+            </RadzenAutoComplete>
             <button class="btn btn-outline-primary" type="button" @onclick="PerformSearch">
                 <i class="bi bi-search"></i>
             </button>
         </div>
-        <ul class="navbar-nav flex-row flex-wrap ms-md-auto align-items-center">
+ 
+        <ul class="navbar-nav flex-row flex-wrap ms-sm-auto align-items-center">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle ps-2 user" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="media media-card mb-0 rounded-0 align-items-center bg-transparent">
@@ -42,9 +61,18 @@
 
 @code {
     private string _searchTerm = string.Empty;
+    private IEnumerable<QuestionApiResponse>? _suggestedQuestions = new List<QuestionApiResponse>();
 
     private void PerformSearch()
     {
         Navigation.NavigateTo(!string.IsNullOrWhiteSpace(_searchTerm) ? $"/search/{Uri.EscapeDataString(_searchTerm)}" : "/");
+    }
+    
+    private async Task OnSearchChanged(LoadDataArgs args)
+    {
+        if (args.Filter.Length > 3)
+        {
+            _suggestedQuestions = await QuestionHttpClient.SearchQuestionsAsync(args.Filter, QuestionVisibility.Public);
+        }
     }
 }

@@ -146,4 +146,27 @@ public class QuestionHttpClient(HttpClient http)
             return false;
         }
     }
+    
+    /// <summary>
+    /// Sends a request to search for questions based on a query string and visibility.
+    /// </summary>
+    /// <param name="query">The search query string.</param>
+    /// <param name="visibility">The visibility filter for questions (<c>public</c> or <c>private</c>).</param>
+    /// <returns>
+    /// A collection of <see cref="QuestionApiResponse"/> entities if successful; otherwise, <c>null</c> in case of an error.
+    /// </returns>
+    public async Task<IEnumerable<QuestionApiResponse>?> SearchQuestionsAsync(string query, QuestionVisibility visibility)
+    {
+        try
+        {
+            var url = $"{QuestionApiRouting.GetAllRoute}?$filter=(contains(tolower(Title),'{query.ToLower()}') or contains(tolower(Content),'{query.ToLower()}')) and Visibility eq '{visibility}'";
+            var result = await http.GetFromJsonAsync<IEnumerable<QuestionApiResponse>>(url);
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error searching questions: {e.Message}");
+            return null;
+        }
+    }
 }
