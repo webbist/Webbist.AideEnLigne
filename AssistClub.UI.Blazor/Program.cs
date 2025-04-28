@@ -21,6 +21,7 @@ builder.Services.AddScoped<UserHttpClient>();
 builder.Services.AddScoped<QuestionHttpClient>();
 builder.Services.AddScoped<AnswerHttpClient>();
 builder.Services.AddScoped<FileHttpClient>();
+builder.Services.AddScoped<AnswerVoteHttpClient>();
 builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 builder.Services.AddAuthentication(options =>
     {

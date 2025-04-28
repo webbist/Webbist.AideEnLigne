@@ -16,6 +16,8 @@ public partial class AssistClubDbContext : DbContext
 
     public virtual DbSet<Answer> Answers { get; set; }
 
+    public virtual DbSet<AnswerVote> AnswerVotes { get; set; }
+
     public virtual DbSet<NotificationPreference> NotificationPreferences { get; set; }
 
     public virtual DbSet<Question> Questions { get; set; }
@@ -47,6 +49,24 @@ public partial class AssistClubDbContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Answers_Users");
+        });
+
+        modelBuilder.Entity<AnswerVote>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__AnswerVo__3214EC07554A1987");
+
+            entity.HasIndex(e => new { e.UserId, e.AnswerId }, "UQ_AnswerVotes_User_Answer").IsUnique();
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+            entity.HasOne(d => d.Answer).WithMany(p => p.AnswerVotes)
+                .HasForeignKey(d => d.AnswerId)
+                .HasConstraintName("FK_AnswerVotes_Answers");
+
+            entity.HasOne(d => d.User).WithMany(p => p.AnswerVotes)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AnswerVotes_Users");
         });
 
         modelBuilder.Entity<NotificationPreference>(entity =>

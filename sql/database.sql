@@ -65,3 +65,13 @@ CREATE TABLE NotificationPreferences (
 
     CONSTRAINT FK_NotificationPreferences_Users FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
 );
+
+CREATE TABLE AnswerVotes (
+                             Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+                             AnswerId UNIQUEIDENTIFIER NOT NULL,
+                             UserId UNIQUEIDENTIFIER NOT NULL,
+
+                             CONSTRAINT FK_AnswerVotes_Answers FOREIGN KEY (AnswerId) REFERENCES Answers(Id) ON DELETE CASCADE,
+                             CONSTRAINT FK_AnswerVotes_Users FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION,
+                             CONSTRAINT UQ_AnswerVotes_User_Answer UNIQUE (UserId, AnswerId)
+);

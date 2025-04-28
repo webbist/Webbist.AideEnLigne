@@ -30,10 +30,11 @@ public interface IAnswerService
     /// <summary>
     /// Retrieves all answers in the system, including user information.
     /// </summary>
+    /// <param name="userId">The ID of the user to check if he voted for any answer.</param>
     /// <returns>
     /// An <see cref="IQueryable{T}"/> of <see cref="AnswerResponse"/> containing the answers.
     /// </returns>
-    Task<IQueryable<AnswerResponse>> GetAnswersAsync();
+    Task<IQueryable<AnswerResponse>> GetAnswersAsync(Guid userId);
     
     /// <summary>
     /// Updates the status of an answer and the associated question status.

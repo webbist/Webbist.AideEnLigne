@@ -38,15 +38,16 @@ public class AnswerHttpClient(HttpClient http)
     /// This method utilizes OData to allow dynamic filtering and sorting of answers.
     /// </remarks>
     /// <param name="questionId">The unique identifier of the question for which answers are being retrieved.</param>
+    /// <param name="userId">The unique identifier of the user to check if he voted for any answer.</param>
     /// <returns>
     /// A collection of <see cref="AnswerApiResponse"/> entities if successful; otherwise, <c>null</c> in case of an error.
     /// </returns>
-    public async Task<IEnumerable<AnswerApiResponse>?> GetAnswersAsync(Guid questionId)
+    public async Task<IEnumerable<AnswerApiResponse>?> GetAnswersAsync(Guid questionId, Guid userId)
     {
         try
         {
             var query = $"$orderby=CreatedAt asc&$filter=Question/Id eq {questionId}";
-            var url = $"{AnswerApiRouting.GetAllRoute}?{query}";
+            var url = $"{AnswerApiRouting.GetAllRoute(userId)}?{query}";
             var result = await http.GetFromJsonAsync<IEnumerable<AnswerApiResponse>>(url);
             return result;
         }
@@ -113,7 +114,7 @@ public class AnswerHttpClient(HttpClient http)
         try
         {
             var query = $"$orderby=CreatedAt desc&$filter=User/Id eq {userId}";
-            var url = $"{AnswerApiRouting.GetAllRoute}?{query}";
+            var url = $"{AnswerApiRouting.GetAllRoute(userId)}?{query}";
             var result = await http.GetFromJsonAsync<IEnumerable<AnswerApiResponse>>(url);
             return result;
         }

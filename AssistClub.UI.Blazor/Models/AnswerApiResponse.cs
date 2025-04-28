@@ -44,4 +44,14 @@ public class AnswerApiResponse
     /// Gets or sets the name of the file attached to the answer.
     /// </summary>
     public string? AttachmentName { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the number of votes received for the answer.
+    /// </summary>
+    public int VoteCount { get; set; }
+    
+    /// <summary>
+    /// Gets or sets a value indicating whether the user has voted for this answer.
+    /// </summary>
+    public bool HasVoted { get; set; }
 }

@@ -1,3 +1,4 @@
+@using System.Security.Claims
 @using AssistClub.UI.Blazor.Components.Enums
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
@@ -14,6 +15,8 @@
 @inject TooltipService TooltipService
 @inject IConfiguration Configuration
 @inject FileHttpClient FileHttpClient
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject AnswerVoteHttpClient AnswerVoteHttpClient
 
 <div class="total-answers">
     <h5>@(_answers?.Count() ?? 0) @(_answers?.Count() == 1 ? AnswerListLocalizer["AnswerCountSingularLabel"] : AnswerListLocalizer["AnswerCountPluralLabel"])</h5>
@@ -24,84 +27,96 @@
                 PagingSummaryFormat="@AnswerListLocalizer["PagingSummary"]" ShowEmptyMessage="true" 
                 EmptyText="@AnswerListLocalizer["EmptyText"]">
     <Template Context="answer">
-        <AuthorizeView>
-            <Authorized Context="auth">
-                @{
-                    var isAdmin = auth.UserIsAdmin();
-                    var isAuthor = auth.UserIsAuthor(answer.User.Id);
-                }
-                @if (isAdmin || isAuthor)
-                {
-                    <div class="btn-toolbar" role="toolbar">
-                        <div class="btn-group ms-auto mb-1" role="group">
-                            @if (isAdmin && (!HasOfficialAnswer || answer.Status == AnswerStatus.Official.ToString()))
+        <div class="d-flex">
+            <div class="toggle-vote">
+                <span class="vote-count">@answer.VoteCount</span>
+                <button class="btn-vote btn btn-sm mt-2"
+                        title="@AnswerListLocalizer["VoteButtonLabel"]"
+                        @onclick="@(() => ToggleVote(answer))">
+                    <i class="bi @(answer.HasVoted ? "bi-hand-thumbs-up-fill" : "bi-hand-thumbs-up")"></i>
+                </button>
+            </div>
+            <div class="answer w-100">
+                <AuthorizeView>
+                    <Authorized Context="auth">
+                        @{
+                            var isAdmin = auth.UserIsAdmin();
+                            var isAuthor = auth.UserIsAuthor(answer.User.Id);
+                        }
+                        @if (isAdmin || isAuthor)
+                        {
+                            <div class="btn-toolbar" role="toolbar">
+                                <div class="btn-group ms-auto mb-1" role="group">
+                                    @if (isAdmin && (!HasOfficialAnswer || answer.Status == AnswerStatus.Official.ToString()))
+                                    {
+                                        <button @ref="@_buttonRefMap[answer.Id]" disabled="@_isProcessingOfficialToggle"
+                                                @onmouseenter="@(() => ShowTooltip(_buttonRefMap[answer.Id], answer.Status))"
+                                                @onmouseleave="HideTooltip"
+                                                class="btn btn-sm @(answer.Status == AnswerStatus.Official.ToString()
+                                                                      ? "btn-outline-danger"
+                                                                      : "btn-outline-success")"
+                                                @onclick="@(() => ToggleOfficialStatus(answer.Id, Enum.Parse<AnswerStatus>(answer.Status)))">
+                                            <i class="bi @(answer.Status == AnswerStatus.Official.ToString()
+                                                             ? "bi-x-circle"
+                                                             : "bi-check-circle")"></i>
+                                        </button>
+                                    }
+
+                                    <button class="btn btn-outline-secondary btn-sm"
+                                            title="@AnswerListLocalizer["EditAnswerButton"]"
+                                            @onclick="@(() => OpenEditDialog(answer))">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+
+                                    <button class="btn btn-outline-danger btn-sm"
+                                            title="@AnswerListLocalizer["DeleteAnswerButton"]"
+                                            @onclick="@(() => ConfirmDelete(answer.Id, answer.AttachmentName))">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </Authorized>
+                </AuthorizeView>
+                <div class="answer-body">
+                    @((MarkupString)answer.Content)
+                    @if (!string.IsNullOrEmpty(answer.AttachmentName))
+                    {
+                        var fileUrl = $"{Configuration["Api:BaseUrl"]}/{FileApiRouting.DownloadFileRoute}/{answer.AttachmentName}";
+
+                        <div class="mt-3">
+                            @if (answer.AttachmentName.EndsWith(".jpg") || answer.AttachmentName.EndsWith(".jpeg") || answer.AttachmentName.EndsWith(".png"))
                             {
-                                <button @ref="@_buttonRefMap[answer.Id]" disabled="@_isProcessingOfficialToggle"
-                                        @onmouseenter="@(() => ShowTooltip(_buttonRefMap[answer.Id], answer.Status))"
-                                        @onmouseleave="HideTooltip"
-                                        class="btn btn-sm @(answer.Status == AnswerStatus.Official.ToString()
-                                                              ? "btn-outline-danger"
-                                                              : "btn-outline-success")"
-                                        @onclick="@(() => ToggleOfficialStatus(answer.Id, Enum.Parse<AnswerStatus>(answer.Status)))">
-                                    <i class="bi @(answer.Status == AnswerStatus.Official.ToString()
-                                                     ? "bi-x-circle"
-                                                     : "bi-check-circle")"></i>
-                                </button>
+                                <img src="@fileUrl" alt="@Localizer["AttachmentAltText"]" style="max-width: 100%; height: auto;" class="img-thumbnail"/>
                             }
-
-                            <button class="btn btn-outline-secondary btn-sm"
-                                    title="@AnswerListLocalizer["EditAnswerButton"]"
-                                    @onclick="@(() => OpenEditDialog(answer))">
-                                <i class="bi bi-pencil-square"></i>
-                            </button>
-
-                            <button class="btn btn-outline-danger btn-sm"
-                                    title="@AnswerListLocalizer["DeleteAnswerButton"]"
-                                    @onclick="@(() => ConfirmDelete(answer.Id, answer.AttachmentName))">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                            else
+                            {
+                                <a class="button-download btn btn-outline-primary" href="@fileUrl" target="_blank" download>
+                                    <i class="bi bi-download"></i> @Localizer["DownloadAttachmentButton"]
+                                </a>
+                            }
                         </div>
-                    </div>
-                }
-            </Authorized>
-        </AuthorizeView>
-        <div class="answer-body">
-            @((MarkupString)answer.Content)
-            @if (!string.IsNullOrEmpty(answer.AttachmentName))
-            {
-                var fileUrl = $"{Configuration["Api:BaseUrl"]}/{FileApiRouting.DownloadFileRoute}/{answer.AttachmentName}";
-
-                <div class="mt-3">
-                    @if (answer.AttachmentName.EndsWith(".jpg") || answer.AttachmentName.EndsWith(".jpeg") || answer.AttachmentName.EndsWith(".png"))
-                    {
-                        <img src="@fileUrl" alt="@Localizer["AttachmentAltText"]" style="max-width: 100%; height: auto;" class="img-thumbnail" />
-                    }
-                    else
-                    {
-                        <a class="button-download btn btn-outline-primary" href="@fileUrl" target="_blank" download>
-                            <i class="bi bi-download"></i> @Localizer["DownloadAttachmentButton"]
-                        </a>
                     }
                 </div>
-            }
-        </div>
-        <div class="answer-info text-end">
-            <div class="answer-date d-flex">
-                @if (answer.Status == AnswerStatus.Official.ToString())
-                {
-                    <span class="badge-official badge bg-success me-2">@AnswerListLocalizer["OfficialAnswerBadgeLabel"]</span>
-                }
-                @AnswerListLocalizer["AnsweredLabel"]:&nbsp;
-                <span>@answer.CreatedAt.GetTimeAgo()</span>
-            </div>
-            <div>
-                <span class="author-span">@AnswerListLocalizer["ByLabel"]:</span>
-                <a href="user/@answer.User.Id">
-                    <span class="author-image-span">
-                        <img src="@(answer.User.Photo ?? "images/default.jpeg")" alt="avatar" class="author-img rounded-circle">
-                    </span>
-                    <span class="author-text-span">@answer.User.Firstname @answer.User.Lastname</span>
-                </a>
+                <div class="answer-info text-end">
+                    <div class="answer-date d-flex">
+                        @if (answer.Status == AnswerStatus.Official.ToString())
+                        {
+                            <span class="badge-official badge bg-success me-2">@AnswerListLocalizer["OfficialAnswerBadgeLabel"]</span>
+                        }
+                        @AnswerListLocalizer["AnsweredLabel"]:&nbsp;
+                        <span>@answer.CreatedAt.GetTimeAgo()</span>
+                    </div>
+                    <div>
+                        <span class="author-span">@AnswerListLocalizer["ByLabel"]:</span>
+                        <a href="user/@answer.User.Id">
+                            <span class="author-image-span">
+                                <img src="@(answer.User.Photo ?? "images/default.jpeg")" alt="avatar" class="author-img rounded-circle">
+                            </span>
+                            <span class="author-text-span">@answer.User.Firstname @answer.User.Lastname</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </Template>
@@ -114,9 +129,13 @@
     private Dictionary<Guid, ElementReference> _buttonRefMap = new();
     private ElementReference? _currentTooltipRef;
     private bool _isProcessingOfficialToggle;
+    private Guid _userId;
     
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userIdClaim = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        _userId = Guid.TryParse(userIdClaim, out var id) ? id : Guid.Empty;
         await LoadAnswersAsync();
     }
     
@@ -128,7 +147,7 @@
 
     private async Task LoadAnswersAsync()
     {
-        _answers = await AnswerHttpClient.GetAnswersAsync(QuestionId);
+        _answers = await AnswerHttpClient.GetAnswersAsync(QuestionId, _userId);
     }
     
     private async Task ToggleOfficialStatus(Guid answerId, AnswerStatus currentStatus)
@@ -259,6 +278,35 @@
                 Detail = AnswerListLocalizer["DeleteAnswerErrorMessage"],
                 Duration = 4000
             });
+        }
+    }
+
+    private async Task ToggleVote(AnswerApiResponse answer)
+    {
+        try
+        {
+            var success = await AnswerVoteHttpClient.ToggleVoteAsync(
+                new AnswerVoteRequest
+                {
+                    AnswerId = answer.Id,
+                    UserId = _userId
+                });
+            if (success)
+            {
+                if (answer.HasVoted)
+                {
+                    answer.HasVoted = false;
+                    answer.VoteCount--;
+                } else 
+                {
+                    answer.HasVoted = true;
+                    answer.VoteCount++;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error toggling vote: {e.Message}");
         }
     }
 }

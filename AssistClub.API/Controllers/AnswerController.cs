@@ -53,18 +53,19 @@ public class AnswerController(IAnswerService answerService, ILogger<AnswerContro
     /// <para><c>$select</c>: Retrieves only specific fields (e.g., <c>$select=Content,CreatedAt</c>).</para>
     /// <para><c>$expand</c>: Includes related entities, such as user details (e.g., <c>$expand=User</c>).</para>
     /// </remarks>
+    /// <param name="userId">The ID of the user to check if he voted for any answer.</param>
     /// <returns>
     /// <c>200 OK</c>: Returns a list of answers.<br/>
     /// <c>500 Internal Server Error</c>: If an unexpected error occurs.
     /// </returns>
-    [Route("All")]
+    [Route("All/{userId}")]
     [HttpGet]
     [EnableQuery]
-    public async Task<IActionResult> GetAnswers()
+    public async Task<IActionResult> GetAnswers(Guid userId)
     {
         try
         {
-            var answers = await answerService.GetAnswersAsync();
+            var answers = await answerService.GetAnswersAsync(userId);
             return Ok(answers);
         }
         catch (Exception e)
