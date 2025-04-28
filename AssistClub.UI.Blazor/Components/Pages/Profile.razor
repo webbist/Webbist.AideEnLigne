@@ -52,8 +52,11 @@
                                 <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">
                                     @ProfileLocalizer["MicrositeLabel"]:
                                 </RadzenText>
-                                <NavLink class="text-decoration-none" href="@_user.Microsite" target="_blank">
-                                    <RadzenText TextStyle="TextStyle.Body1">@_user.Microsite</RadzenText>
+                                <NavLink class="text-decoration-underline" href="@_user.Microsite" target="_blank">
+                                    <RadzenText TextStyle="TextStyle.Body1">
+                                        @_user.Microsite
+                                        <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                    </RadzenText>
                                 </NavLink>
                             </RadzenColumn>
                         </div>
