@@ -54,9 +54,9 @@ public interface IUserRepository
     /// <param name="authorId">The ID of the author of the question.</param>
     /// <param name="club">The club associated with the question.</param>
     /// <returns>
-    /// A collection of <see cref="User"/> entities representing the users to notify.
+    /// A collection of <c>string</c> representing the email addresses of the users to notify.
     /// </returns>
-    Task<IEnumerable<User>> GetEmailsToNotifyOnNewQuestion(Guid authorId, string club);
+    Task<IEnumerable<string>> GetEmailsToNotifyOnNewQuestion(Guid authorId, string club);
 
     /// <summary>
     /// Retrieves the users to notify when a question is updated.
@@ -65,10 +65,11 @@ public interface IUserRepository
     /// This method gets all users who have answered the question and are either admins
     /// </remarks>
     /// <param name="questionId">The ID of the question.</param>
+    /// <param name="authorId">The ID of the author of the question.</param>
     /// <returns>
-    /// A collection of <see cref="User"/> entities representing the users to notify.
+    /// A collection of <c>string</c> representing the email addresses of the users to notify.
     /// </returns>
-    Task<IEnumerable<User>> GetEmailsToNotifyOnUpdateQuestion(Guid questionId);
+    Task<IEnumerable<string>> GetEmailsToNotifyOnUpdateQuestion(Guid questionId, Guid authorId);
 
     /// <summary>
     /// Retrieves the users to notify when an official answer is updated.
@@ -78,24 +79,23 @@ public interface IUserRepository
     /// </remarks>
     /// <param name="questionId">The ID of the question.</param>
     /// <returns>
-    /// A collection of <see cref="User"/> entities representing the users to notify.
+    /// A collection of <c>string</c> representing the email addresses of the users to notify.
     /// </returns>
-    Task<IEnumerable<User>> GetEmailsToNotifyOnUpdateOfficialAnswer(Guid questionId);
+    Task<IEnumerable<string>> GetEmailsToNotifyOnUpdateOfficialAnswer(Guid questionId);
 
     /// <summary>
     /// Retrieves the users to notify when a new answer is posted.
     /// </summary>
     /// <remarks>
-    /// This method gets all users who are not the author of the answer and
-    /// are either admins or have answered the question.
+    /// This method gets all emails of users who are not the author of the answer or question but
+    /// have answered the question or are admins and have opted in to receive notifications.
     /// </remarks>
     /// <param name="answerAuthorId">The ID of the author of the answer.</param>
-    /// <param name="questionAuthorId">The ID of the author of the question.</param>
-    /// <param name="questionId">The ID of the question.</param>
+    /// <param name="question">The question associated with the answer.</param>
     /// <returns>
-    /// A collection of <see cref="User"/> entities representing the users to notify.
+    /// A collection of <c>string</c> representing the email addresses of the users to notify.
     /// </returns>
-    Task<IEnumerable<User>> GetEmailsToNotifyOnNewAnswer(Guid answerAuthorId, Guid questionAuthorId, Guid questionId);
+    Task<IEnumerable<string>> GetEmailsToNotifyOnNewAnswer(Guid answerAuthorId, Question question);
 
     /// <summary>
     /// Retrieves the users to notify when an answer is marked as official.
@@ -105,11 +105,11 @@ public interface IUserRepository
     /// the author of the question, or have answered the question.
     /// </remarks>
     /// <param name="answerAuthorId">The ID of the author of the answer.</param>
-    /// <param name="questionId">The ID of the question.</param>
+    /// <param name="question">The question associated with the answer.</param>
     /// <returns>
-    /// A collection of <see cref="User"/> entities representing the users to notify.
+    /// A collection of <c>string</c> representing the email addresses of the users to notify.
     /// </returns>
-    Task<IEnumerable<User>> GetEmailsToNotifyOnOfficialAnswer(Guid answerAuthorId, Guid questionId);
+    Task<IEnumerable<string>> GetEmailsToNotifyOnOfficialAnswer(Guid answerAuthorId, Question question);
     
     /// <summary>
     /// Retrieves the notification preferences for a user by their unique identifier.

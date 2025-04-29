@@ -83,10 +83,9 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
         
         var recipients = await userRepository.GetEmailsToNotifyOnNewQuestion(createdQuestion.UserId, author.Club);
         var emailTasks = recipients
-            .Where(user => user.NotificationPreference.NotifyOnNewClubQuestion.Value || user.Role == Role.Admin.ToString())
-            .Select(user => SendEmailAsync(new EmailRequest
+            .Select(email => SendEmailAsync(new EmailRequest
             {
-                To = user.Email,
+                To = email,
                 Subject = $"Nouvelle question sur {websiteName}",
                 Body = @$"
                        <p>Bonjour,</p>
@@ -96,8 +95,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
                        <p><a href=""{url}/{createdQuestion.Id}"">👉 Voir ma question sur {websiteName}</a></p>
                        <p>Merci de contribuer à notre communauté !</p>
                        <p>L'équipe {websiteName}</p>"
-            }))
-            .ToList();
+            })).ToList();
         
         emailTasks.Add(SendEmailAsync(new EmailRequest
         {
@@ -134,12 +132,11 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
         var author = await userRepository.GetUserByIdAsync(updatedQuestion.UserId) 
                      ?? throw new ArgumentException($"User with ID {updatedQuestion.UserId} not found.");
         
-        var recipients = await userRepository.GetEmailsToNotifyOnUpdateQuestion(updatedQuestion.Id);
+        var recipients = await userRepository.GetEmailsToNotifyOnUpdateQuestion(updatedQuestion.Id, updatedQuestion.UserId);
         var emailTasks = recipients
-            .Where(u => u.NotificationPreference.NotifyOnQuestionIrelatedModifiedByAuthor.Value)
-            .Select(user => SendEmailAsync(new EmailRequest
+            .Select(email => SendEmailAsync(new EmailRequest
             {
-                To = user.Email,
+                To = email,
                 Subject = $"Mise à jour d'une question sur {websiteName}",
                 Body = @$"
                        <p>Bonjour,</p>
@@ -194,9 +191,9 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
         if (updatedAnswer.Status == AnswerStatus.Official.ToString())
         {
             var recipients = await userRepository.GetEmailsToNotifyOnUpdateOfficialAnswer(updatedAnswer.QuestionId);
-            emailTasks.AddRange(recipients.Select(user => SendEmailAsync(new EmailRequest
+            emailTasks.AddRange(recipients.Select(email => SendEmailAsync(new EmailRequest
             {
-                To = user.Email,
+                To = email,
                 Subject = $"Mise à jour de la réponse officielle dans {websiteName}",
                 Body = @$"
                        <p>Bonjour,</p>
@@ -246,12 +243,11 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
         var author = await userRepository.GetUserByIdAsync(answer.Question.UserId) 
                      ?? throw new ArgumentException($"User with ID {answer.Question.UserId} not found.");
         
-        var recipients = await userRepository.GetEmailsToNotifyOnNewAnswer(answer.UserId, author.Id, answer.QuestionId);
+        var recipients = await userRepository.GetEmailsToNotifyOnNewAnswer(answer.UserId, answer.Question);
         var emailTasks = recipients
-            .Where(u => u.NotificationPreference.NotifyOnNewAnswerInQuestionIrelated.Value)
-            .Select(user => SendEmailAsync(new EmailRequest
+            .Select(email => SendEmailAsync(new EmailRequest
             {
-                To = user.Email,
+                To = email,
                 Subject = $"Nouvelle réponse sur {websiteName}",
                 Body = @$"
                         <p>Bonjour,</p>
@@ -301,12 +297,12 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
         var author = await userRepository.GetUserByIdAsync(answer.Question.UserId) 
                      ?? throw new ArgumentException($"User with ID {answer.Question.UserId} not found.");
         
-        var recipients = await userRepository.GetEmailsToNotifyOnOfficialAnswer(answer.UserId, answer.QuestionId);
+        var recipients = await userRepository.GetEmailsToNotifyOnOfficialAnswer(answer.UserId, answer.Question);
         var emailTasks = recipients
-            .Where(u => u.Id != author.Id && u.NotificationPreference.NotifyOnAnyOfficialAnswerInQuestionIrelated.Value)
-            .Select(user => SendEmailAsync(new EmailRequest
+            //.Where(u => u.Id != author.Id && u.NotificationPreference.NotifyOnAnyOfficialAnswerInQuestionIrelated.Value)
+            .Select(email => SendEmailAsync(new EmailRequest
             {
-                To = user.Email,
+                To = email,
                 Subject = $"Réponse officielle sur {websiteName}",
                 Body = @$"
                         <p>Bonjour,</p>
