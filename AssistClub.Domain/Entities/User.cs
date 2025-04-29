@@ -18,6 +18,8 @@ public partial class User
 
     public string Role { get; set; } = null!;
 
+    public virtual ICollection<AnswerVote> AnswerVotes { get; set; } = new List<AnswerVote>();
+
     public virtual ICollection<Answer> Answers { get; set; } = new List<Answer>();
 
     public virtual NotificationPreference? NotificationPreference { get; set; }

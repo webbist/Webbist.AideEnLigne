@@ -105,13 +105,13 @@ public class UserService(IUserRepository userRepository) : IUserService
             return new NotificationPreferenceRequest
             {
                 UserId = preferences.UserId,
-                NotifyOnNewClubQuestion = preferences.NotifyOnNewClubQuestion.Value,
-                NotifyOnAnswerPublishedOnMyQuestion = preferences.NotifyOnAnswerPublishedOnMyQuestion.Value,
-                NotifyOnAnswerToMyQuestionMarkedOfficial = preferences.NotifyOnAnswerToMyQuestionMarkedOfficial.Value,
-                NotifyOnMyQuestionOrAnswerModifiedByAdmin = preferences.NotifyOnMyQuestionOrAnswerModifiedByAdmin.Value,
-                NotifyOnAnyOfficialAnswerInQuestionIrelated = preferences.NotifyOnAnyOfficialAnswerInQuestionIrelated.Value,
-                NotifyOnQuestionIrelatedModifiedByAuthor = preferences.NotifyOnQuestionIrelatedModifiedByAuthor.Value,
-                NotifyOnNewAnswerInQuestionIrelated = preferences.NotifyOnNewAnswerInQuestionIrelated.Value
+                NotifyOnNewClubQuestion = preferences.NotifyOnNewClubQuestion,
+                NotifyOnAnswerPublishedOnMyQuestion = preferences.NotifyOnAnswerPublishedOnMyQuestion,
+                NotifyOnAnswerToMyQuestionMarkedOfficial = preferences.NotifyOnAnswerToMyQuestionMarkedOfficial,
+                NotifyOnMyQuestionOrAnswerModifiedByAdmin = preferences.NotifyOnMyQuestionOrAnswerModifiedByAdmin,
+                NotifyOnAnyOfficialAnswerInQuestionIrelated = preferences.NotifyOnAnyOfficialAnswerInQuestionIrelated,
+                NotifyOnQuestionIrelatedModifiedByAuthor = preferences.NotifyOnQuestionIrelatedModifiedByAuthor,
+                NotifyOnNewAnswerInQuestionIrelated = preferences.NotifyOnNewAnswerInQuestionIrelated
             };
         return null;
     }

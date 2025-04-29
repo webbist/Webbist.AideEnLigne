@@ -149,7 +149,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
             }))
             .ToList();
 
-        if (updatedQuestion.ModifiedBy != author.Id && author.NotificationPreference.NotifyOnMyQuestionOrAnswerModifiedByAdmin.Value)
+        if (updatedQuestion.ModifiedBy != author.Id && author.NotificationPreference.NotifyOnMyQuestionOrAnswerModifiedByAdmin)
         {
             emailTasks.Add(SendEmailAsync(new EmailRequest
             {
@@ -206,7 +206,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
             })));
         }
         
-        if (updatedAnswer.ModifiedBy != author.Id && author.NotificationPreference.NotifyOnMyQuestionOrAnswerModifiedByAdmin.Value)
+        if (updatedAnswer.ModifiedBy != author.Id && author.NotificationPreference.NotifyOnMyQuestionOrAnswerModifiedByAdmin)
         {
             emailTasks.Add(SendEmailAsync(new EmailRequest
             {
@@ -260,7 +260,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
             }))
             .ToList();
         
-        if (author.NotificationPreference.NotifyOnAnswerPublishedOnMyQuestion.Value && answer.UserId != author.Id)
+        if (author.NotificationPreference.NotifyOnAnswerPublishedOnMyQuestion && answer.UserId != author.Id)
         {
             emailTasks.Add(SendEmailAsync(new EmailRequest
             {
@@ -315,7 +315,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
             }))
             .ToList();
         
-        if (author.NotificationPreference.NotifyOnAnswerToMyQuestionMarkedOfficial.Value)
+        if (author.NotificationPreference.NotifyOnAnswerToMyQuestionMarkedOfficial)
         {
             emailTasks.Add(SendEmailAsync(new EmailRequest
             {
