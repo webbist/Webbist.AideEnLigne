@@ -116,15 +116,14 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
     /// </returns>
     public async Task<IEnumerable<string>> GetEmailsToNotifyOnNewQuestion(Guid authorId, string club)
     {
-        return await db.Users
+        return await Task.FromResult(db.Users
             .Where(u =>
                 u.Id != authorId &&
                 (u.Role == Role.Admin.ToString() || u.Club == club) &&
                 (u.NotificationPreference.NotifyOnNewClubQuestion == true || u.Role == Role.Admin.ToString())
             )
             .Select(u => u.Email)
-            .Distinct()
-            .ToListAsync();
+            .Distinct());
     }
     
     /// <summary>
@@ -141,13 +140,12 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
     /// </returns>
     public async Task<IEnumerable<string>> GetEmailsToNotifyOnUpdateQuestion(Guid questionId, Guid authorId)
     {
-        return await db.Answers
+        return await Task.FromResult(db.Answers
             .Where(a => a.QuestionId == questionId &&
                         a.UserId != authorId &&
                         a.User.NotificationPreference.NotifyOnQuestionIrelatedModifiedByAuthor == true)
             .Select(a => a.User.Email)
-            .Distinct()
-            .ToListAsync();
+            .Distinct());
     }
 
     /// <summary>
@@ -162,17 +160,14 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
     /// </returns>
     public async Task<IEnumerable<string>> GetEmailsToNotifyOnUpdateOfficialAnswer(Guid questionId)
     {
-        var emails = await db.Users
+        return await Task.FromResult(db.Users
             .Where(u =>
                 u.Role == Role.Admin.ToString() || 
                 db.Questions.Any(q => q.Id == questionId && q.UserId == u.Id) ||
                 db.Answers.Any(a => a.QuestionId == questionId && a.UserId == u.Id)
             )
             .Select(u => u.Email)
-            .Distinct()
-            .ToListAsync();
-        
-        return emails;
+            .Distinct());
     }
 
     /// <summary>
@@ -189,7 +184,7 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
     /// </returns>
     public async Task<IEnumerable<string>> GetEmailsToNotifyOnNewAnswer(Guid answerAuthorId, Question question)
     {
-        return await db.Users
+        return await Task.FromResult(db.Users
             .Where(u =>
                 u.Id != answerAuthorId &&
                 (u.Role == Role.Admin.ToString() || 
@@ -197,8 +192,7 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
                  && u.NotificationPreference.NotifyOnNewAnswerInQuestionIrelated == true
             )
             .Select(u => u.Email)
-            .Distinct()
-            .ToListAsync();
+            .Distinct());
     }
 
     /// <summary>
@@ -215,7 +209,7 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
     /// </returns>
     public async Task<IEnumerable<string>> GetEmailsToNotifyOnOfficialAnswer(Guid answerAuthorId, Question question)
     {
-       return await db.Users
+       return await Task.FromResult(db.Users
             .Where(u =>
                 u.Id != question.UserId &&
                 u.NotificationPreference.NotifyOnAnyOfficialAnswerInQuestionIrelated == true &&
@@ -223,8 +217,7 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
                 db.Answers.Any(a => a.QuestionId == question.Id && a.UserId == u.Id))
             )
             .Select(u => u.Email)
-            .Distinct()
-            .ToListAsync();
+            .Distinct());
     }
 
     /// <summary>
