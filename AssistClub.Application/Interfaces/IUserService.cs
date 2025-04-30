@@ -35,4 +35,22 @@ public interface IUserService
     /// A <see cref="UserResponseDto"/> containing user details if found; otherwise, <c>null</c>.
     /// </returns>
     Task<UserResponseDto?> GetUserByIdAsync(Guid id);
+
+    /// <summary>
+    /// Retrieves the notification preferences for a user by their ID.
+    /// </summary>
+    /// <param name="userId">The ID of the user whose notification preferences to retrieve.</param>
+    /// <returns>
+    /// A <see cref="NotificationPreferenceRequest"/> containing the user's notification preferences if found; otherwise, <c>null</c>.
+    /// </returns>
+    Task<NotificationPreferenceRequest?> GetUserNotificationPreferencesAsync(Guid userId);
+    
+    /// <summary>
+    /// Updates the notification preferences for a user.
+    /// </summary>
+    /// <param name="preferences">The <see cref="NotificationPreferenceRequest"/> containing the updated preferences.</param>
+    /// <returns>
+    /// Returns <c>true</c> if the update was successful; otherwise, <c>false</c>.
+    /// </returns>
+    Task<bool> UpdateUserNotificationPreferencesAsync(NotificationPreferenceRequest preferences);
 }

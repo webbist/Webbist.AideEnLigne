@@ -100,4 +100,40 @@ public class UserController(IUserService userService, ILogger<UserController> lo
             return StatusCode(500, e.Message);
         }
     }
+    
+    [HttpGet("notifications/{id:guid}")]
+    public async Task<IActionResult> GetUserNotificationPreferences(Guid id)
+    {
+        try
+        {
+            var preferences = await userService.GetUserNotificationPreferencesAsync(id);
+            if (preferences == null)
+            {
+                logger.LogWarning("Notification preferences for user with ID {id} not found.", id);
+                return NotFound();
+            }
+            logger.LogTrace("Notification preferences found for user with ID {id}", id);
+            return Ok(preferences);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "An error occurred while getting the user's notification preferences.");
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    [HttpPut("notifications")]
+    public async Task<IActionResult> UpdateUserNotificationPreferences(NotificationPreferenceRequest preferences)
+    {
+        try
+        {
+            var result = await userService.UpdateUserNotificationPreferencesAsync(preferences);
+            return result ? Ok() : NotFound();
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "An error occurred while updating the user's notification preferences.");
+            return StatusCode(500, e.Message);
+        }
+    }
 }

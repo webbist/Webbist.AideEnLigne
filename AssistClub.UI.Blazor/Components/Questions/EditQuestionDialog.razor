@@ -1,10 +1,13 @@
+@using System.Security.Claims
 @using AssistClub.UI.Blazor.Components.Enums
 @using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
+@using Microsoft.AspNetCore.Components.Authorization
 
 @inject DialogService DialogService
 @inject FileHttpClient FileHttpClient
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @rendermode InteractiveServer
 
 <EditForm Model="_questionModel" OnValidSubmit="UpdateQuestion">
@@ -62,7 +65,7 @@
         </div>
     </div>
     <div class="mt-3 text-end">
-        <button type="submit" class="btn btn-primary">@Localizer["SaveButton"]</button>
+        <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">@Localizer["SaveButton"]</button>
         <button class="btn btn-secondary ms-2" type="button" @onclick="Close">@Localizer["CancelButton"]</button>
     </div>
 </EditForm>
@@ -74,6 +77,7 @@
     private QuestionRequest _questionModel = new();
     private string? _fileContent;
     private string? _fileName;
+    private bool _isSubmitting;
     
     protected override void OnInitialized()
     {
@@ -90,33 +94,46 @@
     
     private async Task UpdateQuestion()
     {
-        if (_fileContent != null && !string.IsNullOrEmpty(_fileName))
+        if (_isSubmitting) return;
+        _isSubmitting = true;
+        try
         {
-            if (!string.IsNullOrEmpty(Question.AttachmentName))
+            if (_fileContent != null && !string.IsNullOrEmpty(_fileName))
             {
-                await FileHttpClient.DeleteFileAsync(Question.AttachmentName);
-            }
-            
-            var base64 = _fileContent.Substring(_fileContent.IndexOf(",") + 1);
-            var cleanedBytes = Convert.FromBase64String(base64);
-            var content = new MultipartFormDataContent
-            {
-                { new ByteArrayContent(cleanedBytes), "file", _fileName }
-            };
-            
-            var response = await FileHttpClient.UploadFileAsync(content);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseJson = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
-                if (responseJson != null && responseJson.TryGetValue("filePath", out var filePath))
+                if (!string.IsNullOrEmpty(Question.AttachmentName))
                 {
-                    _questionModel.AttachmentName = filePath;
+                    await FileHttpClient.DeleteFileAsync(Question.AttachmentName);
+                }
+
+                var base64 = _fileContent.Substring(_fileContent.IndexOf(",") + 1);
+                var cleanedBytes = Convert.FromBase64String(base64);
+                var content = new MultipartFormDataContent
+                {
+                    { new ByteArrayContent(cleanedBytes), "file", _fileName }
+                };
+
+                var response = await FileHttpClient.UploadFileAsync(content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseJson = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+                    if (responseJson != null && responseJson.TryGetValue("filePath", out var filePath))
+                    {
+                        _questionModel.AttachmentName = filePath;
+                    }
                 }
             }
+
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var userId = authState.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (userId != null) _questionModel.ModifiedBy = Guid.Parse(userId);
+
+            await OnQuestionUpdated.InvokeAsync(_questionModel);
+            DialogService.Close();
         }
-        
-        await OnQuestionUpdated.InvokeAsync(_questionModel);
-        DialogService.Close();
+        finally
+        {
+            _isSubmitting = false;
+        }
     }
     
     private void Close() => DialogService.Close();

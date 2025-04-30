@@ -37,7 +37,7 @@
                          Accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
     </div>
     <div class="mt-3 text-end">
-        <button class="btn btn-primary" type="submit">@Localizer["SaveButton"]</button>
+        <button class="btn btn-primary" type="submit" disabled="@_isSubmitting">@Localizer["SaveButton"]</button>
         <button class="btn btn-secondary ms-2" type="button" @onclick="Close">@Localizer["CancelButton"]</button>
     </div>
 </EditForm>
@@ -49,6 +49,7 @@
     private AnswerRequest _answerModel = new();
     private string? _fileContent;
     private string? _fileName;
+    private bool _isSubmitting;
 
     protected override void OnInitialized()
     {
@@ -63,33 +64,42 @@
 
     private async Task UpdateAnswer()
     {
-        if (_fileContent != null && !string.IsNullOrEmpty(_fileName))
+        if (_isSubmitting) return;
+        _isSubmitting = true;
+        try
         {
-            if (!string.IsNullOrEmpty(Answer.AttachmentName))
+            if (_fileContent != null && !string.IsNullOrEmpty(_fileName))
             {
-                await FileHttpClient.DeleteFileAsync(Answer.AttachmentName);
-            }
-            
-            var base64 = _fileContent.Substring(_fileContent.IndexOf(",") + 1);
-            var cleanedBytes = Convert.FromBase64String(base64);
-            var content = new MultipartFormDataContent
-            {
-                { new ByteArrayContent(cleanedBytes), "file", _fileName }
-            };
-            
-            var response = await FileHttpClient.UploadFileAsync(content);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseJson = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
-                if (responseJson != null && responseJson.TryGetValue("filePath", out var filePath))
+                if (!string.IsNullOrEmpty(Answer.AttachmentName))
                 {
-                    _answerModel.AttachmentName = filePath;
+                    await FileHttpClient.DeleteFileAsync(Answer.AttachmentName);
+                }
+
+                var base64 = _fileContent.Substring(_fileContent.IndexOf(",") + 1);
+                var cleanedBytes = Convert.FromBase64String(base64);
+                var content = new MultipartFormDataContent
+                {
+                    { new ByteArrayContent(cleanedBytes), "file", _fileName }
+                };
+
+                var response = await FileHttpClient.UploadFileAsync(content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseJson = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+                    if (responseJson != null && responseJson.TryGetValue("filePath", out var filePath))
+                    {
+                        _answerModel.AttachmentName = filePath;
+                    }
                 }
             }
+
+            await OnAnswerUpdated.InvokeAsync(_answerModel);
+            DialogService.Close();
         }
-        
-        await OnAnswerUpdated.InvokeAsync(_answerModel);
-        DialogService.Close();
+        finally
+        {
+            _isSubmitting = false;
+        }
     }
     
     private void Close() => DialogService.Close();

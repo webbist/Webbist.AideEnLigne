@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AssistClub.Application;
 
@@ -11,10 +12,11 @@ public static class DependencyInjection
     /// Adds application services to the service collection.
     /// </summary>
     /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        //add possible automapper configurations
+        services.AddScoped<Notification>();
         return services;
     }
 }

@@ -5,7 +5,7 @@ using Domain.Entities;
 namespace AssistClub.Application.Services;
 
 /// <inheritdoc/>
-public class QuestionService(IQuestionRepository questionRepository): IQuestionService
+public class QuestionService(IQuestionRepository questionRepository, Notification notification): IQuestionService
 {
     /// <summary>
     /// Creates a new question in the system.
@@ -47,6 +47,8 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
         };
         
         var createdQuestion = await questionRepository.CreateQuestionAsync(question);
+        
+        await notification.SendEmailOnCreate(createdQuestion);
         
         return new QuestionResponseDto
         {
@@ -158,10 +160,15 @@ public class QuestionService(IQuestionRepository questionRepository): IQuestionS
             Content = questionRequest.Content,
             UpdatedAt = DateTime.UtcNow,
             Visibility = questionRequest.Visibility.ToString(),
-            AttachmentName = questionRequest.AttachmentName
+            AttachmentName = questionRequest.AttachmentName,
+            ModifiedBy = questionRequest.ModifiedBy
         };
-        
-        return await questionRepository.UpdateQuestionAsync(question);
+        var result = await questionRepository.UpdateQuestionAsync(question);
+        if (result)
+        {
+            await notification.SendEmailOnUpdateQuestion(question);
+        }
+        return result;
     }
     
     /// <summary>

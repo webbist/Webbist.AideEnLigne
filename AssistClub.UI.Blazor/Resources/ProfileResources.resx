@@ -48,4 +48,7 @@
     <data name="AnsweredQuestionsLabel" xml:space="preserve">
         <value>Questions répondues</value>
     </data>
+    <data name="TabSettingsLabel" xml:space="preserve">
+        <value>Paramètres</value>
+    </data>
 </root>

@@ -43,7 +43,7 @@
                              Accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
         </div>
         <div class="pb-2">
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
                 @AnswerFormLocalizer["FormSubmitButton"]
             </button>
         </div>
@@ -57,80 +57,91 @@
     private AnswerRequest _answerModel = new();
     private string? _fileContent;
     private string? _fileName;
+    private bool _isSubmitting;
 
     private async Task PublishAnswer()
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var userIdClaim = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (!Guid.TryParse(userIdClaim, out var userId))
+        if (_isSubmitting) return; 
+        _isSubmitting = true;
+        try
         {
-            NotificationService.Notify(new NotificationMessage
-            {
-                Severity = NotificationSeverity.Error,
-                Summary = Localizer["Error"],
-                Detail = AnswerFormLocalizer["FormUserNotFoundMessage"],
-                Duration = 4000
-            });
-            return;
-        }
-        _answerModel.UserId = userId;
-        _answerModel.QuestionId = QuestionId;
-
-        if (_fileContent != null && !string.IsNullOrEmpty(_fileName))
-        {
-            var base64 = _fileContent.Substring(_fileContent.IndexOf(",") + 1);
-            var cleanedBytes = Convert.FromBase64String(base64);
-            
-            var content = new MultipartFormDataContent
-            {
-                { new ByteArrayContent(cleanedBytes), "file", _fileName }
-            };
-            
-            var response = await FileHttpClient.UploadFileAsync(content);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseJson = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
-                if (responseJson != null && responseJson.TryGetValue("filePath", out var filePath))
-                {
-                    _answerModel.AttachmentName = filePath;
-                }
-            }
-            else
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var userIdClaim = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!Guid.TryParse(userIdClaim, out var userId))
             {
                 NotificationService.Notify(new NotificationMessage
                 {
                     Severity = NotificationSeverity.Error,
                     Summary = Localizer["Error"],
-                    Detail = Localizer["FileUploadErrorMessage"],
+                    Detail = AnswerFormLocalizer["FormUserNotFoundMessage"],
                     Duration = 4000
                 });
                 return;
             }
-        }
-        
-        var result = await AnswerHttpClient.CreateAnswerAsync(_answerModel);
-        
-        if (result == null)
-        {
-            NotificationService.Notify(new NotificationMessage
+
+            _answerModel.UserId = userId;
+            _answerModel.QuestionId = QuestionId;
+
+            if (_fileContent != null && !string.IsNullOrEmpty(_fileName))
             {
-                Severity = NotificationSeverity.Error,
-                Summary = Localizer["Error"],
-                Detail = AnswerFormLocalizer["FormErrorMessage"],
-                Duration = 4000
-            });
-        }
-        else
-        {
-            _answerModel = new AnswerRequest();
-            await AnswerCreated.InvokeAsync();
-            NotificationService.Notify(new NotificationMessage
+                var base64 = _fileContent.Substring(_fileContent.IndexOf(",") + 1);
+                var cleanedBytes = Convert.FromBase64String(base64);
+
+                var content = new MultipartFormDataContent
+                {
+                    { new ByteArrayContent(cleanedBytes), "file", _fileName }
+                };
+
+                var response = await FileHttpClient.UploadFileAsync(content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseJson = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+                    if (responseJson != null && responseJson.TryGetValue("filePath", out var filePath))
+                    {
+                        _answerModel.AttachmentName = filePath;
+                    }
+                }
+                else
+                {
+                    NotificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Error,
+                        Summary = Localizer["Error"],
+                        Detail = Localizer["FileUploadErrorMessage"],
+                        Duration = 4000
+                    });
+                    return;
+                }
+            }
+
+            var result = await AnswerHttpClient.CreateAnswerAsync(_answerModel);
+
+            if (result == null)
             {
-                Severity = NotificationSeverity.Success,
-                Summary = Localizer["Success"],
-                Detail = AnswerFormLocalizer["FormSuccessMessage"],
-                Duration = 4000
-            });
+                NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = Localizer["Error"],
+                    Detail = AnswerFormLocalizer["FormErrorMessage"],
+                    Duration = 4000
+                });
+            }
+            else
+            {
+                _answerModel = new AnswerRequest();
+                await AnswerCreated.InvokeAsync();
+                NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = Localizer["Success"],
+                    Detail = AnswerFormLocalizer["FormSuccessMessage"],
+                    Duration = 4000
+                });
+            }
+        }
+        finally
+        {
+            _isSubmitting = false;
         }
     }
 }

@@ -14,21 +14,21 @@ namespace AssistClub.UI.Blazor.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ProfileResources {
+    internal class UserSettingsResources {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ProfileResources() {
+        internal UserSettingsResources() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.ProfileResources", typeof(ProfileResources).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AssistClub.UI.Blazor.Resources.UserSettingsResources", typeof(UserSettingsResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,33 +45,45 @@ namespace AssistClub.UI.Blazor.Resources {
             }
         }
         
-        internal static string FullnameLabel {
+        internal static string NotifyOnNewClubQuestionLabel {
             get {
-                return ResourceManager.GetString("FullnameLabel", resourceCulture);
+                return ResourceManager.GetString("NotifyOnNewClubQuestionLabel", resourceCulture);
             }
         }
         
-        internal static string EmailLabel {
+        internal static string NotifyOnAnswerPublishedOnMyQuestionLabel {
             get {
-                return ResourceManager.GetString("EmailLabel", resourceCulture);
+                return ResourceManager.GetString("NotifyOnAnswerPublishedOnMyQuestionLabel", resourceCulture);
             }
         }
         
-        internal static string PhotoLabel {
+        internal static string NotifyOnAnswerToMyQuestionMarkedOfficialLabel {
             get {
-                return ResourceManager.GetString("PhotoLabel", resourceCulture);
+                return ResourceManager.GetString("NotifyOnAnswerToMyQuestionMarkedOfficialLabel", resourceCulture);
             }
         }
         
-        internal static string ClubLabel {
+        internal static string NotifyOnMyQuestionOrAnswerModifiedByAdminLabel {
             get {
-                return ResourceManager.GetString("ClubLabel", resourceCulture);
+                return ResourceManager.GetString("NotifyOnMyQuestionOrAnswerModifiedByAdminLabel", resourceCulture);
             }
         }
         
-        internal static string MicrositeLabel {
+        internal static string NotifyOnAnyOfficialAnswerInQuestionIrelatedLabel {
             get {
-                return ResourceManager.GetString("MicrositeLabel", resourceCulture);
+                return ResourceManager.GetString("NotifyOnAnyOfficialAnswerInQuestionIrelatedLabel", resourceCulture);
+            }
+        }
+        
+        internal static string NotifyOnQuestionIrelatedModifiedByAuthorLabel {
+            get {
+                return ResourceManager.GetString("NotifyOnQuestionIrelatedModifiedByAuthorLabel", resourceCulture);
+            }
+        }
+        
+        internal static string NotifyOnNewAnswerInQuestionIrelatedLabel {
+            get {
+                return ResourceManager.GetString("NotifyOnNewAnswerInQuestionIrelatedLabel", resourceCulture);
             }
         }
         
@@ -81,33 +93,27 @@ namespace AssistClub.UI.Blazor.Resources {
             }
         }
         
-        internal static string TabProfileLabel {
+        internal static string OnLabel {
             get {
-                return ResourceManager.GetString("TabProfileLabel", resourceCulture);
+                return ResourceManager.GetString("OnLabel", resourceCulture);
             }
         }
         
-        internal static string TabActivityLabel {
+        internal static string OffLabel {
             get {
-                return ResourceManager.GetString("TabActivityLabel", resourceCulture);
+                return ResourceManager.GetString("OffLabel", resourceCulture);
             }
         }
         
-        internal static string CreatedQuestionsLabel {
+        internal static string SuccessMessage {
             get {
-                return ResourceManager.GetString("CreatedQuestionsLabel", resourceCulture);
+                return ResourceManager.GetString("SuccessMessage", resourceCulture);
             }
         }
         
-        internal static string AnsweredQuestionsLabel {
+        internal static string ErrorMessage {
             get {
-                return ResourceManager.GetString("AnsweredQuestionsLabel", resourceCulture);
-            }
-        }
-        
-        internal static string TabSettingsLabel {
-            get {
-                return ResourceManager.GetString("TabSettingsLabel", resourceCulture);
+                return ResourceManager.GetString("ErrorMessage", resourceCulture);
             }
         }
     }
