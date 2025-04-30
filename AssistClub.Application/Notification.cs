@@ -83,7 +83,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
         
         var recipients = await userRepository.GetEmailsToNotifyOnNewQuestion(createdQuestion.UserId, author.Club);
         var emailTasks = recipients
-            .Where(user => user.NotificationPreference.NotifyOnNewClubQuestion.Value || user.Role == Role.Admin.ToString())
+            .Where(user => user.NotificationPreference.NotifyOnNewClubQuestion || user.Role == Role.Admin.ToString())
             .Select(user => SendEmailAsync(new EmailRequest
             {
                 To = user.Email,
@@ -136,7 +136,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
         
         var recipients = await userRepository.GetEmailsToNotifyOnUpdateQuestion(updatedQuestion.Id);
         var emailTasks = recipients
-            .Where(u => u.NotificationPreference.NotifyOnQuestionIrelatedModifiedByAuthor.Value)
+            .Where(u => u.NotificationPreference.NotifyOnQuestionIrelatedModifiedByAuthor)
             .Select(user => SendEmailAsync(new EmailRequest
             {
                 To = user.Email,
@@ -152,7 +152,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
             }))
             .ToList();
 
-        if (updatedQuestion.ModifiedBy != author.Id && author.NotificationPreference.NotifyOnMyQuestionOrAnswerModifiedByAdmin.Value)
+        if (updatedQuestion.ModifiedBy != author.Id && author.NotificationPreference.NotifyOnMyQuestionOrAnswerModifiedByAdmin)
         {
             emailTasks.Add(SendEmailAsync(new EmailRequest
             {
@@ -209,7 +209,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
             })));
         }
         
-        if (updatedAnswer.ModifiedBy != author.Id && author.NotificationPreference.NotifyOnMyQuestionOrAnswerModifiedByAdmin.Value)
+        if (updatedAnswer.ModifiedBy != author.Id && author.NotificationPreference.NotifyOnMyQuestionOrAnswerModifiedByAdmin)
         {
             emailTasks.Add(SendEmailAsync(new EmailRequest
             {
@@ -248,7 +248,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
         
         var recipients = await userRepository.GetEmailsToNotifyOnNewAnswer(answer.UserId, author.Id, answer.QuestionId);
         var emailTasks = recipients
-            .Where(u => u.NotificationPreference.NotifyOnNewAnswerInQuestionIrelated.Value)
+            .Where(u => u.NotificationPreference.NotifyOnNewAnswerInQuestionIrelated)
             .Select(user => SendEmailAsync(new EmailRequest
             {
                 To = user.Email,
@@ -264,7 +264,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
             }))
             .ToList();
         
-        if (author.NotificationPreference.NotifyOnAnswerPublishedOnMyQuestion.Value && answer.UserId != author.Id)
+        if (author.NotificationPreference.NotifyOnAnswerPublishedOnMyQuestion && answer.UserId != author.Id)
         {
             emailTasks.Add(SendEmailAsync(new EmailRequest
             {
@@ -303,7 +303,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
         
         var recipients = await userRepository.GetEmailsToNotifyOnOfficialAnswer(answer.UserId, answer.QuestionId);
         var emailTasks = recipients
-            .Where(u => u.Id != author.Id && u.NotificationPreference.NotifyOnAnyOfficialAnswerInQuestionIrelated.Value)
+            .Where(u => u.Id != author.Id && u.NotificationPreference.NotifyOnAnyOfficialAnswerInQuestionIrelated)
             .Select(user => SendEmailAsync(new EmailRequest
             {
                 To = user.Email,
@@ -319,7 +319,7 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
             }))
             .ToList();
         
-        if (author.NotificationPreference.NotifyOnAnswerToMyQuestionMarkedOfficial.Value)
+        if (author.NotificationPreference.NotifyOnAnswerToMyQuestionMarkedOfficial)
         {
             emailTasks.Add(SendEmailAsync(new EmailRequest
             {

@@ -53,11 +53,11 @@ public partial class AssistClubDbContext : DbContext
 
         modelBuilder.Entity<AnswerVote>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AnswerVo__3214EC07554A1987");
+            entity.HasKey(e => new { e.UserId, e.AnswerId }).HasName("UQ_AnswerVotes_User_Answer");
 
-            entity.HasIndex(e => new { e.UserId, e.AnswerId }, "UQ_AnswerVotes_User_Answer").IsUnique();
-
-            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
 
             entity.HasOne(d => d.Answer).WithMany(p => p.AnswerVotes)
                 .HasForeignKey(d => d.AnswerId)

@@ -25,9 +25,9 @@ public class AnswerVoteService(IAnswerVoteRepository answerVoteRepository) : IAn
         
         var newVote = new AnswerVote
         {
-            Id = Guid.NewGuid(),
             AnswerId = request.AnswerId,
-            UserId = request.UserId
+            UserId = request.UserId,
+            CreatedAt = DateTime.UtcNow
         };
         return await answerVoteRepository.AddVoteAsync(newVote);
     }

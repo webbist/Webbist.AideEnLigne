@@ -2,11 +2,11 @@
 
 public partial class AnswerVote
 {
-    public Guid Id { get; set; }
-
     public Guid AnswerId { get; set; }
 
     public Guid UserId { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
 
     public virtual Answer Answer { get; set; } = null!;
 
