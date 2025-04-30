@@ -299,7 +299,6 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
         
         var recipients = await userRepository.GetEmailsToNotifyOnOfficialAnswer(answer.UserId, answer.Question);
         var emailTasks = recipients
-            //.Where(u => u.Id != author.Id && u.NotificationPreference.NotifyOnAnyOfficialAnswerInQuestionIrelated.Value)
             .Select(email => SendEmailAsync(new EmailRequest
             {
                 To = email,

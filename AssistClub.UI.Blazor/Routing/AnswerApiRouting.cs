@@ -23,7 +23,8 @@ public static class AnswerApiRouting
     /// <summary>
     /// Endpoint for retrieving all answers.
     /// </summary>
-    public const string GetAllRoute = $"{Base}/all";
+    /// <param name="userId">The unique identifier of the user to check if he voted for any answer.</param>
+    public static string GetAllRoute(Guid userId) => $"{Base}/all/{userId}";
     
     /// <summary>
     /// Endpoint for updating the status of an answer.

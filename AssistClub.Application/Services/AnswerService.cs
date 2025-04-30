@@ -65,10 +65,11 @@ public class AnswerService(IAnswerRepository answerRepository, Notification noti
     /// <summary>
     /// Retrieves all answers in the system, including user information.
     /// </summary>
+    /// <param name="userId">The ID of the user to check if he voted for any answer.</param>
     /// <returns>
     /// An <see cref="IQueryable{T}"/> of <see cref="AnswerResponse"/> containing the answers.
     /// </returns>
-    public async Task<IQueryable<AnswerResponse>> GetAnswersAsync()
+    public async Task<IQueryable<AnswerResponse>> GetAnswersAsync(Guid userId)
     {
         var answers = await answerRepository.GetAnswers();
         return answers.Select(a => new AnswerResponse
@@ -101,7 +102,9 @@ public class AnswerService(IAnswerRepository answerRepository, Notification noti
                 Status = a.Status,
                 CreatedAt = a.CreatedAt,
                 UpdatedAt = a.UpdatedAt,
-                AttachmentName = a.AttachmentName
+                AttachmentName = a.AttachmentName,
+                VoteCount = a.AnswerVotes.Count,
+                HasVoted = a.AnswerVotes.Any(v => v.UserId == userId)
             }
         ).AsQueryable();
     }

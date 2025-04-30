@@ -47,4 +47,14 @@ public class AnswerResponse
     /// Gets or sets the name of the uploaded attachment file.
     /// </summary>
     public string? AttachmentName { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the number of votes received for the answer.
+    /// </summary>
+    public int VoteCount { get; set; }
+    
+    /// <summary>
+    /// Gets or sets a value indicating whether the user has voted for this answer.
+    /// </summary>
+    public bool HasVoted { get; set; }
 }

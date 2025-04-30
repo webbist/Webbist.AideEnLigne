@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS AnswerVotes;
+DROP TABLE IF EXISTS NotificationPreferences;
 DROP TABLE IF EXISTS Answers;
 DROP TABLE IF EXISTS Questions;
 DROP TABLE IF EXISTS Users;
@@ -64,4 +66,14 @@ CREATE TABLE NotificationPreferences (
     NotifyOnNewAnswerInQuestionIRelated BIT DEFAULT 1 NOT NULL,
 
     CONSTRAINT FK_NotificationPreferences_Users FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
+);
+
+CREATE TABLE AnswerVotes (
+                             AnswerId UNIQUEIDENTIFIER NOT NULL,
+                             UserId UNIQUEIDENTIFIER NOT NULL,
+                             CreatedAt DATETIME DEFAULT GETDATE(),
+
+                             CONSTRAINT UQ_AnswerVotes_User_Answer PRIMARY KEY (UserId, AnswerId),
+                             CONSTRAINT FK_AnswerVotes_Answers FOREIGN KEY (AnswerId) REFERENCES Answers(Id) ON DELETE CASCADE,
+                             CONSTRAINT FK_AnswerVotes_Users FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION
 );

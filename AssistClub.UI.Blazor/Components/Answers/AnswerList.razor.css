@@ -32,4 +32,31 @@
 
 .badge-official {
     font-size: .65rem;
+    margin: auto;
+}
+
+.toggle-vote {
+    margin: auto .8rem auto 0;
+    text-align: center;
+}
+
+.answer {
+    overflow: auto;
+    padding-left: .25rem;
+    border-left: 1px solid lightgray;
+}
+
+.vote-count {
+    font-weight: 500;
+}
+
+.btn-vote {
+    padding: 0;
+    color: #006bb7;
+}
+
+@media (max-width: 768px) {
+    .toggle-vote {
+        margin: auto .25rem auto 0;
+    }
 }
