@@ -106,97 +106,93 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
     /// Retrieves the users to notify when a new question is posted.
     /// </summary>
     /// <remarks>
-    /// This method gets all users who are not the author of the question and
-    /// are either admins or belong to the same club as the question.
+    /// This method gets all emails of users who are not the author of the question and
+    /// are either admins or belong to the same club as the question and have opted in to receive notifications.
     /// </remarks>
     /// <param name="authorId">The ID of the author of the question.</param>
     /// <param name="club">The club associated with the question.</param>
     /// <returns>
-    /// A collection of <see cref="User"/> entities representing the users to notify.
+    /// A collection of <c>string</c> representing the email addresses of the users to notify.
     /// </returns>
-    public async Task<IEnumerable<User>> GetEmailsToNotifyOnNewQuestion(Guid authorId, string club)
+    public async Task<IEnumerable<string>> GetEmailsToNotifyOnNewQuestion(Guid authorId, string club)
     {
-        return await db.Users
+        return await Task.FromResult(db.Users
             .Where(u =>
                 u.Id != authorId &&
-                (u.Role == Role.Admin.ToString() || u.Club == club)
+                (u.Role == Role.Admin.ToString() || u.Club == club) &&
+                (u.NotificationPreference.NotifyOnNewClubQuestion == true || u.Role == Role.Admin.ToString())
             )
-            .Include(u => u.NotificationPreference)
-            .Distinct()
-            .ToListAsync();
+            .Select(u => u.Email)
+            .Distinct());
     }
     
     /// <summary>
     /// Retrieves the users to notify when a question is updated.
     /// </summary>
     /// <remarks>
-    /// This method gets all users who have answered the question and are admins
+    /// This method gets all emails of users who have answered the question
+    /// and have opted in to receive notifications.
     /// </remarks>
     /// <param name="questionId">The ID of the question.</param>
+    /// <param name="authorId">The ID of the author of the question.</param>
     /// <returns>
-    /// A collection of <see cref="User"/> entities representing the users to notify.
+    /// A collection of <c>string</c> representing the email addresses of the users to notify.
     /// </returns>
-    public async Task<IEnumerable<User>> GetEmailsToNotifyOnUpdateQuestion(Guid questionId)
+    public async Task<IEnumerable<string>> GetEmailsToNotifyOnUpdateQuestion(Guid questionId, Guid authorId)
     {
-        return await db.Answers
-            .Where(a => a.QuestionId == questionId)
-            .Include(a => a.User)
-            .Include(a => a.User.NotificationPreference)
-            .Select(a => a.User)
-            .Distinct()
-            .ToListAsync();
+        return await Task.FromResult(db.Answers
+            .Where(a => a.QuestionId == questionId &&
+                        a.UserId != authorId &&
+                        a.User.NotificationPreference.NotifyOnQuestionIrelatedModifiedByAuthor == true)
+            .Select(a => a.User.Email)
+            .Distinct());
     }
 
     /// <summary>
     /// Retrieves the users to notify when an official answer is updated.
     /// </summary>
     /// <remarks>
-    /// This method gets all users who have answered the question, admins and the author of the question.
+    /// This method gets all emails of users who have answered the question, admins and the author of the question.
     /// </remarks>
     /// <param name="questionId">The ID of the question.</param>
     /// <returns>
-    /// A collection of <see cref="User"/> entities representing the users to notify.
+    /// A collection of <c>string</c> representing the email addresses of the users to notify.
     /// </returns>
-    public async Task<IEnumerable<User>> GetEmailsToNotifyOnUpdateOfficialAnswer(Guid questionId)
+    public async Task<IEnumerable<string>> GetEmailsToNotifyOnUpdateOfficialAnswer(Guid questionId)
     {
-        var users = await db.Users
+        return await Task.FromResult(db.Users
             .Where(u =>
                 u.Role == Role.Admin.ToString() || 
                 db.Questions.Any(q => q.Id == questionId && q.UserId == u.Id) ||
                 db.Answers.Any(a => a.QuestionId == questionId && a.UserId == u.Id)
             )
-            .Distinct()
-            .ToListAsync();
-        
-        return users;
+            .Select(u => u.Email)
+            .Distinct());
     }
 
     /// <summary>
     /// Retrieves the users to notify when a new answer is posted.
     /// </summary>
     /// <remarks>
-    /// This method gets all users who are not the author of the answer and
-    /// are either admins or have answered the question.
+    /// This method gets all emails of users who are not the author of the answer or question but
+    /// have answered the question or are admins and have opted in to receive notifications.
     /// </remarks>
     /// <param name="answerAuthorId">The ID of the author of the answer.</param>
-    /// <param name="questionAuthorId">The ID of the author of the question.</param>
-    /// <param name="questionId">The ID of the question.</param>
+    /// <param name="question">The question associated with the answer.</param>
     /// <returns>
-    /// A collection of <see cref="User"/> entities representing the users to notify.
+    /// A collection of <c>string</c> representing the email addresses of the users to notify.
     /// </returns>
-    public async Task<IEnumerable<User>> GetEmailsToNotifyOnNewAnswer(Guid answerAuthorId, Guid questionAuthorId, Guid questionId)
+    public async Task<IEnumerable<string>> GetEmailsToNotifyOnNewAnswer(Guid answerAuthorId, Question question)
     {
-        var users = await db.Users
+        return await Task.FromResult(db.Users
             .Where(u =>
-                u.Id != answerAuthorId && 
+                u.Id != answerAuthorId &&
                 (u.Role == Role.Admin.ToString() || 
-                 db.Answers.Any(a => a.QuestionId == questionId && a.UserId == u.Id && a.UserId != questionAuthorId))
+                 db.Answers.Any(a => a.QuestionId == question.Id && a.UserId == u.Id && a.UserId != question.UserId))
+                 && u.NotificationPreference.NotifyOnNewAnswerInQuestionIrelated == true
             )
-            .Include(u => u.NotificationPreference)
-            .Distinct()
-            .ToListAsync();
-        
-        return users;
+            .Select(u => u.Email)
+            .Distinct());
     }
 
     /// <summary>
@@ -207,23 +203,21 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
     /// the author of the question, or have answered the question.
     /// </remarks>
     /// <param name="answerAuthorId">The ID of the author of the answer.</param>
-    /// <param name="questionId">The ID of the question.</param>
+    /// <param name="question">The question associated with the answer.</param>
     /// <returns>
-    /// A collection of <see cref="User"/> entities representing the users to notify.
+    /// A collection of <c>string</c> representing the email addresses of the users to notify.
     /// </returns>
-    public async Task<IEnumerable<User>> GetEmailsToNotifyOnOfficialAnswer(Guid answerAuthorId, Guid questionId)
+    public async Task<IEnumerable<string>> GetEmailsToNotifyOnOfficialAnswer(Guid answerAuthorId, Question question)
     {
-        var users = await db.Users
+       return await Task.FromResult(db.Users
             .Where(u =>
-                u.Id == answerAuthorId ||
-                db.Questions.Any(q => q.Id == questionId && q.UserId == u.Id) ||
-                db.Answers.Any(a => a.QuestionId == questionId && a.UserId == u.Id)
+                u.Id != question.UserId &&
+                u.NotificationPreference.NotifyOnAnyOfficialAnswerInQuestionIrelated == true &&
+                (u.Id == answerAuthorId ||
+                db.Answers.Any(a => a.QuestionId == question.Id && a.UserId == u.Id))
             )
-            .Include(u => u.NotificationPreference)
-            .Distinct()
-            .ToListAsync();
-
-        return users;
+            .Select(u => u.Email)
+            .Distinct());
     }
 
     /// <summary>

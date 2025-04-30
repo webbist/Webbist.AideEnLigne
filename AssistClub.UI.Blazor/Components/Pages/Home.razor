@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 @page "/search/{Query?}"
 @using AssistClub.UI.Blazor.Components.Enums
 @using AssistClub.UI.Blazor.Extensions
@@ -59,7 +59,7 @@
     {
         _questions = await QuestionHttpClient.GetQuestionsAsync(QuestionVisibility.Public);
         var allQuestions = await QuestionHttpClient.GetQuestionsAsync(QuestionVisibility.Public);
- 
+
         if (!string.IsNullOrWhiteSpace(Query) && allQuestions != null)
         {
             _questions = allQuestions

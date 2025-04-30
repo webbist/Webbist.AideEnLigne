@@ -52,18 +52,18 @@ CREATE TABLE Answers (
 );
 
 CREATE TABLE NotificationPreferences (
-    UserId UNIQUEIDENTIFIER  PRIMARY KEY NOT NULL,
+    UserId UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
 
     -- Responsable de club
-    NotifyOnNewClubQuestion BIT DEFAULT 1,
+    NotifyOnNewClubQuestion BIT DEFAULT 1 NOT NULL,
 
     -- Utilisateur
-    NotifyOnAnswerPublishedOnMyQuestion BIT DEFAULT 1,
-    NotifyOnAnswerToMyQuestionMarkedOfficial BIT DEFAULT 1,
-    NotifyOnMyQuestionOrAnswerModifiedByAdmin BIT DEFAULT 1,
-    NotifyOnAnyOfficialAnswerInQuestionIRelated BIT DEFAULT 1,
-    NotifyOnQuestionIRelatedModifiedByAuthor BIT DEFAULT 1,
-    NotifyOnNewAnswerInQuestionIRelated BIT DEFAULT 1,
+    NotifyOnAnswerPublishedOnMyQuestion BIT DEFAULT 1 NOT NULL,
+    NotifyOnAnswerToMyQuestionMarkedOfficial BIT DEFAULT 1 NOT NULL,
+    NotifyOnMyQuestionOrAnswerModifiedByAdmin BIT DEFAULT 1 NOT NULL,
+    NotifyOnAnyOfficialAnswerInQuestionIRelated BIT DEFAULT 1 NOT NULL,
+    NotifyOnQuestionIRelatedModifiedByAuthor BIT DEFAULT 1 NOT NULL,
+    NotifyOnNewAnswerInQuestionIRelated BIT DEFAULT 1 NOT NULL,
 
     CONSTRAINT FK_NotificationPreferences_Users FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
 );
