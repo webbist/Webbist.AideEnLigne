@@ -25,4 +25,6 @@ public partial class Question
     public virtual ICollection<Answer> Answers { get; set; } = new List<Answer>();
 
     public virtual User User { get; set; } = null!;
+
+    public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
 }

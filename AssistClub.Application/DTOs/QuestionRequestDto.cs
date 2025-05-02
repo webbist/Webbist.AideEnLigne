@@ -54,4 +54,9 @@ public class QuestionRequestDto
     /// Gets or sets the unique identifier of the user who last modified the question.
     /// </summary>
     public Guid? ModifiedBy { get; set; }
+
+    /// <summary>
+    /// Gets or sets the list of categories associated with the question.
+    /// </summary>
+    public IEnumerable<string> Categories { get; set; } = [];
 }

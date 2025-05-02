@@ -18,6 +18,8 @@ public partial class AssistClubDbContext : DbContext
 
     public virtual DbSet<AnswerVote> AnswerVotes { get; set; }
 
+    public virtual DbSet<Category> Categories { get; set; }
+
     public virtual DbSet<NotificationPreference> NotificationPreferences { get; set; }
 
     public virtual DbSet<Question> Questions { get; set; }
@@ -69,6 +71,16 @@ public partial class AssistClubDbContext : DbContext
                 .HasConstraintName("FK_AnswerVotes_Users");
         });
 
+        modelBuilder.Entity<Category>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Categori__3214EC07B4A6C2CB");
+
+            entity.HasIndex(e => e.Name, "UQ__Categori__737584F627F886BB").IsUnique();
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Name).HasMaxLength(100);
+        });
+
         modelBuilder.Entity<NotificationPreference>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("PK__Notifica__1788CC4CF2D008AF");
@@ -110,6 +122,21 @@ public partial class AssistClubDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Questions)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_Questions_Users");
+
+            entity.HasMany(d => d.Categories).WithMany(p => p.Questions)
+                .UsingEntity<Dictionary<string, object>>(
+                    "QuestionCategory",
+                    r => r.HasOne<Category>().WithMany()
+                        .HasForeignKey("CategoryId")
+                        .HasConstraintName("FK_QuestionCategories_Categories"),
+                    l => l.HasOne<Question>().WithMany()
+                        .HasForeignKey("QuestionId")
+                        .HasConstraintName("FK_QuestionCategories_Questions"),
+                    j =>
+                    {
+                        j.HasKey("QuestionId", "CategoryId");
+                        j.ToTable("QuestionCategories");
+                    });
         });
 
         modelBuilder.Entity<User>(entity =>

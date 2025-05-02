@@ -41,6 +41,7 @@ public class QuestionRepository(AssistClubDbContext db, ILogger<QuestionReposito
         {
             return await db.Questions
                 .Include(q => q.User)
+                .Include(q => q.Categories)
                 .SingleOrDefaultAsync(q => q.Id == id);
         }
         catch (InvalidOperationException ex)

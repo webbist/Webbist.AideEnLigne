@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AssistClub.Infrastructure.Persistence.Repositories;
 
 /// <summary>
-/// Repository for managing answer votes.
+/// Represents a repository for managing answer votes in the database.
 /// </summary>
 /// <param name="db">The database context.</param>
 public class AnswerVoteRepository(AssistClubDbContext db) : IAnswerVoteRepository

@@ -5,7 +5,7 @@ using Domain.Entities;
 namespace AssistClub.Application.Services;
 
 /// <inheritdoc/>
-public class QuestionService(IQuestionRepository questionRepository, Notification notification): IQuestionService
+public class QuestionService(IQuestionRepository questionRepository, Notification notification, ICategoryRepository categoryRepository): IQuestionService
 {
     /// <summary>
     /// Creates a new question in the system.
@@ -34,6 +34,17 @@ public class QuestionService(IQuestionRepository questionRepository, Notificatio
             throw new ArgumentException($"Question content exceeds the maximum character limit of {QuestionRequestDto.ContentMaxLength}.");
         }
         
+        var categories = new List<Category>();
+        foreach (var catName in questionDto.Categories.Distinct(StringComparer.OrdinalIgnoreCase))
+        {
+            var existing = await categoryRepository.GetCategoryByNameAsync(catName);
+            categories.Add(existing ?? new Category
+            {
+                Id = Guid.NewGuid(),
+                Name = catName
+            });
+        }
+        
         var question = new Question
         {
             Id = Guid.NewGuid(),
@@ -43,7 +54,8 @@ public class QuestionService(IQuestionRepository questionRepository, Notificatio
             CreatedAt = DateTime.UtcNow,
             Visibility = questionDto.Visibility.ToString(),
             Status = questionDto.Status,
-            AttachmentName = questionDto.AttachmentName
+            AttachmentName = questionDto.AttachmentName,
+            Categories = categories
         };
         
         var createdQuestion = await questionRepository.CreateQuestionAsync(question);
@@ -57,7 +69,8 @@ public class QuestionService(IQuestionRepository questionRepository, Notificatio
             CreatedAt = createdQuestion.CreatedAt,
             Visibility = createdQuestion.Visibility,
             Status = createdQuestion.Status,
-            AttachmentName = createdQuestion.AttachmentName
+            AttachmentName = createdQuestion.AttachmentName,
+            Categories = createdQuestion.Categories.Select(c => c.Name).ToList(),
         };
     }
     
@@ -89,7 +102,8 @@ public class QuestionService(IQuestionRepository questionRepository, Notificatio
             Visibility = q.Visibility,
             UpdatedAt = q.UpdatedAt,
             Status = q.Status,
-            AttachmentName = q.AttachmentName
+            AttachmentName = q.AttachmentName,
+            Categories = q.Categories.Select(c => c.Name).ToList()
         }).AsQueryable();
     }
 
@@ -122,7 +136,8 @@ public class QuestionService(IQuestionRepository questionRepository, Notificatio
                 Visibility = question.Visibility,
                 UpdatedAt = question.UpdatedAt,
                 Status = question.Status,
-                AttachmentName = question.AttachmentName
+                AttachmentName = question.AttachmentName,
+                Categories = question.Categories.Select(c => c.Name).ToList()
             };
         }
         return null;
