@@ -3,9 +3,8 @@
 @inject CategoryHttpClient CategoryHttpClient
 
 <div class="mb-3">
-    <label class="text-black fw-medium mb-0">Catégories</label>
     <div class="mb-2">
-        @foreach (var cat in _selectedCategories)
+        @foreach (var cat in SelectedCategories)
         {
             <span class="badge bg-primary me-1 d-inline-flex align-items-center">
                 @cat <button type="button" class="btn-close btn-close-white btn-sm ms-1" aria-label="Remove" @onclick="() => RemoveCategory(cat)"></button>
@@ -14,13 +13,11 @@
     </div>
     <form @onsubmit="HandleSubmit">
         <InputText type="text"
-               class="form-control"
-               placeholder="Ajouter une catégorie..."
-               @bind-Value="@_categoryInput"
-               @oninput="OnCategoryInputChanged"
-        />
+                   class="form-control"
+                   placeholder="Ajouter une catégorie..."
+                   @bind-Value="@_categoryInput"
+                   @oninput="OnCategoryInputChanged"/>
     </form>
-
     @if (_suggestedCategories?.Any() == true)
     {
         <ul class="list-group mt-1 shadow-sm">
@@ -34,10 +31,10 @@
 
 @code {
     [Parameter] public EventCallback<List<string>> OnCategoriesChanged { get; set; }
+    [Parameter] public List<string> SelectedCategories { get; set; } = [];
     
+    private string _categoryInput = string.Empty;
     private List<string> _suggestedCategories = [];
-    private string _categoryInput = "";
-    private List<string> _selectedCategories = [];
 
     private async Task OnCategoryInputChanged(ChangeEventArgs e)
     {
@@ -56,10 +53,10 @@
     
     private async Task AddCategory(string category)
     {
-        if (!_selectedCategories.Contains(category, StringComparer.OrdinalIgnoreCase))
+        if (!SelectedCategories.Contains(category, StringComparer.OrdinalIgnoreCase))
         {
-            _selectedCategories.Add(category);
-            await OnCategoriesChanged.InvokeAsync(_selectedCategories);
+            SelectedCategories.Add(category);
+            await OnCategoriesChanged.InvokeAsync(SelectedCategories);
         }
         _categoryInput = "";
         _suggestedCategories.Clear();
@@ -67,8 +64,8 @@
 
     private async Task RemoveCategory(string category)
     {
-        _selectedCategories.Remove(category);
-        await OnCategoriesChanged.InvokeAsync(_selectedCategories);
+        SelectedCategories.Remove(category);
+        await OnCategoriesChanged.InvokeAsync(SelectedCategories);
     }
     
     private async Task HandleSubmit()

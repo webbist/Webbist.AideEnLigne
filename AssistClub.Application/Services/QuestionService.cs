@@ -176,7 +176,11 @@ public class QuestionService(IQuestionRepository questionRepository, Notificatio
             UpdatedAt = DateTime.UtcNow,
             Visibility = questionRequest.Visibility.ToString(),
             AttachmentName = questionRequest.AttachmentName,
-            ModifiedBy = questionRequest.ModifiedBy
+            ModifiedBy = questionRequest.ModifiedBy,
+            Categories = questionRequest.Categories.Select(c => new Category
+            {
+                Name = c
+            }).ToList()
         };
         var result = await questionRepository.UpdateQuestionAsync(question);
         if (result)

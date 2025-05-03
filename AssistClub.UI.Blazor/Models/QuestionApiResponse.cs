@@ -56,4 +56,9 @@ public class QuestionApiResponse
     /// Gets or sets the name of the uploaded attachment file.
     /// </summary>
     public string AttachmentName { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the list of categories associated with the question.
+    /// </summary>
+    public IEnumerable<string> Categories { get; set; }
 }
