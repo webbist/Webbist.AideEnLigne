@@ -1,20 +1,23 @@
 @using AssistClub.UI.Blazor.HttpClients
 
 @inject CategoryHttpClient CategoryHttpClient
+@inject IStringLocalizer<CategoryInputResources> CategoryInputLocalizer
 
 <div class="mb-3">
     <div class="mb-2">
         @foreach (var cat in SelectedCategories)
         {
             <span class="badge bg-primary me-1 d-inline-flex align-items-center">
-                @cat <button type="button" class="btn-close btn-close-white btn-sm ms-1" aria-label="Remove" @onclick="() => RemoveCategory(cat)"></button>
+                @cat <button type="button" class="btn-close btn-close-white btn-sm ms-1" 
+                             aria-label="@CategoryInputLocalizer["RemoveCategoryAriaLabel"]" 
+                             @onclick="() => RemoveCategory(cat)"></button>
             </span>
         }
     </div>
     <form @onsubmit="HandleSubmit">
         <InputText type="text"
                    class="form-control"
-                   placeholder="Ajouter une catégorie..."
+                   placeholder="@CategoryInputLocalizer["AddCategoryPlaceholder"]"
                    @bind-Value="@_categoryInput"
                    @oninput="OnCategoryInputChanged"/>
     </form>
