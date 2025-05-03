@@ -152,5 +152,11 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("FormFileInputLabel", resourceCulture);
             }
         }
+        
+        internal static string CategoryLabel {
+            get {
+                return ResourceManager.GetString("CategoryLabel", resourceCulture);
+            }
+        }
     }
 }
