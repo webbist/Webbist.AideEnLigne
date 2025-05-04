@@ -8,6 +8,7 @@
 @inject IStringLocalizer<NavBarResources> NavBarLocalizer
 @inject NavigationManager Navigation
 @inject QuestionHttpClient QuestionHttpClient
+@inject CategoryHttpClient CategoryHttpClient
 
 <AuthorizeView>
     <Authorized>
@@ -27,22 +28,36 @@
                     </NavLink>
                 </Template>
             </RadzenAutoComplete>
-            <button class="btn btn-outline-primary" type="button" @onclick="PerformSearch">
-                <i class="bi bi-search"></i>
-            </button>
-            <div class="dropdown">
-                <button type="button" class="btn btn-outline-primary dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+            
+            <div class="btn-group">
+                <button class="btn btn-outline-primary" type="button" @onclick="PerformSearch">
+                    <i class="bi bi-search"></i>
+                </button>
+                <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                     <i class="bi bi-funnel"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <div class="mx-3 mb-2">
                         <label for="startDate">@NavBarLocalizer["StartDateLabel"]</label>
-                        <input type="date" id="startDate" class="form-control" @bind="@_startDate" />
+                        <input type="date" id="startDate" class="form-control" @bind="@_startDate"/>
                     </div>
                     <div class="mx-3 mb-2">
                         <label for="endDate">@NavBarLocalizer["EndDateLabel"]</label>
-                        <input type="date" id="endDate" class="form-control" @bind="@_endDate" />
+                        <input type="date" id="endDate" class="form-control" @bind="@_endDate"/>
                     </div>
+
+                    <label class="form-label mx-3 mb-0">@NavBarLocalizer["StatusLabel"]</label>
+                    <div class="btn-group mx-3 mb-2" role="group" aria-label="Basic checkbox toggle button group">
+                        <input type="checkbox" class="btn-check" id="open" value="Open" @onchange="e => ToggleStatus(e, QuestionStatus.Open.ToString())">
+                        <label class="btn btn-outline-primary" for="open">@QuestionStatus.Open</label>
+
+                        <input type="checkbox" class="btn-check" id="pending" value="Pending" @onchange="e => ToggleStatus(e, QuestionStatus.Pending.ToString())">
+                        <label class="btn btn-outline-primary" for="pending">@QuestionStatus.Pending</label>
+
+                        <input type="checkbox" class="btn-check" id="resolved" value="Resolved" @onchange="e => ToggleStatus(e, QuestionStatus.Resolved.ToString())">
+                        <label class="btn btn-outline-primary" for="resolved">@QuestionStatus.Resolved</label>
+                    </div>
+
                     <button class="btn btn-primary mx-3 my-2" type="button" @onclick="PerformSearch">@NavBarLocalizer["ApplyFiltersLabel"]</button>
                 </div>
             </div>
@@ -80,6 +95,20 @@
     private IEnumerable<QuestionApiResponse>? _suggestedQuestions = new List<QuestionApiResponse>();
     private DateTime? _startDate;
     private DateTime? _endDate;
+    private List<string> _selectedStatuses = new();
+    
+    private void ToggleStatus(ChangeEventArgs e, string status)
+    {
+        var isChecked = (bool?) e.Value ?? false;
+        if (isChecked && !_selectedStatuses.Contains(status))
+        {
+            _selectedStatuses.Add(status);
+        }
+        else if (!isChecked && _selectedStatuses.Contains(status))
+        {
+            _selectedStatuses.Remove(status);
+        }
+    }
 
     private void PerformSearch()
     {
@@ -95,9 +124,11 @@
         if (_endDate.HasValue)
             parameters.Add($"to={_endDate.Value:yyyy-MM-dd}");
 
+        if (_selectedStatuses.Any())
+            parameters.Add($"status={string.Join(",", _selectedStatuses)}");
+
         if (parameters.Any())
             url += "?" + string.Join("&", parameters);
-
         
         Navigation.NavigateTo(url, forceLoad: parameters.Any());
     }

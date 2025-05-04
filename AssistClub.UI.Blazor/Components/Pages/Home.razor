@@ -64,6 +64,10 @@
     [SupplyParameterFromQuery]
     public string? To { get; set; }
     
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? Status { get; set; }
+    
     private IEnumerable<QuestionApiResponse>? _questions;
 
     protected override async Task OnInitializedAsync()
@@ -71,11 +75,13 @@
         var search = Query;
         DateTime? fromDate = DateTime.TryParse(From, out var fromParsed) ? fromParsed : null;
         DateTime? toDate = DateTime.TryParse(To, out var toParsed) ? toParsed : null;
+        var statusList = Status?.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
 
         _questions = await QuestionHttpClient.GetQuestionsFilteredAsync(
             QuestionVisibility.Public,
             search,
             fromDate,
-            toDate);
+            toDate,
+            statusList);
     }
 }

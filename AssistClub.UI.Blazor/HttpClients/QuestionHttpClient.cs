@@ -128,6 +128,7 @@ public class QuestionHttpClient(HttpClient http)
     /// <param name="search">The search term to filter questions by title or content.</param>
     /// <param name="from">The start date for filtering questions.</param>
     /// <param name="to">The end date for filtering questions.</param>
+    /// <param name="statuses">A list of statuses to filter questions by.</param>
     /// <returns>
     /// A collection of <see cref="QuestionApiResponse"/> entities if successful; otherwise, <c>null</c> in case of an error.
     /// </returns>
@@ -135,7 +136,8 @@ public class QuestionHttpClient(HttpClient http)
         QuestionVisibility visibility,
         string? search = null,
         DateTime? from = null,
-        DateTime? to = null)
+        DateTime? to = null,
+        List<string>? statuses = null)
     {
         try
         {
@@ -160,6 +162,12 @@ public class QuestionHttpClient(HttpClient http)
             {
                 var toDate = to.Value.ToString("yyyy-MM-dd");
                 filters.Add($"CreatedAt le {toDate}");
+            }
+            
+            if (statuses is { Count: > 0 })
+            {
+                var statusFilters = statuses.Select(s => $"Status eq '{s}'");
+                filters.Add($"({string.Join(" or ", statusFilters)})");
             }
 
             var filterQuery = string.Join(" and ", filters);
