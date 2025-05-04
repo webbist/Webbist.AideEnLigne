@@ -62,6 +62,10 @@
     --bs-btn-active-border-color: #1b6ec2!important;
 }
 
+.filters label {
+    font-weight: 500;
+}
+
 @media (min-width: 740px) {
     .xl\:block {
         display: block;
