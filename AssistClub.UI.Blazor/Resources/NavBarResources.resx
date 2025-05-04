@@ -27,4 +27,22 @@
     <data name="MyProfileLabel" xml:space="preserve">
         <value>Mon profil</value>
     </data>
+    <data name="StartDateLabel" xml:space="preserve">
+        <value>Date de début</value>
+    </data>
+    <data name="EndDateLabel" xml:space="preserve">
+        <value>Date de fin</value>
+    </data>
+    <data name="StatusLabel" xml:space="preserve">
+        <value>Statut</value>
+    </data>
+    <data name="CategoryLabel" xml:space="preserve">
+        <value>Catégories</value>
+    </data>
+    <data name="ApplyFiltersLabel" xml:space="preserve">
+        <value>Appliquer les filtres</value>
+    </data>
+    <data name="SelectCategoriesPlaceholder" xml:space="preserve">
+        <value>Sélectionner des catégories</value>
+    </data>
 </root>
