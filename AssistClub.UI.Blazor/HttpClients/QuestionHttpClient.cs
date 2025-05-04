@@ -35,32 +35,6 @@ public class QuestionHttpClient(HttpClient http)
     }
 
     /// <summary>
-    /// Sends a request to retrieve all questions in descending order by creation date and filtered by visibility.
-    /// </summary>
-    /// <remarks>
-    /// This method utilizes OData to allow dynamic filtering and sorting of questions.
-    /// </remarks>
-    /// <param name="visibility">The visibility filter for questions (<c>public</c> or <c>private</c>).</param>
-    /// <returns>
-    /// A collection of <see cref="QuestionApiResponse"/> entities if successful; otherwise, <c>null</c> in case of an error.
-    /// </returns>
-    public async Task<IEnumerable<QuestionApiResponse>?> GetQuestionsAsync(QuestionVisibility visibility)
-    {
-        try
-        {
-            var query = $"$orderby=CreatedAt desc&$filter=Visibility eq '{visibility}'";
-            var url = $"{QuestionApiRouting.GetAllRoute}?{query}";
-            var result = await http.GetFromJsonAsync<IEnumerable<QuestionApiResponse>>(url);
-            return result;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error getting questions: {e.Message}");
-            return null;
-        }
-    }
-
-    /// <summary>
     /// Sends a request to retrieve a specific question by its ID.
     /// </summary>
     /// <param name="id">The ID of the question to retrieve.</param>
@@ -148,24 +122,54 @@ public class QuestionHttpClient(HttpClient http)
     }
     
     /// <summary>
-    /// Sends a request to search for questions based on a query string and visibility.
+    /// Sends a request to retrieve questions filtered by visibility, search term, and date range.
     /// </summary>
-    /// <param name="query">The search query string.</param>
     /// <param name="visibility">The visibility filter for questions (<c>public</c> or <c>private</c>).</param>
+    /// <param name="search">The search term to filter questions by title or content.</param>
+    /// <param name="from">The start date for filtering questions.</param>
+    /// <param name="to">The end date for filtering questions.</param>
     /// <returns>
     /// A collection of <see cref="QuestionApiResponse"/> entities if successful; otherwise, <c>null</c> in case of an error.
     /// </returns>
-    public async Task<IEnumerable<QuestionApiResponse>?> SearchQuestionsAsync(string query, QuestionVisibility visibility)
+    public async Task<IEnumerable<QuestionApiResponse>?> GetQuestionsFilteredAsync(
+        QuestionVisibility visibility,
+        string? search = null,
+        DateTime? from = null,
+        DateTime? to = null)
     {
         try
         {
-            var url = $"{QuestionApiRouting.GetAllRoute}?$filter=(contains(tolower(Title),'{query.ToLower()}') or contains(tolower(Content),'{query.ToLower()}')) and Visibility eq '{visibility}'";
+            var filters = new List<string>
+            {
+                $"Visibility eq '{visibility}'"
+            };
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var lowerSearch = search.ToLower();
+                filters.Add($"(contains(tolower(Title),'{lowerSearch}') or contains(tolower(Content),'{lowerSearch}'))");
+            }
+
+            if (from.HasValue)
+            {
+                var fromDate = from.Value.ToString("yyyy-MM-dd");
+                filters.Add($"CreatedAt ge {fromDate}");
+            }
+
+            if (to.HasValue)
+            {
+                var toDate = to.Value.ToString("yyyy-MM-dd");
+                filters.Add($"CreatedAt le {toDate}");
+            }
+
+            var filterQuery = string.Join(" and ", filters);
+            var url = $"{QuestionApiRouting.GetAllRoute}?$orderby=CreatedAt desc&$filter={filterQuery}";
             var result = await http.GetFromJsonAsync<IEnumerable<QuestionApiResponse>>(url);
             return result;
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error searching questions: {e.Message}");
+            Console.WriteLine($"Error getting filtered questions: {e.Message}");
             return null;
         }
     }

@@ -144,7 +144,7 @@
                 _debounceTimer?.Dispose();
                 await InvokeAsync(async () =>
                 {
-                    var results = await QuestionHttpClient.SearchQuestionsAsync(_searchTerm, QuestionVisibility.Public);
+                    var results = await QuestionHttpClient.GetQuestionsFilteredAsync(QuestionVisibility.Public, _searchTerm);
                     _suggestedQuestions = results?.ToList() ?? new();
                     StateHasChanged();
                 });

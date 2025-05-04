@@ -30,6 +30,22 @@
             <button class="btn btn-outline-primary" type="button" @onclick="PerformSearch">
                 <i class="bi bi-search"></i>
             </button>
+            <div class="dropdown">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                    <i class="bi bi-funnel"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="mx-3 mb-2">
+                        <label for="startDate">@NavBarLocalizer["StartDateLabel"]</label>
+                        <input type="date" id="startDate" class="form-control" @bind="@_startDate" />
+                    </div>
+                    <div class="mx-3 mb-2">
+                        <label for="endDate">@NavBarLocalizer["EndDateLabel"]</label>
+                        <input type="date" id="endDate" class="form-control" @bind="@_endDate" />
+                    </div>
+                    <button class="btn btn-primary mx-3 my-2" type="button" @onclick="PerformSearch">@NavBarLocalizer["ApplyFiltersLabel"]</button>
+                </div>
+            </div>
         </div>
  
         <ul class="navbar-nav flex-row flex-wrap ms-sm-auto align-items-center">
@@ -62,17 +78,35 @@
 @code {
     private string _searchTerm = string.Empty;
     private IEnumerable<QuestionApiResponse>? _suggestedQuestions = new List<QuestionApiResponse>();
+    private DateTime? _startDate;
+    private DateTime? _endDate;
 
     private void PerformSearch()
     {
-        Navigation.NavigateTo(!string.IsNullOrWhiteSpace(_searchTerm) ? $"/search/{Uri.EscapeDataString(_searchTerm)}" : "/");
+        var url = "/search";    
+        var parameters = new List<string>();
+        
+        if (!string.IsNullOrWhiteSpace(_searchTerm))
+            parameters.Add($"query={Uri.EscapeDataString(_searchTerm)}");
+
+        if (_startDate.HasValue)
+            parameters.Add($"from={_startDate.Value:yyyy-MM-dd}");
+
+        if (_endDate.HasValue)
+            parameters.Add($"to={_endDate.Value:yyyy-MM-dd}");
+
+        if (parameters.Any())
+            url += "?" + string.Join("&", parameters);
+
+        
+        Navigation.NavigateTo(url, forceLoad: parameters.Any());
     }
     
     private async Task OnSearchChanged(LoadDataArgs args)
     {
         if (args.Filter.Length > 3)
         {
-            _suggestedQuestions = await QuestionHttpClient.SearchQuestionsAsync(args.Filter, QuestionVisibility.Public);
+            _suggestedQuestions = await QuestionHttpClient.GetQuestionsFilteredAsync(QuestionVisibility.Public, args.Filter);
         }
     }
 }

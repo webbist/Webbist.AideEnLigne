@@ -1,5 +1,5 @@
 @page "/"
-@page "/search/{Query?}"
+@page "/search"
 @using AssistClub.UI.Blazor.Components.Enums
 @using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.HttpClients
@@ -52,23 +52,30 @@
 </div>
 
 @code {
-    [Parameter] public string? Query { get; set; }
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? Query { get; set; }
+    
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? From { get; set; }
+    
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? To { get; set; }
+    
     private IEnumerable<QuestionApiResponse>? _questions;
 
     protected override async Task OnInitializedAsync()
     {
-        _questions = await QuestionHttpClient.GetQuestionsAsync(QuestionVisibility.Public);
-        var allQuestions = await QuestionHttpClient.GetQuestionsAsync(QuestionVisibility.Public);
+        var search = Query;
+        DateTime? fromDate = DateTime.TryParse(From, out var fromParsed) ? fromParsed : null;
+        DateTime? toDate = DateTime.TryParse(To, out var toParsed) ? toParsed : null;
 
-        if (!string.IsNullOrWhiteSpace(Query) && allQuestions != null)
-        {
-            _questions = allQuestions
-                .Where(q => q.Title.Contains(Query, StringComparison.OrdinalIgnoreCase) || 
-                            q.Content.Contains(Query, StringComparison.OrdinalIgnoreCase));
-        }
-        else
-        {
-            _questions = allQuestions;
-        }
+        _questions = await QuestionHttpClient.GetQuestionsFilteredAsync(
+            QuestionVisibility.Public,
+            search,
+            fromDate,
+            toDate);
     }
 }
