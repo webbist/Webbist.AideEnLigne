@@ -16,12 +16,16 @@ public class CategoryHttpClient(HttpClient http)
     /// <returns>
     /// A collection of <see cref="CategoryApiResponse"/> entities if successful; otherwise, <c>null</c> in case of an error.
     /// </returns>
-    public async Task<IEnumerable<CategoryApiResponse>?> GetCategoriesAsync(string term)
+    public async Task<IEnumerable<CategoryApiResponse>?> GetCategoriesAsync(string? term = null)
     {
         try
         {
-            var query = $"$filter=contains(Name, '{term}')";
-            var url = $"{CategoryApiRouting.GetAllRoute}?{query}";
+            var url = CategoryApiRouting.GetAllRoute;
+            if (!string.IsNullOrEmpty(term))
+            {
+                var query = $"?$filter=contains(Name, '{term}')";
+                url += query;
+            }
             var result = await http.GetFromJsonAsync<IEnumerable<CategoryApiResponse>>(url);
             return result;
         }

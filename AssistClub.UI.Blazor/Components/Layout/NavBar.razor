@@ -33,7 +33,7 @@
                 <button class="btn btn-outline-primary" type="button" @onclick="PerformSearch">
                     <i class="bi bi-search"></i>
                 </button>
-                <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="false">
                     <i class="bi bi-funnel"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -47,7 +47,7 @@
                     </div>
 
                     <label class="form-label mx-3 mb-0">@NavBarLocalizer["StatusLabel"]</label>
-                    <div class="btn-group mx-3 mb-2" role="group" aria-label="Basic checkbox toggle button group">
+                    <div class="btn-group mx-3 mb-2" role="group" aria-label="checkbox button group">
                         <input type="checkbox" class="btn-check" id="open" value="Open" @onchange="e => ToggleStatus(e, QuestionStatus.Open.ToString())">
                         <label class="btn btn-outline-primary" for="open">@QuestionStatus.Open</label>
 
@@ -56,6 +56,18 @@
 
                         <input type="checkbox" class="btn-check" id="resolved" value="Resolved" @onchange="e => ToggleStatus(e, QuestionStatus.Resolved.ToString())">
                         <label class="btn btn-outline-primary" for="resolved">@QuestionStatus.Resolved</label>
+                    </div>
+
+                    <div class="mx-3 mb-2">
+                        <label>@NavBarLocalizer["CategoryLabel"]</label>
+                        <RadzenDropDown Multiple="true"
+                                        @bind-Value="@_selectedCategories"
+                                        Data="@_categories"
+                                        TextProperty="@nameof(CategoryApiResponse.Name)"
+                                        ValueProperty="@nameof(CategoryApiResponse.Name)"
+                                        Chips=true shouldReposition="true"
+                                        Placeholder="Sélectionner catégories"
+                                        Style="width:100%" />
                     </div>
 
                     <button class="btn btn-primary mx-3 my-2" type="button" @onclick="PerformSearch">@NavBarLocalizer["ApplyFiltersLabel"]</button>
@@ -96,6 +108,15 @@
     private DateTime? _startDate;
     private DateTime? _endDate;
     private List<string> _selectedStatuses = new();
+    private List<string> _selectedCategories = new();
+    private List<CategoryApiResponse> _categories = new();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var categoryResult = await CategoryHttpClient.GetCategoriesAsync();
+        if (categoryResult != null)
+            _categories = categoryResult.ToList();
+    }
     
     private void ToggleStatus(ChangeEventArgs e, string status)
     {
@@ -126,6 +147,9 @@
 
         if (_selectedStatuses.Any())
             parameters.Add($"status={string.Join(",", _selectedStatuses)}");
+        
+        if (_selectedCategories.Any())
+            parameters.Add($"categories={string.Join(",", _selectedCategories.Select(Uri.EscapeDataString))}");
 
         if (parameters.Any())
             url += "?" + string.Join("&", parameters);

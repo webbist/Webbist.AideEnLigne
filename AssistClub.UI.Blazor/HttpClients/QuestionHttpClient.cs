@@ -129,6 +129,7 @@ public class QuestionHttpClient(HttpClient http)
     /// <param name="from">The start date for filtering questions.</param>
     /// <param name="to">The end date for filtering questions.</param>
     /// <param name="statuses">A list of statuses to filter questions by.</param>
+    /// <param name="categories">A list of categories to filter questions by.</param>
     /// <returns>
     /// A collection of <see cref="QuestionApiResponse"/> entities if successful; otherwise, <c>null</c> in case of an error.
     /// </returns>
@@ -137,7 +138,8 @@ public class QuestionHttpClient(HttpClient http)
         string? search = null,
         DateTime? from = null,
         DateTime? to = null,
-        List<string>? statuses = null)
+        List<string>? statuses = null,
+        List<string>? categories = null)
     {
         try
         {
@@ -168,6 +170,12 @@ public class QuestionHttpClient(HttpClient http)
             {
                 var statusFilters = statuses.Select(s => $"Status eq '{s}'");
                 filters.Add($"({string.Join(" or ", statusFilters)})");
+            }
+            
+            if (categories is { Count: > 0 })
+            {
+                var catFilters = categories.Select(cat => $"Categories/any(c: c eq '{cat}')");
+                filters.Add($"({string.Join(" or ", catFilters)})");
             }
 
             var filterQuery = string.Join(" and ", filters);

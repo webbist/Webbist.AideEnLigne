@@ -68,6 +68,10 @@
     [SupplyParameterFromQuery]
     public string? Status { get; set; }
     
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "categories")]
+    public string? Categories { get; set; }
+    
     private IEnumerable<QuestionApiResponse>? _questions;
 
     protected override async Task OnInitializedAsync()
@@ -76,12 +80,14 @@
         DateTime? fromDate = DateTime.TryParse(From, out var fromParsed) ? fromParsed : null;
         DateTime? toDate = DateTime.TryParse(To, out var toParsed) ? toParsed : null;
         var statusList = Status?.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+        var categoryList = Categories?.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
 
         _questions = await QuestionHttpClient.GetQuestionsFilteredAsync(
             QuestionVisibility.Public,
             search,
             fromDate,
             toDate,
-            statusList);
+            statusList,
+            categoryList);
     }
 }
