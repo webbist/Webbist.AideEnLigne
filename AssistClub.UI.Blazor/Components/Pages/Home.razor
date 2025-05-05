@@ -27,9 +27,18 @@
         <Template Context="question">
             <div class="question-card d-flex rounded-0 shadow-none mb-0 bg-transparent p-2">
                 <div class="question-body">
-                    <h5 class="mb-2 fw-medium">
+                    <h5 class="mb-1 fw-medium">
                         <NavLink href="@($"question/{question.Id}")">@question.Title</NavLink>
                     </h5>
+                    <div class="question-categories mb-2">
+                        @if (question.Categories.Any())
+                        {
+                            foreach (var category in question.Categories)
+                            {
+                                <span class="badge bg-secondary">@category</span>
+                            }
+                        }
+                    </div>
                     <p class="mb-2 truncate-text lh-20 fs-13">
                         @question.Content.GetPlainTextFromHtml()
                     </p>

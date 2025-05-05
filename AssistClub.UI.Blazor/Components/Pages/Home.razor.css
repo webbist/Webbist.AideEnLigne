@@ -58,3 +58,8 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
 }
+
+.question-categories span {
+    background: #006bb7!important;
+    margin-right: .25rem;
+}
