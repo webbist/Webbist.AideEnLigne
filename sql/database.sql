@@ -77,3 +77,16 @@ CREATE TABLE AnswerVotes (
                              CONSTRAINT FK_AnswerVotes_Answers FOREIGN KEY (AnswerId) REFERENCES Answers(Id) ON DELETE CASCADE,
                              CONSTRAINT FK_AnswerVotes_Users FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION
 );
+
+CREATE TABLE Categories (
+                            Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+                            Name NVARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE QuestionCategories (
+                                    QuestionId UNIQUEIDENTIFIER NOT NULL,
+                                    CategoryId UNIQUEIDENTIFIER NOT NULL,
+                                    CONSTRAINT PK_QuestionCategories PRIMARY KEY (QuestionId, CategoryId),
+                                    CONSTRAINT FK_QuestionCategories_Questions FOREIGN KEY (QuestionId) REFERENCES Questions(Id) ON DELETE CASCADE,
+                                    CONSTRAINT FK_QuestionCategories_Categories FOREIGN KEY (CategoryId) REFERENCES Categories(Id) ON DELETE CASCADE
+);
