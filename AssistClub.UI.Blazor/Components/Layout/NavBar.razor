@@ -6,6 +6,7 @@
 @rendermode InteractiveServer
 
 @inject IStringLocalizer<NavBarResources> NavBarLocalizer
+@inject IStringLocalizer<QuestionStatusResources> QuestionStatusLocalizer
 @inject NavigationManager Navigation
 @inject QuestionHttpClient QuestionHttpClient
 @inject CategoryHttpClient CategoryHttpClient
@@ -47,15 +48,15 @@
                     </div>
 
                     <label class="form-label mx-3 mb-0">@NavBarLocalizer["StatusLabel"]</label>
-                    <div class="btn-group mx-3 mb-2" role="group" aria-label="checkbox button group">
+                    <div class="status-buttons btn-group mx-3 mb-2" role="group" aria-label="checkbox button group">
                         <input type="checkbox" class="btn-check" id="open" value="Open" @onchange="e => ToggleStatus(e, QuestionStatus.Open.ToString())">
-                        <label class="btn btn-outline-primary" for="open">@QuestionStatus.Open</label>
+                        <label class="btn btn-outline-primary" for="open">@QuestionStatusLocalizer[QuestionStatus.Open.ToString()]</label>
 
                         <input type="checkbox" class="btn-check" id="pending" value="Pending" @onchange="e => ToggleStatus(e, QuestionStatus.Pending.ToString())">
-                        <label class="btn btn-outline-primary" for="pending">@QuestionStatus.Pending</label>
+                        <label class="btn btn-outline-primary" for="pending">@QuestionStatusLocalizer[QuestionStatus.Pending.ToString()]</label>
 
                         <input type="checkbox" class="btn-check" id="resolved" value="Resolved" @onchange="e => ToggleStatus(e, QuestionStatus.Resolved.ToString())">
-                        <label class="btn btn-outline-primary" for="resolved">@QuestionStatus.Resolved</label>
+                        <label class="btn btn-outline-primary" for="resolved">@QuestionStatusLocalizer[QuestionStatus.Resolved.ToString()]</label>
                     </div>
 
                     <div class="mx-3 mb-2">

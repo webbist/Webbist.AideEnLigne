@@ -66,6 +66,10 @@
     font-weight: 500;
 }
 
+.status-buttons {
+    width: max-content;
+}
+
 @media (min-width: 740px) {
     .xl\:block {
         display: block;
