@@ -43,18 +43,6 @@
             <label class="text-black fw-medium mb-2">@Localizer["CategoryLabel"]</label>
             <CategoryInput CategoriesChanged="UpdateSelectedCategories" SelectedCategories="_questionModel.Categories.ToList()"/>
         </div>
-        <div class="mb-3">
-            <label class="text-black fw-medium mb-1">@Localizer["VisibilityLabel"]:</label>
-            <div class="form-group">
-                <InputSelect class="form-control" @bind-Value="_questionModel.Visibility">
-                    @foreach (var visibility in Enum.GetValues(typeof(QuestionVisibility)).Cast<QuestionVisibility>())
-                    {
-                        <option value="@visibility">@visibility.ToVisibilityLocalizedLabel()</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(() => _questionModel.Visibility)" class="text-danger pt-1" />
-            </div>
-        </div>
         <div class="mb-1">
             <label class="text-black fw-medium mb-1">
                 @string.Format(Localizer["FormFileLabelWithSize"], QuestionRequest.AttachmentMaxSize / 1024 / 1024):
