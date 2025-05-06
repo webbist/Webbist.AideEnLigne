@@ -158,7 +158,7 @@ else
         var parameters = new Dictionary<string, object>
         {
             { "Question", question },
-            { "OnQuestionUpdated", EventCallback.Factory.Create<QuestionRequest>(this, async (updatedQuestion) =>
+            { "QuestionUpdated", EventCallback.Factory.Create<QuestionRequest>(this, async updatedQuestion =>
                 {
                     var success = await QuestionHttpClient.UpdateQuestionAsync(question.Id, updatedQuestion);
                     if (success)
