@@ -1,6 +1,8 @@
 @page "/sign-in"
 
-<PageTitle>Sign in with your Google account</PageTitle>
+@inject IStringLocalizer<LoginResources> LoginLocalizer
+
+<PageTitle>@LoginLocalizer["PageTitle"]</PageTitle>
 
 <style>
     body { background-color: #201f1e; }
@@ -9,13 +11,9 @@
 <RadzenCard class="rz-my-12 rz-mx-auto text-white" Style="max-width: 450px; background: #3a3937;">
     <div class="text-center">
         <h1 class="title">AssistClub</h1>
-        <h3 class="py-3">Sign in with your Google account</h3>
+        <h3 class="py-3">@LoginLocalizer["SignInMessage"]</h3>
         <p class="py-2">
-            <NavLink class="btn btn-dark" href="login">Sign in</NavLink>
+            <NavLink class="btn btn-dark" href="login">@LoginLocalizer["SignInButton"]</NavLink>
         </p>
     </div>
 </RadzenCard>
-
-@code {
-    
-}

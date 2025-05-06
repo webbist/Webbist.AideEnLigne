@@ -77,6 +77,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>CategoryInputResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\LoginResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>LoginResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -159,6 +163,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>CategoryInputResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\LoginResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>LoginResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
