@@ -62,5 +62,47 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("MyProfileLabel", resourceCulture);
             }
         }
+        
+        internal static string StartDateLabel {
+            get {
+                return ResourceManager.GetString("StartDateLabel", resourceCulture);
+            }
+        }
+        
+        internal static string EndDateLabel {
+            get {
+                return ResourceManager.GetString("EndDateLabel", resourceCulture);
+            }
+        }
+        
+        internal static string StatusLabel {
+            get {
+                return ResourceManager.GetString("StatusLabel", resourceCulture);
+            }
+        }
+        
+        internal static string CategoryLabel {
+            get {
+                return ResourceManager.GetString("CategoryLabel", resourceCulture);
+            }
+        }
+        
+        internal static string ApplyFiltersLabel {
+            get {
+                return ResourceManager.GetString("ApplyFiltersLabel", resourceCulture);
+            }
+        }
+        
+        internal static string SelectCategoriesPlaceholder {
+            get {
+                return ResourceManager.GetString("SelectCategoriesPlaceholder", resourceCulture);
+            }
+        }
+        
+        internal static string SelectAllLabel {
+            get {
+                return ResourceManager.GetString("SelectAllLabel", resourceCulture);
+            }
+        }
     }
 }

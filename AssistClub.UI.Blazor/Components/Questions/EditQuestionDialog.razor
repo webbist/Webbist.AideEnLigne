@@ -41,7 +41,7 @@
         </div>
         <div class="mb-3">
             <label class="text-black fw-medium mb-2">@Localizer["CategoryLabel"]</label>
-            <CategoryInput OnCategoriesChanged="UpdateSelectedCategories" SelectedCategories="_questionModel.Categories.ToList()"/>
+            <CategoryInput CategoriesChanged="UpdateSelectedCategories" SelectedCategories="_questionModel.Categories.ToList()"/>
         </div>
         <div class="mb-3">
             <label class="text-black fw-medium mb-1">@Localizer["VisibilityLabel"]:</label>
@@ -77,7 +77,7 @@
 
 @code {
     [Parameter] public QuestionApiResponse Question { get; set; }
-    [Parameter] public EventCallback<QuestionRequest> OnQuestionUpdated { get; set; }
+    [Parameter] public EventCallback<QuestionRequest> QuestionUpdated { get; set; }
     
     private QuestionRequest _questionModel = new();
     private string? _fileContent;
@@ -133,7 +133,7 @@
             var userId = authState.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             if (userId != null) _questionModel.ModifiedBy = Guid.Parse(userId);
 
-            await OnQuestionUpdated.InvokeAsync(_questionModel);
+            await QuestionUpdated.InvokeAsync(_questionModel);
             DialogService.Close();
         }
         finally

@@ -33,7 +33,7 @@
 </div>
 
 @code {
-    [Parameter] public EventCallback<List<string>> OnCategoriesChanged { get; set; }
+    [Parameter] public EventCallback<List<string>> CategoriesChanged { get; set; }
     [Parameter] public List<string> SelectedCategories { get; set; } = [];
     
     private string _categoryInput = string.Empty;
@@ -59,7 +59,7 @@
         if (!SelectedCategories.Contains(category, StringComparer.OrdinalIgnoreCase))
         {
             SelectedCategories.Add(category);
-            await OnCategoriesChanged.InvokeAsync(SelectedCategories);
+            await CategoriesChanged.InvokeAsync(SelectedCategories);
         }
         _categoryInput = "";
         _suggestedCategories.Clear();
@@ -68,7 +68,7 @@
     private async Task RemoveCategory(string category)
     {
         SelectedCategories.Remove(category);
-        await OnCategoriesChanged.InvokeAsync(SelectedCategories);
+        await CategoriesChanged.InvokeAsync(SelectedCategories);
     }
     
     private async Task HandleSubmit()

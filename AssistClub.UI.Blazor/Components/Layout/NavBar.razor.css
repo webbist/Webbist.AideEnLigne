@@ -55,6 +55,21 @@
     -webkit-line-clamp: 1;
 }
 
+.btn-outline-primary {
+    --bs-btn-color: #1b6ec2!important;
+    --bs-btn-border-color: #1b6ec2!important;
+    --bs-btn-active-bg: #1b6ec2!important;
+    --bs-btn-active-border-color: #1b6ec2!important;
+}
+
+.filters label {
+    font-weight: 500;
+}
+
+.status-buttons {
+    width: max-content;
+}
+
 @media (min-width: 740px) {
     .xl\:block {
         display: block;

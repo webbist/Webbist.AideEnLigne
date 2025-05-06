@@ -6,8 +6,10 @@
 @rendermode InteractiveServer
 
 @inject IStringLocalizer<NavBarResources> NavBarLocalizer
+@inject IStringLocalizer<QuestionStatusResources> QuestionStatusLocalizer
 @inject NavigationManager Navigation
 @inject QuestionHttpClient QuestionHttpClient
+@inject CategoryHttpClient CategoryHttpClient
 
 <AuthorizeView>
     <Authorized>
@@ -27,9 +29,52 @@
                     </NavLink>
                 </Template>
             </RadzenAutoComplete>
-            <button class="btn btn-outline-primary" type="button" @onclick="PerformSearch">
-                <i class="bi bi-search"></i>
-            </button>
+            
+            <div class="btn-group">
+                <button class="btn btn-outline-primary" type="button" @onclick="PerformSearch">
+                    <i class="bi bi-search"></i>
+                </button>
+                <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="false">
+                    <i class="bi bi-funnel"></i>
+                </button>
+                <div class="filters dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="mx-3 mb-2">
+                        <label for="startDate">@NavBarLocalizer["StartDateLabel"]</label>
+                        <input type="date" id="startDate" class="form-control" @bind="@_startDate"/>
+                    </div>
+                    <div class="mx-3 mb-2">
+                        <label for="endDate">@NavBarLocalizer["EndDateLabel"]</label>
+                        <input type="date" id="endDate" class="form-control" @bind="@_endDate"/>
+                    </div>
+
+                    <label class="form-label mx-3 mb-0">@NavBarLocalizer["StatusLabel"]</label>
+                    <div class="status-buttons btn-group mx-3 mb-2" role="group" aria-label="checkbox button group">
+                        <input type="checkbox" class="btn-check" id="open" value="Open" @onchange="e => ToggleStatus(e, QuestionStatus.Open.ToString())">
+                        <label class="btn btn-outline-primary" for="open">@QuestionStatusLocalizer[QuestionStatus.Open.ToString()]</label>
+
+                        <input type="checkbox" class="btn-check" id="pending" value="Pending" @onchange="e => ToggleStatus(e, QuestionStatus.Pending.ToString())">
+                        <label class="btn btn-outline-primary" for="pending">@QuestionStatusLocalizer[QuestionStatus.Pending.ToString()]</label>
+
+                        <input type="checkbox" class="btn-check" id="resolved" value="Resolved" @onchange="e => ToggleStatus(e, QuestionStatus.Resolved.ToString())">
+                        <label class="btn btn-outline-primary" for="resolved">@QuestionStatusLocalizer[QuestionStatus.Resolved.ToString()]</label>
+                    </div>
+
+                    <div class="mx-3 mb-2">
+                        <label>@NavBarLocalizer["CategoryLabel"]</label>
+                        <RadzenDropDown Multiple="true"
+                                        @bind-Value="@_selectedCategories"
+                                        Data="@_categories"
+                                        TextProperty="@nameof(CategoryApiResponse.Name)"
+                                        ValueProperty="@nameof(CategoryApiResponse.Name)"
+                                        Chips=true shouldReposition="true"
+                                        Placeholder="@NavBarLocalizer["SelectCategoriesPlaceholder"]"
+                                        SelectAllText= "@NavBarLocalizer["SelectAllLabel"]"
+                                        Style="width:100%" />
+                    </div>
+
+                    <button class="btn btn-primary mx-3 my-2" type="button" @onclick="PerformSearch">@NavBarLocalizer["ApplyFiltersLabel"]</button>
+                </div>
+            </div>
         </div>
  
         <ul class="navbar-nav flex-row flex-wrap ms-sm-auto align-items-center">
@@ -62,17 +107,63 @@
 @code {
     private string _searchTerm = string.Empty;
     private IEnumerable<QuestionApiResponse>? _suggestedQuestions = new List<QuestionApiResponse>();
+    private DateTime? _startDate;
+    private DateTime? _endDate;
+    private List<string> _selectedStatuses = new();
+    private List<string> _selectedCategories = new();
+    private List<CategoryApiResponse> _categories = new();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var categoryResult = await CategoryHttpClient.GetCategoriesAsync();
+        if (categoryResult != null)
+            _categories = categoryResult.ToList();
+    }
+    
+    private void ToggleStatus(ChangeEventArgs e, string status)
+    {
+        var isChecked = (bool?) e.Value ?? false;
+        if (isChecked && !_selectedStatuses.Contains(status))
+        {
+            _selectedStatuses.Add(status);
+        }
+        else if (!isChecked && _selectedStatuses.Contains(status))
+        {
+            _selectedStatuses.Remove(status);
+        }
+    }
 
     private void PerformSearch()
     {
-        Navigation.NavigateTo(!string.IsNullOrWhiteSpace(_searchTerm) ? $"/search/{Uri.EscapeDataString(_searchTerm)}" : "/");
+        var url = "/search";    
+        var parameters = new List<string>();
+        
+        if (!string.IsNullOrWhiteSpace(_searchTerm))
+            parameters.Add($"query={Uri.EscapeDataString(_searchTerm)}");
+
+        if (_startDate.HasValue)
+            parameters.Add($"from={_startDate.Value:yyyy-MM-dd}");
+
+        if (_endDate.HasValue)
+            parameters.Add($"to={_endDate.Value:yyyy-MM-dd}");
+
+        if (_selectedStatuses.Any())
+            parameters.Add($"status={string.Join(",", _selectedStatuses)}");
+        
+        if (_selectedCategories.Any())
+            parameters.Add($"categories={string.Join(",", _selectedCategories.Select(Uri.EscapeDataString))}");
+
+        if (parameters.Any())
+            url += "?" + string.Join("&", parameters);
+        
+        Navigation.NavigateTo(url, forceLoad: parameters.Any());
     }
     
     private async Task OnSearchChanged(LoadDataArgs args)
     {
         if (args.Filter.Length > 3)
         {
-            _suggestedQuestions = await QuestionHttpClient.SearchQuestionsAsync(args.Filter, QuestionVisibility.Public);
+            _suggestedQuestions = await QuestionHttpClient.GetQuestionsFilteredAsync(QuestionVisibility.Public, args.Filter);
         }
     }
 }

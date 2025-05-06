@@ -12,7 +12,7 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="AddCategoryPlaceholder" xml:space="preserve">
-        <value>Agrega una categoría...</value>
+        <value>Agrega una categoría</value>
     </data>
     <data name="RemoveCategoryAriaLabel" xml:space="preserve">
         <value>Quitar categoría</value>
