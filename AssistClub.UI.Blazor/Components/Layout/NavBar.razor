@@ -156,7 +156,7 @@
         if (parameters.Any())
             url += "?" + string.Join("&", parameters);
         
-        Navigation.NavigateTo(url, forceLoad: parameters.Any());
+        Navigation.NavigateTo(url);
     }
     
     private async Task OnSearchChanged(LoadDataArgs args)

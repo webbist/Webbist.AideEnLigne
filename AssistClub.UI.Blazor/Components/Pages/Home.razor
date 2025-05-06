@@ -83,7 +83,7 @@
     
     private IEnumerable<QuestionApiResponse>? _questions;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         var search = Query;
         DateTime? fromDate = DateTime.TryParse(From, out var fromParsed) ? fromParsed : null;
