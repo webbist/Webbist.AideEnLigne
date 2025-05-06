@@ -41,6 +41,7 @@ public class QuestionRepository(AssistClubDbContext db, ILogger<QuestionReposito
         {
             return await db.Questions
                 .Include(q => q.User)
+                .Include(q => q.Categories)
                 .SingleOrDefaultAsync(q => q.Id == id);
         }
         catch (InvalidOperationException ex)
@@ -68,8 +69,12 @@ public class QuestionRepository(AssistClubDbContext db, ILogger<QuestionReposito
     {
         try
         {
-            var existingQuestion = await db.Questions.FindAsync(question.Id);
+            var existingQuestion = await db.Questions
+                .Include(q => q.Categories)
+                .FirstOrDefaultAsync(q => q.Id == question.Id);
+
             if (existingQuestion == null) return false;
+
             existingQuestion.UserId = question.UserId;
             existingQuestion.Title = question.Title;
             existingQuestion.Content = question.Content;
@@ -77,7 +82,37 @@ public class QuestionRepository(AssistClubDbContext db, ILogger<QuestionReposito
             existingQuestion.Visibility = question.Visibility;
             existingQuestion.AttachmentName = question.AttachmentName;
             existingQuestion.ModifiedBy = question.ModifiedBy;
-            db.Questions.Update(existingQuestion);
+
+            var updatedCategoryNames = question.Categories
+                .Select(c => c.Name.Trim())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            var newCategories = new List<Category>();
+
+            foreach (var name in updatedCategoryNames)
+            {
+                var existing = await db.Categories
+                    .FirstOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
+
+                if (existing != null)
+                {
+                    newCategories.Add(existing);
+                }
+                else
+                {
+                    var newCat = new Category { Id = Guid.NewGuid(), Name = name };
+                    db.Categories.Add(newCat);
+                    newCategories.Add(newCat);
+                }
+            }
+            
+            existingQuestion.Categories.Clear();
+            foreach (var category in newCategories)
+            {
+                existingQuestion.Categories.Add(category);
+            }
+
             return await db.SaveChangesAsync() > 0;
         }
         catch (DbUpdateException e)

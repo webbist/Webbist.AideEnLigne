@@ -1,5 +1,6 @@
 @using System.Security.Claims
 @using AssistClub.UI.Blazor.Components.Enums
+@using AssistClub.UI.Blazor.Components.Inputs
 @using AssistClub.UI.Blazor.Extensions
 @using AssistClub.UI.Blazor.HttpClients
 @using AssistClub.UI.Blazor.Models
@@ -37,6 +38,10 @@
                 </RadzenHtmlEditor>
                 <ValidationMessage For="@(() => _questionModel.Content)" class="text-danger pt-1" />
             </div>
+        </div>
+        <div class="mb-3">
+            <label class="text-black fw-medium mb-2">@Localizer["CategoryLabel"]</label>
+            <CategoryInput OnCategoriesChanged="UpdateSelectedCategories" SelectedCategories="_questionModel.Categories.ToList()"/>
         </div>
         <div class="mb-3">
             <label class="text-black fw-medium mb-1">@Localizer["VisibilityLabel"]:</label>
@@ -88,7 +93,8 @@
             Content = Question.Content,
             Visibility = Enum.Parse<QuestionVisibility>(Question.Visibility, true),
             Status = Question.Status,
-            AttachmentName = Question.AttachmentName
+            AttachmentName = Question.AttachmentName,
+            Categories = Question.Categories,
         };
     }
     
@@ -137,4 +143,9 @@
     }
     
     private void Close() => DialogService.Close();
+    
+    private void UpdateSelectedCategories(List<string> updated)
+    {
+        _questionModel.Categories = updated;
+    }
 }

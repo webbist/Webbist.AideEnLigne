@@ -8,6 +8,15 @@
     font-size: 12px;
 }
 
+.question-categories {
+    font-size: .9rem;
+}
+
+.question-categories span {
+    background: #006bb7!important;
+    margin-right: .25rem;
+}
+
 .question-info span {
     padding-right: 1rem;
 }

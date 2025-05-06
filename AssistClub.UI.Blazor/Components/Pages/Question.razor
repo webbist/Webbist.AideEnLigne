@@ -65,6 +65,15 @@
                     <span class="info-status">@QuestionStatusLocalizer[_question.Status]</span>
                 </span>
             </div>
+            <div class="question-categories">
+                @if (_question.Categories.Any())
+                {
+                    foreach (var category in _question.Categories)
+                    {
+                        <span class="badge bg-secondary">@category</span>
+                    }
+                }
+            </div>
             <div class="question-content">
                 @((MarkupString)_question.Content)
                 @if (!string.IsNullOrEmpty(_question.AttachmentName))

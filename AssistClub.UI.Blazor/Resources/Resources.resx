@@ -72,4 +72,7 @@
     <data name="FormFileInputLabel" xml:space="preserve">
         <value>Choisir un fichier</value>
     </data>
+    <data name="CategoryLabel" xml:space="preserve">
+        <value>Catégories</value>
+    </data>
 </root>

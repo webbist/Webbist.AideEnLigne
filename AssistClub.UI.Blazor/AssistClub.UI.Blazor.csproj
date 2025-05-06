@@ -73,6 +73,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>UserSettingsResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\CategoryInputResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CategoryInputResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -150,6 +154,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>UserSettingsResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\CategoryInputResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CategoryInputResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

@@ -1,0 +1,91 @@
+@using AssistClub.UI.Blazor.HttpClients
+
+@inject CategoryHttpClient CategoryHttpClient
+@inject IStringLocalizer<CategoryInputResources> CategoryInputLocalizer
+
+<div class="mb-3">
+    <div class="categories mb-2">
+        @foreach (var cat in SelectedCategories)
+        {
+            <span class="badge bg-primary me-1 d-inline-flex align-items-center">
+                @cat <button type="button" class="btn-close btn-close-white btn-sm ms-1" 
+                             aria-label="@CategoryInputLocalizer["RemoveCategoryAriaLabel"]" 
+                             @onclick="() => RemoveCategory(cat)"></button>
+            </span>
+        }
+    </div>
+    <form @onsubmit="HandleSubmit">
+        <InputText type="text"
+                   class="form-control"
+                   placeholder="@CategoryInputLocalizer["AddCategoryPlaceholder"]"
+                   @bind-Value="@_categoryInput"
+                   @oninput="OnCategoryInputChanged"/>
+    </form>
+    @if (_suggestedCategories?.Any() == true)
+    {
+        <ul class="list-group mt-1 shadow-sm">
+            @foreach (var suggestion in _suggestedCategories)
+            {
+                <li class="list-group-item list-group-item-action" @onclick="@(() => AddCategory(suggestion))">@suggestion</li>
+            }
+        </ul>
+    }
+</div>
+
+@code {
+    [Parameter] public EventCallback<List<string>> OnCategoriesChanged { get; set; }
+    [Parameter] public List<string> SelectedCategories { get; set; } = [];
+    
+    private string _categoryInput = string.Empty;
+    private List<string> _suggestedCategories = [];
+
+    private async Task OnCategoryInputChanged(ChangeEventArgs e)
+    {
+        _categoryInput = e.Value?.ToString() ?? "";
+
+        if (_categoryInput.Length >= 2)
+        {
+            var result = await CategoryHttpClient.GetCategoriesAsync(_categoryInput);
+            if (result != null) _suggestedCategories = result.Select(c => c.Name).ToList();
+        }
+        else
+        {
+            _suggestedCategories.Clear();
+        }
+    }
+    
+    private async Task AddCategory(string category)
+    {
+        if (!SelectedCategories.Contains(category, StringComparer.OrdinalIgnoreCase))
+        {
+            SelectedCategories.Add(category);
+            await OnCategoriesChanged.InvokeAsync(SelectedCategories);
+        }
+        _categoryInput = "";
+        _suggestedCategories.Clear();
+    }
+
+    private async Task RemoveCategory(string category)
+    {
+        SelectedCategories.Remove(category);
+        await OnCategoriesChanged.InvokeAsync(SelectedCategories);
+    }
+    
+    private async Task HandleSubmit()
+    {
+        if (!string.IsNullOrWhiteSpace(_categoryInput))
+        {
+            var categories = _categoryInput
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(c => c.Trim())
+                .Where(c => !string.IsNullOrWhiteSpace(c) && c.Length >= 2)
+                .Distinct(StringComparer.OrdinalIgnoreCase);
+            
+            foreach (var category in categories)
+            {
+                await AddCategory(category.Trim());
+            }
+            await Task.Yield();
+        }
+    }
+}
