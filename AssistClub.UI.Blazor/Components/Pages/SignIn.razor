@@ -1,6 +1,7 @@
 @page "/sign-in"
 
 @inject IStringLocalizer<LoginResources> LoginLocalizer
+@inject IConfiguration Configuration
 
 <PageTitle>@LoginLocalizer["PageTitle"]</PageTitle>
 
@@ -10,7 +11,7 @@
 
 <RadzenCard class="rz-my-12 rz-mx-auto text-white" Style="max-width: 450px; background: #3a3937;">
     <div class="text-center">
-        <h1 class="title">AssistClub</h1>
+        <h1 class="title">@Configuration["AppName"]</h1>
         <h3 class="py-3">@LoginLocalizer["SignInMessage"]</h3>
         <p class="py-2">
             <NavLink class="btn btn-dark" href="login">@LoginLocalizer["SignInButton"]</NavLink>
