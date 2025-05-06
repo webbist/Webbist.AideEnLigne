@@ -98,5 +98,11 @@ namespace AssistClub.UI.Blazor.Resources {
                 return ResourceManager.GetString("SelectCategoriesPlaceholder", resourceCulture);
             }
         }
+        
+        internal static string SelectAllLabel {
+            get {
+                return ResourceManager.GetString("SelectAllLabel", resourceCulture);
+            }
+        }
     }
 }

@@ -45,4 +45,7 @@
     <data name="SelectCategoriesPlaceholder" xml:space="preserve">
         <value>Sélectionner des catégories</value>
     </data>
+    <data name="SelectAllLabel" xml:space="preserve">
+        <value>Sélectionner tout</value>
+    </data>
 </root>
