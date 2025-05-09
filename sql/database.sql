@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS QuestionCategories;
+DROP TABLE IF EXISTS Categories;
 DROP TABLE IF EXISTS AnswerVotes;
 DROP TABLE IF EXISTS NotificationPreferences;
 DROP TABLE IF EXISTS Answers;
@@ -7,7 +9,7 @@ DROP TABLE IF EXISTS Users;
 DROP DATABASE IF EXISTS AssistClubDB;
 
 CREATE DATABASE AssistClubDB;
-
+GO
 USE AssistClubDB;
 
 CREATE TABLE Users (
@@ -18,7 +20,7 @@ CREATE TABLE Users (
                        Photo VARCHAR(255),
                        Club NVARCHAR(100) NOT NULL,
                        Microsite VARCHAR(255) NOT NULL,
-                       Role NVARCHAR(50) NOT NULL CHECK (Role IN ('admin', 'user')),
+                       Role NVARCHAR(50) NOT NULL CHECK (Role IN ('admin', 'user'))
 );
 
 CREATE TABLE Questions (

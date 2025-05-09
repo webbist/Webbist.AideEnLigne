@@ -4,6 +4,7 @@ using AssistClub.Infrastructure;
 using Microsoft.AspNetCore.OData;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseUrls("http://*:5284");
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);

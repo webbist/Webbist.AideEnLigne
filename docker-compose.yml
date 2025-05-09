@@ -1,0 +1,51 @@
+networks:
+  assistclub-network:
+
+services:
+  database:
+    container_name: 'assistclub-db'
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: 'always'
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: 'Y'
+      SA_PASSWORD: 'YourStrong@Passw0rd'
+    volumes:
+      - assistclub-data:/var/opt/mssql
+      - ./sql:/sql
+    networks:
+      - assistclub-network
+  
+  db-init:
+    image: mcr.microsoft.com/mssql-tools
+    depends_on:
+      - database
+    entrypoint: >
+      /bin/bash -c "
+      echo 'Waiting for database to be ready...';
+      sleep 20;
+      /opt/mssql-tools/bin/sqlcmd -S assistclub-db -U sa -P 'YourStrong@Passw0rd' -i /sql/database.sql;
+      echo 'Database initialized successfully.';
+      "
+    volumes:
+      - ./sql:/sql
+    networks:
+      - assistclub-network
+
+  api:
+    container_name: 'assistclub-api'
+    image: ${DOCKER_REGISTRY-}assistclub-api
+    restart: 'always'
+    ports:
+      - "5284:5284"
+    build:
+      context: .
+      dockerfile: AssistClub.API/Dockerfile
+    depends_on:
+      - database
+    networks:
+      - assistclub-network
+
+volumes:
+  assistclub-data:
