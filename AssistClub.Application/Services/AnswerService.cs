@@ -145,6 +145,7 @@ public class AnswerService(IAnswerRepository answerRepository, Notification noti
         var updatedAnswer = new Answer
         {
             Id = id,
+            UserId = answerRequest.UserId,
             Content = answerRequest.Content,
             UpdatedAt = DateTime.UtcNow,
             AttachmentName = answerRequest.AttachmentName
