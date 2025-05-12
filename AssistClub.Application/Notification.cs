@@ -7,6 +7,8 @@ using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using MimeKit.Text;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace AssistClub.Application;
 
@@ -18,11 +20,11 @@ namespace AssistClub.Application;
 public class Notification(IConfiguration configuration, IUserRepository userRepository)
 {
     /// <summary>
-    /// Sends a single email message asynchronously.
+    /// Sends an email using SMTP based on configuration.
     /// </summary>
     /// <param name="emailRequest">The <see cref="EmailRequest"/> containing email details.</param>
     /// <returns>True if the email was sent successfully, false otherwise.</returns>
-    private async Task<bool> SendEmailAsync(EmailRequest emailRequest)
+    private async Task<bool> SendEmailSmtpAsync(EmailRequest emailRequest)
     {
         try
         {
@@ -47,6 +49,35 @@ public class Notification(IConfiguration configuration, IUserRepository userRepo
         catch (Exception e)
         {
             Console.WriteLine($"Error sending email: {e.Message}");
+            return false;
+        }
+    }
+    
+    /// <summary>
+    /// Sends an email using SendGrid API.
+    /// </summary>
+    /// <param name="emailRequest">The <see cref="EmailRequest"/> containing email details.</param>
+    /// <returns>
+    /// True if the email was sent successfully, false otherwise.
+    /// </returns>
+    private async Task<bool> SendEmailAsync(EmailRequest emailRequest)
+    {
+        try
+        {
+            var apiKey = configuration["EmailSettings:ApiKey"];
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress(configuration["EmailSettings:From"]);
+            var subject = emailRequest.Subject;
+            var to = new EmailAddress(emailRequest.To);
+            var plainTextContent = string.Empty;
+            var htmlContent = emailRequest.Body;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"SendGrid Error: {ex.Message}");
             return false;
         }
     }
