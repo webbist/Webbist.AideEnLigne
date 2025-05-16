@@ -63,7 +63,9 @@ public class UserRepository(AssistClubDbContext db, ILogger<UserRepository> logg
                     NotifyOnAnswerPublishedOnMyQuestion = true,
                     NotifyOnAnswerToMyQuestionMarkedOfficial = true,
                     NotifyOnMyQuestionOrAnswerModifiedByAdmin = true,
-                    NotifyOnAnyOfficialAnswerInQuestionIrelated = true
+                    NotifyOnAnyOfficialAnswerInQuestionIrelated = true,
+                    NotifyOnQuestionIrelatedModifiedByAuthor = true,
+                    NotifyOnNewAnswerInQuestionIrelated = true
                 }
             );
             await db.SaveChangesAsync();
