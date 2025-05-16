@@ -19,7 +19,8 @@
                    class="form-control"
                    placeholder="@CategoryInputLocalizer["AddCategoryPlaceholder"]"
                    @bind-Value="@_categoryInput"
-                   @oninput="OnCategoryInputChanged"/>
+                   @oninput="OnCategoryInputChanged"
+                   @onkeydown="HandleKeyDown"/>
     </form>
     @if (_suggestedCategories?.Any() == true)
     {
@@ -86,6 +87,14 @@
                 await AddCategory(category.Trim());
             }
             await Task.Yield();
+        }
+    }
+    
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Tab" && !string.IsNullOrWhiteSpace(_categoryInput))
+        {
+            await AddCategory(_categoryInput.Trim());
         }
     }
 }
