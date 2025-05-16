@@ -39,19 +39,32 @@
     
     private string _categoryInput = string.Empty;
     private List<string> _suggestedCategories = [];
+    private CancellationTokenSource? _debounceCts;
 
     private async Task OnCategoryInputChanged(ChangeEventArgs e)
     {
         _categoryInput = e.Value?.ToString() ?? "";
-
-        if (_categoryInput.Length >= 2)
+        
+        _debounceCts?.Cancel();
+        _debounceCts = new CancellationTokenSource();
+        
+        try
         {
-            var result = await CategoryHttpClient.GetCategoriesAsync(_categoryInput);
-            if (result != null) _suggestedCategories = result.Select(c => c.Name).ToList();
+            await Task.Delay(250, _debounceCts.Token);
+            
+            if (_categoryInput.Length >= 2)
+            {
+                var result = await CategoryHttpClient.GetCategoriesAsync(_categoryInput);
+                if (result != null) _suggestedCategories = result.Select(c => c.Name).ToList();
+            }
+            else
+            {
+                _suggestedCategories.Clear();
+            }
         }
-        else
+        catch (TaskCanceledException)
         {
-            _suggestedCategories.Clear();
+            // Task was canceled, do nothing
         }
     }
     
