@@ -90,6 +90,12 @@
     display: block;
 }
 
+.main_logo {
+    width: 2.5rem;
+    padding-right: .2rem;
+    padding-bottom: .5rem;
+}
+
 @media (min-width: 641px) {
     .navbar-toggler {
         display: none;
