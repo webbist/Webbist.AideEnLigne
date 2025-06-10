@@ -9,17 +9,17 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.2.1" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\AssistClub.Application\AssistClub.Application.csproj" />
-      <ProjectReference Include="..\AssistClub.Infrastructure\AssistClub.Infrastructure.csproj" />
+      <ProjectReference Include="..\AssistClub.Infrastructure\Webbist.AideEnLigne.Data.csproj" />
     </ItemGroup>
 
     <ItemGroup>

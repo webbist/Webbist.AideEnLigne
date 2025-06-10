@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using AssistClub.Application;
-using AssistClub.Infrastructure;
 using Microsoft.AspNetCore.OData;
+using Webbist.AideEnLigne.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("http://*:5284");
