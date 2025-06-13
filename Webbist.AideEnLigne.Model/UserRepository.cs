@@ -13,13 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
 
-using AssistClub.Application.Interfaces;
-using Domain.Entities;
-using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Webbist.AideEnLigne.Data;
 
-namespace Webbist.AideEnLigne.Data.Repositories
+namespace Webbist.AideEnLigne.Model
 {
     /// <inheritdoc/>
     public class UserRepository(DataContext db, ILogger<UserRepository> logger) : IUserRepository
@@ -40,9 +38,8 @@ namespace Webbist.AideEnLigne.Data.Repositories
             string normalizedEmail = email.Trim().ToLower();
             try
             {
-                return await db.Users
-                    .Where(u => u.Email.ToLower() == normalizedEmail)
-                    .SingleOrDefaultAsync();
+                return await db.Users.Where(u => u.Email.ToLower() == normalizedEmail)
+                                     .SingleOrDefaultAsync();
             }
             catch (InvalidOperationException ex)
             {
@@ -68,23 +65,21 @@ namespace Webbist.AideEnLigne.Data.Repositories
                 var result = db.Users.Add(user);
                 await db.SaveChangesAsync();
                 if (result.Entity == null)
-                {
                     throw new DbUpdateException("Failed to save the user to the database.");
-                }
-                db.NotificationPreferences.Add(
-                    new NotificationPreference
-                    {
-                        UserId = result.Entity.Id,
-                        NotifyOnNewClubQuestion = true,
-                        NotifyOnAnswerPublishedOnMyQuestion = true,
-                        NotifyOnAnswerToMyQuestionMarkedOfficial = true,
-                        NotifyOnMyQuestionOrAnswerModifiedByAdmin = true,
-                        NotifyOnAnyOfficialAnswerInQuestionIrelated = true,
-                        NotifyOnQuestionIrelatedModifiedByAuthor = true,
-                        NotifyOnNewAnswerInQuestionIrelated = true
-                    }
-                );
+
+                db.NotificationPreferences.Add(new NotificationPreference
+                {
+                    UserId = result.Entity.Id,
+                    NotifyOnNewClubQuestion = true,
+                    NotifyOnAnswerPublishedOnMyQuestion = true,
+                    NotifyOnAnswerToMyQuestionMarkedOfficial = true,
+                    NotifyOnMyQuestionOrAnswerModifiedByAdmin = true,
+                    NotifyOnAnyOfficialAnswerInQuestionIrelated = true,
+                    NotifyOnQuestionIrelatedModifiedByAuthor = true,
+                    NotifyOnNewAnswerInQuestionIrelated = true
+                });
                 await db.SaveChangesAsync();
+
                 return result.Entity;
             }
             catch (DbUpdateException ex)
@@ -108,10 +103,9 @@ namespace Webbist.AideEnLigne.Data.Repositories
         {
             try
             {
-                return await db.Users
-                    .Where(u => u.Id == id)
-                    .Include(u => u.NotificationPreference)
-                    .SingleOrDefaultAsync();
+                return await db.Users.Where(u => u.Id == id)
+                                     .Include(u => u.NotificationPreference)
+                                     .SingleOrDefaultAsync();
             }
             catch (InvalidOperationException ex)
             {
@@ -134,14 +128,12 @@ namespace Webbist.AideEnLigne.Data.Repositories
         /// </returns>
         public async Task<IEnumerable<string>> GetEmailsToNotifyOnNewQuestion(Guid authorId, string club)
         {
-            return await Task.FromResult(db.Users
-                .Where(u =>
-                    u.Id != authorId &&
-                    (u.Role == Role.Admin.ToString() || u.Club == club) &&
-                    (u.NotificationPreference.NotifyOnNewClubQuestion || u.Role == Role.Admin.ToString())
-                )
-                .Select(u => u.Email)
-                .Distinct());
+            return await Task.FromResult(db.Users.Where(u => u.Id != authorId &&
+                                                             (u.Role == Role.Admin.ToString() || u.Club == club) &&
+                                                             u.NotificationPreference != null &&
+                                                             (u.NotificationPreference.NotifyOnNewClubQuestion || u.Role == Role.Admin.ToString()))
+                                                 .Select(u => u.Email)
+                                                 .Distinct());
         }
 
         /// <summary>
@@ -158,12 +150,12 @@ namespace Webbist.AideEnLigne.Data.Repositories
         /// </returns>
         public async Task<IEnumerable<string>> GetEmailsToNotifyOnUpdateQuestion(Guid questionId, Guid authorId)
         {
-            return await Task.FromResult(db.Answers
-                .Where(a => a.QuestionId == questionId &&
-                            a.UserId != authorId &&
-                            a.User.NotificationPreference.NotifyOnQuestionIrelatedModifiedByAuthor == true)
-                .Select(a => a.User.Email)
-                .Distinct());
+            return await Task.FromResult(db.Answers.Where(a => a.QuestionId == questionId &&
+                                                               a.UserId != authorId &&
+                                                               a.User.NotificationPreference != null &&
+                                                               a.User.NotificationPreference.NotifyOnQuestionIrelatedModifiedByAuthor)
+                                                   .Select(a => a.User.Email)
+                                                   .Distinct());
         }
 
         /// <summary>
@@ -178,14 +170,11 @@ namespace Webbist.AideEnLigne.Data.Repositories
         /// </returns>
         public async Task<IEnumerable<string>> GetEmailsToNotifyOnUpdateOfficialAnswer(Guid questionId)
         {
-            return await Task.FromResult(db.Users
-                .Where(u =>
-                    u.Role == Role.Admin.ToString() ||
-                    db.Questions.Any(q => q.Id == questionId && q.UserId == u.Id) ||
-                    db.Answers.Any(a => a.QuestionId == questionId && a.UserId == u.Id)
-                )
-                .Select(u => u.Email)
-                .Distinct());
+            return await Task.FromResult(db.Users.Where(u => u.Role == Role.Admin.ToString() ||
+                                                             db.Questions.Any(q => q.Id == questionId && q.UserId == u.Id) ||
+                                                             db.Answers.Any(a => a.QuestionId == questionId && a.UserId == u.Id))
+                                                 .Select(u => u.Email)
+                                                 .Distinct());
         }
 
         /// <summary>
@@ -202,15 +191,13 @@ namespace Webbist.AideEnLigne.Data.Repositories
         /// </returns>
         public async Task<IEnumerable<string>> GetEmailsToNotifyOnNewAnswer(Guid answerAuthorId, Question question)
         {
-            return await Task.FromResult(db.Users
-                .Where(u =>
-                    u.Id != answerAuthorId &&
-                    (u.Role == Role.Admin.ToString() ||
-                     db.Answers.Any(a => a.QuestionId == question.Id && a.UserId == u.Id && a.UserId != question.UserId))
-                     && u.NotificationPreference.NotifyOnNewAnswerInQuestionIrelated == true
-                )
-                .Select(u => u.Email)
-                .Distinct());
+            return await Task.FromResult(db.Users.Where(u => u.Id != answerAuthorId &&
+                                                             (u.Role == Role.Admin.ToString() ||
+                                                              db.Answers.Any(a => a.QuestionId == question.Id && a.UserId == u.Id && a.UserId != question.UserId)) &&
+                                                             u.NotificationPreference != null &&
+                                                             u.NotificationPreference.NotifyOnNewAnswerInQuestionIrelated)
+                                                 .Select(u => u.Email)
+                                                 .Distinct());
         }
 
         /// <summary>
@@ -227,15 +214,13 @@ namespace Webbist.AideEnLigne.Data.Repositories
         /// </returns>
         public async Task<IEnumerable<string>> GetEmailsToNotifyOnOfficialAnswer(Guid answerAuthorId, Question question)
         {
-            return await Task.FromResult(db.Users
-                 .Where(u =>
-                     u.Id != question.UserId &&
-                     u.NotificationPreference.NotifyOnAnyOfficialAnswerInQuestionIrelated == true &&
-                     (u.Id == answerAuthorId ||
-                     db.Answers.Any(a => a.QuestionId == question.Id && a.UserId == u.Id))
-                 )
-                 .Select(u => u.Email)
-                 .Distinct());
+            return await Task.FromResult(db.Users.Where(u => u.Id != question.UserId &&
+                                                             u.NotificationPreference != null &&
+                                                             u.NotificationPreference.NotifyOnAnyOfficialAnswerInQuestionIrelated &&
+                                                             (u.Id == answerAuthorId ||
+                                                              db.Answers.Any(a => a.QuestionId == question.Id && a.UserId == u.Id)))
+                                                 .Select(u => u.Email)
+                                                 .Distinct());
         }
 
         /// <summary>
@@ -252,9 +237,8 @@ namespace Webbist.AideEnLigne.Data.Repositories
         {
             try
             {
-                return await db.NotificationPreferences
-                    .Where(np => np.UserId == userId)
-                    .SingleOrDefaultAsync();
+                return await db.NotificationPreferences.Where(np => np.UserId == userId)
+                                                       .SingleOrDefaultAsync();
             }
             catch (InvalidOperationException ex)
             {
@@ -275,7 +259,9 @@ namespace Webbist.AideEnLigne.Data.Repositories
             try
             {
                 var preferences = await db.NotificationPreferences.FindAsync(updatedPreferences.UserId);
-                if (preferences == null) return false;
+                if (preferences == null)
+                    return false;
+
                 preferences.NotifyOnNewClubQuestion = updatedPreferences.NotifyOnNewClubQuestion;
                 preferences.NotifyOnAnswerPublishedOnMyQuestion = updatedPreferences.NotifyOnAnswerPublishedOnMyQuestion;
                 preferences.NotifyOnAnswerToMyQuestionMarkedOfficial = updatedPreferences.NotifyOnAnswerToMyQuestionMarkedOfficial;
@@ -284,6 +270,7 @@ namespace Webbist.AideEnLigne.Data.Repositories
                 preferences.NotifyOnQuestionIrelatedModifiedByAuthor = updatedPreferences.NotifyOnQuestionIrelatedModifiedByAuthor;
                 preferences.NotifyOnNewAnswerInQuestionIrelated = updatedPreferences.NotifyOnNewAnswerInQuestionIrelated;
                 db.NotificationPreferences.Update(preferences);
+
                 return await db.SaveChangesAsync() > 0;
             }
             catch (DbUpdateException ex)

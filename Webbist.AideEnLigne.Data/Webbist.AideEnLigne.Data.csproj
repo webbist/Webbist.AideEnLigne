@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AssistClub.Application\AssistClub.Application.csproj" />
+      <Folder Include="Repositories\" />
     </ItemGroup>
 
 </Project>

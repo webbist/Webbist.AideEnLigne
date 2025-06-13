@@ -13,17 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
 
-using AssistClub.Application.Interfaces;
-using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+using Webbist.AideEnLigne.Data;
 
-namespace Webbist.AideEnLigne.Data.Repositories
+namespace Webbist.AideEnLigne.Model
 {
     /// <summary>
-    /// Represents a repository for managing categories in the database.
+    /// Represents the repository interface for managing category-related database operations.
     /// </summary>
-    /// <param name="db">The database context.</param>
-    public class CategoryRepository(DataContext db) : ICategoryRepository
+    public interface ICategoryRepository
     {
         #region Methods
         /// <summary>
@@ -32,11 +29,8 @@ namespace Webbist.AideEnLigne.Data.Repositories
         /// <returns>
         /// An <see cref="IQueryable{T}"/> representing the categories in the database.
         /// </returns>
-        public async Task<IQueryable<Category>> GetCategoriesAsync()
-        {
-            return await Task.FromResult(db.Categories);
-        }
-
+        Task<IQueryable<Category>> GetCategoriesAsync();
+    
         /// <summary>
         /// Retrieves a category by its unique identifier.
         /// </summary>
@@ -44,10 +38,7 @@ namespace Webbist.AideEnLigne.Data.Repositories
         /// <returns>
         /// The <see cref="Category"/> entity if found; otherwise, <c>null</c>.
         /// </returns>
-        public async Task<Category?> GetCategoryByNameAsync(string name)
-        {
-            return await db.Categories.FirstOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
-        }
+        Task<Category?> GetCategoryByNameAsync(string name);
         #endregion
     }
 }

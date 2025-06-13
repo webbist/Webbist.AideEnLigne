@@ -1,6 +1,7 @@
 using AssistClub.Application.DTOs;
 using AssistClub.Application.Interfaces;
-using Domain.Entities;
+using Webbist.AideEnLigne.Data;
+using Webbist.AideEnLigne.Model;
 
 namespace AssistClub.Application.Services;
 

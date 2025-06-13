@@ -13,11 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
 
-using AssistClub.Application.Interfaces;
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Webbist.AideEnLigne.Data;
 
-namespace Webbist.AideEnLigne.Data.Repositories
+namespace Webbist.AideEnLigne.Model
 {
     /// <summary>
     /// Represents a repository for managing answer votes in the database.

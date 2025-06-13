@@ -20,6 +20,8 @@
     <ItemGroup>
       <ProjectReference Include="..\AssistClub.Application\AssistClub.Application.csproj" />
       <ProjectReference Include="..\AssistClub.Infrastructure\Webbist.AideEnLigne.Data.csproj" />
+      <ProjectReference Include="..\Webbist.AideEnLigne.Data\Webbist.AideEnLigne.Data.csproj" />
+      <ProjectReference Include="..\Webbist.AideEnLigne.Model\Webbist.AideEnLigne.Model.csproj" />
     </ItemGroup>
 
     <ItemGroup>

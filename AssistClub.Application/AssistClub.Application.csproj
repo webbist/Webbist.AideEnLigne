@@ -7,14 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AssistClub.Domain\AssistClub.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="MailKit" Version="4.11.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.3" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
       <PackageReference Include="SendGrid" Version="9.29.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Webbist.AideEnLigne.Data\Webbist.AideEnLigne.Data.csproj" />
+      <ProjectReference Include="..\Webbist.AideEnLigne.Model\Webbist.AideEnLigne.Model.csproj" />
     </ItemGroup>
 
 </Project>

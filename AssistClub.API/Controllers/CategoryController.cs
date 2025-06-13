@@ -1,6 +1,6 @@
-using AssistClub.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Webbist.AideEnLigne.Model;
 
 namespace AssistClub.API.Controllers;
 

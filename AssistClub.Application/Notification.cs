@@ -1,7 +1,4 @@
 using AssistClub.Application.DTOs;
-using AssistClub.Application.Interfaces;
-using Domain.Entities;
-using Domain.Enums;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +6,8 @@ using MimeKit;
 using MimeKit.Text;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using Webbist.AideEnLigne.Data;
+using Webbist.AideEnLigne.Model;
 
 namespace AssistClub.Application;
 
