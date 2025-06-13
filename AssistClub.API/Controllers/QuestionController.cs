@@ -1,7 +1,6 @@
-using AssistClub.Application.DTOs;
-using AssistClub.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Webbist.AideEnLigne.Services.Questions;
 
 namespace AssistClub.API.Controllers;
 
@@ -21,18 +20,18 @@ public class QuestionController(IQuestionService questionService, ILogger<Questi
     /// This endpoint is used by the frontend application to submit user-generated questions 
     /// to the system, ensuring the data is validated and stored appropriately.
     /// </remarks>
-    /// <param name="questionDto">The question data submitted by the user.</param>
+    /// <param name="questionRequest">The question data submitted by the user.</param>
     /// <returns>
     /// - <c>200 OK</c>: Returns the created question details. <br/>
     /// - <c>500 Internal Server Error</c>: If an unexpected error occurs.
     /// </returns>
     [Route("Create")]
     [HttpPost]
-    public async Task<IActionResult> CreateQuestion(QuestionRequestDto questionDto)
+    public async Task<IActionResult> CreateQuestion(QuestionRequest questionRequest)
     {
         try
         {
-            var question = await questionService.CreateQuestionAsync(questionDto);
+            var question = await questionService.CreateQuestionAsync(questionRequest);
             logger.LogTrace("Question created with title {title}", question.Title);
             return Ok(question);
         }
@@ -101,18 +100,18 @@ public class QuestionController(IQuestionService questionService, ILogger<Questi
     /// Updates an existing question in the system.
     /// </summary>
     /// <param name="id">The ID of the question to update.</param>
-    /// <param name="questionDto">The updated question data.</param>
+    /// <param name="questionRequest">The updated question data.</param>
     /// <returns>
     /// <c>200 OK</c>: If the update was successful.<br/>
     /// <c>404 Not Found</c>: If the question with the specified ID does not exist.<br/>
     /// <c>500 Internal Server Error</c>: If an unexpected error occurs.
     /// </returns>
     [HttpPut("Update/{id}")]
-    public async Task<IActionResult> UpdateQuestion(Guid id, QuestionRequestDto questionDto)
+    public async Task<IActionResult> UpdateQuestion(Guid id, QuestionRequest questionRequest)
     {
         try
         {
-            var result = await questionService.UpdateQuestionAsync(id, questionDto);
+            var result = await questionService.UpdateQuestionAsync(id, questionRequest);
             return result ? Ok() : NotFound();
         }
         catch (Exception e)

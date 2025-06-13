@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssistClub.Application", "AssistClub.Application\AssistClub.Application.csproj", "{82C248E7-5C78-45FF-B8DD-64A9EF8D2882}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webbist.AideEnLigne.Services", "Webbist.AideEnLigne.Services\Webbist.AideEnLigne.Services.csproj", "{82C248E7-5C78-45FF-B8DD-64A9EF8D2882}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webbist.AideEnLigne.Data", "Webbist.AideEnLigne.Data\Webbist.AideEnLigne.Data.csproj", "{525C710A-5C3A-473D-96FE-83209FFFD63F}"
 EndProject
@@ -42,8 +42,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {D8320E37-229F-4E9C-A851-4DC8F6362FE1}
 	EndGlobalSection
 EndGlobal

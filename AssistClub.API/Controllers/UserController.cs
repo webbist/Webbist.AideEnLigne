@@ -1,6 +1,5 @@
-using AssistClub.Application.DTOs;
-using AssistClub.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Webbist.AideEnLigne.Services.Users;
 
 namespace AssistClub.API.Controllers;
 

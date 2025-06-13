@@ -1,13 +1,13 @@
-using AssistClub.Application;
 using Microsoft.AspNetCore.OData;
 using System.Text.Json.Serialization;
 using Webbist.AideEnLigne.Data;
 using Webbist.AideEnLigne.Model;
+using Webbist.AideEnLigne.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("http://*:5284");
 
-builder.Services.AddApplication();
+builder.Services.AddServices();
 builder.Services.AddData(builder.Configuration);
 builder.Services.AddModel();
 
